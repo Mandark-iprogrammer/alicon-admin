@@ -3,6 +3,8 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
+var FCM = require('fcm-push');
+
 @Component({
   selector: 'app-meeting',
   templateUrl: './meeting.component.html',
@@ -11,7 +13,7 @@ import { Router,Params,ActivatedRoute } from '@angular/router';
 })
 
 export class MeetingComponent implements OnInit {
-  
+ 
   public show:boolean = false;
   public show1:boolean = false;
   public show2:boolean = true;
@@ -22,16 +24,18 @@ export class MeetingComponent implements OnInit {
   docs1:any
   docs2:any
   nm:string
+  message;
   desc:string;remk:string;createby:string;objID:string;ven:string;stTime:string;stDate:string;mtDate:string
+
+  
   constructor(
     private http: HttpClient,
     private meeting: MeetingService,
     private toastr: ToastrService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    
+   
   ) { 
-    
       this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
       this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
       this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users?where={"isAdmin":false}'
@@ -58,8 +62,6 @@ export class MeetingComponent implements OnInit {
           }
           
          if(userId!=null){
-
-
           this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+userId+'"}}'
           this.http.get(this.SERVER_URL,{
                headers:new HttpHeaders({
@@ -101,28 +103,20 @@ export class MeetingComponent implements OnInit {
                 this.stTime=data['startTime']
                 this.stDate=data['startDate']
               this.mtDate=data['meetingDate']
-  
+                console.log(this.stDate)
                 //this.mtDate=data['meetingDate']
           })
-
-
-          
-
-        }
-
-        
-
-       
-       
-     
-    
-  
+   }
       });
 
+     
+      
   }
 
   ngOnInit() {
-
+    // this.msgService.getPermission()
+    // this.msgService.receiveMessage()
+    // this.message = this.msgService.currentMessage
     
   }
 
@@ -139,9 +133,12 @@ export class MeetingComponent implements OnInit {
         },
         err=>console.log(err),
         ()=>{
-         console.log("record saved")
+        console.log("record saved")
+         this.router.navigate(['/viewMeeting']);
          this.toastr.success('New Record Added Successfully','Meeting Register');
          })
+
+        
  
     }else{
 
@@ -173,9 +170,31 @@ export class MeetingComponent implements OnInit {
           //this.meeting.showMeeting();
           this.router.navigate(['/viewMeeting']);
           this.toastr.success('New Record Published Successfully','Meeting Register');
-          
-        }
-      )
+          var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
+          var fcm = new FCM(serverKey); 
+          var message = {
+             registration_ids: ['emqR_8IaqyY:APA91bEOFP9T5pD2OPrVur4Fu7CSLM5Kbitek2IE8mFZ4o1AkJMuJ7Wl54OhvwbesnTpaXvH2R0_QaFds6s-yC1iAygBAuAGgJKYDRNJ4laONtDjyoqB29cJWWD6Q7Y3Qp6AK6eYvHVs','fDyP9x0uTBU:APA91bHxw7mBWf9uzEKIetyOhno6jcDBDTOmN8aLYfGibBSRUT7YIqCirKGLqXcnCXKSxYEIvEPvhn-9w4umaaiNnwzzcImOVa6RYy2U0Z9qmTWXnIKkwrleL-sL38FEd1R6AeQ6SPOA'], // required fill with device token or topics
+             collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
+             data: {
+                 your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
+             },
+             notification: {
+                 title: frm.name,
+                 body: frm.desc
+             }
+           };
+  
+  
+           //callback style
+           fcm.send(message, function(err, response){
+             if (err) {
+                 console.log("Something has gone wrong!");
+             } else {
+                 console.log("Successfully sent with response: ", response);
+             }
+           });
+        })
+       
  
     }else{
       console.log(frm);
@@ -188,8 +207,30 @@ export class MeetingComponent implements OnInit {
           this.router.navigate(['/viewMeeting']);
           this.toastr.success('Record Publised Successfully','Meeting Register');
           
-        }
-      )
+        })
+        var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
+        var fcm = new FCM(serverKey); 
+        var message = {
+           registration_ids: ['emqR_8IaqyY:APA91bEOFP9T5pD2OPrVur4Fu7CSLM5Kbitek2IE8mFZ4o1AkJMuJ7Wl54OhvwbesnTpaXvH2R0_QaFds6s-yC1iAygBAuAGgJKYDRNJ4laONtDjyoqB29cJWWD6Q7Y3Qp6AK6eYvHVs','fDyP9x0uTBU:APA91bHxw7mBWf9uzEKIetyOhno6jcDBDTOmN8aLYfGibBSRUT7YIqCirKGLqXcnCXKSxYEIvEPvhn-9w4umaaiNnwzzcImOVa6RYy2U0Z9qmTWXnIKkwrleL-sL38FEd1R6AeQ6SPOA'], // required fill with device token or topics
+           collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
+           data: {
+               your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
+           },
+           notification: {
+               title: frm.name,
+               body: frm.desc
+           }
+         };
+
+
+         //callback style
+         fcm.send(message, function(err, response){
+           if (err) {
+               console.log("Something has gone wrong!");
+           } else {
+               console.log("Successfully sent with response: ", response);
+           }
+         });
     }
 
   }
@@ -217,4 +258,6 @@ export class MeetingComponent implements OnInit {
     this.router.navigate(['/activity',{ 'objectId': _id}]);
   }
  
+
+  
 }

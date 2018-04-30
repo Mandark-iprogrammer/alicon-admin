@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { LoginService } from './login.service';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     constructor(
     public router: Router,
     private lgn: LoginService,
-    private http:HttpClient) {}
+    private http:HttpClient,
+    private toastr: ToastrService) {}
 
     ngOnInit() {}
 
@@ -40,24 +42,28 @@ export class LoginComponent implements OnInit {
             'X-Parse-REST-API-Key':this.MASTER_KEY,
             'X-Parse-Revocable-Session':'1'
         })
-        }).subscribe(data => {
-              console.log(data)       
-            
-               //console.log(abc)
-                if(data['username']==frm.username){
+        }).subscribe(
+            res=>{
+                console.log(res)
+                if(res['username']==frm.username){
                     localStorage.setItem('isLoggedin', 'true');
                     localStorage.setItem('username',frm.username);
-                    localStorage.setItem('objectId',data['objectId']);
+                    localStorage.setItem('objectId',res['objectId']);
                     this.username=frm.username;
-                    this.objectId=data['objectId'];   
+                    this.objectId=res['objectId'];   
                     this.router.navigate(['/dashboard']);
+                    this.toastr.success('Logged in Successfully','Alicon Login');
                 }
-                else{
-                    console.log("Not Login into the app")
-                }
-            
-            //location.reload();
-        })
-      
+            },
+            err=>{
+                console.log(err)
+                console.log(err.error['error'])
+                this.router.navigate(['/login']);
+                this.toastr.success(err.error['error'],'Alicon Login');
+            },
+            ()=>{
+                          
+            })
+              
     }
 }

@@ -18,8 +18,11 @@ export class MeetingService {
       this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
       this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting'
 
+     
+
       
    }
+   
 
   saveData(frm : any){
 

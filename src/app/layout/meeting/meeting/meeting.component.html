@@ -50,6 +50,17 @@
                             <input required type="text" name="startTime" [(ngModel)]="stTime "  #startTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time" /> 
                 </div>
             </div>
+            <!-- <div class="form-group">
+                    <label for="email"> Start Date: </label> 
+                <div class="input-group datepicker-input">
+                    <input class="form-control input-underline input-lg" placeholder="dd-mm-yyyy"
+                    name="startDate"  #startDate="ngModel" ngModel [(ngModel)]="stDate" ngbDatepicker #d="ngbDatepicker" >
+                    <button class="input-group-addon" (click)="d.toggle()" type="button">
+                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                        <span class="fa fa-calendar"></span>
+                    </button>
+                </div>
+            </div> -->
             <div class="col-md-3">
                     <div class="form-group">
                         <label for="email"> Start Date: </label> 
@@ -110,7 +121,7 @@
         <td style="text-align: center;">{{desc}}</td>
         <td style="text-align: center;">{{ven}}</td>
         <td style="text-align: center;">{{mtDate}}</td>
-        <td style="text-align: center;">{{startDate}}</td>
+        <td style="text-align: center;">{{stDate}}</td>
         <td style="text-align: center;">{{stTime}}</td> 
         
         <td>
@@ -183,4 +194,3 @@
         </div>
 
     </div>
-    

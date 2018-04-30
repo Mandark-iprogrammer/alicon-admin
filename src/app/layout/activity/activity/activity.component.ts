@@ -19,8 +19,9 @@ export class ActivityComponent implements OnInit {
   docs:any
   docs1:any
   docs2:any
-  nm:string
+  nm:string;sttTime:string;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
+  ord:number;sec:string;objID:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;
   constructor(
     private http: HttpClient,
     private activity: ActivityService,
@@ -102,21 +103,21 @@ export class ActivityComponent implements OnInit {
       })
       }).subscribe(data => {
           console.log(data)       
-          //this.docs=data
-          //console.log(this.docs)
+         // this.docs=data
+         // console.log(this.docs)
              //data['startDate']=this.dataformat(data['startDate']['iso'])
              //data['meetingDate']=this.dataformat(data['meetingDate']['iso'])
              this.show1 = !this.show1; 
              this.show = !this.show; 
-            this.nm=data['name']
-            this.desc=data['description']
-            this.remk=data['remarks']
-            this.objID1=data['objectId']
-            this.ven=data['venue']
-            this.stTime=data['startTime']
-           this.stDate=data['startDate']
-           this.mtDate=data['meetingDate']
-           this.isPublish=data['isPublished']
+            this.ord=data['order']
+            this.sec=data['section']
+            this.objID=data['objectID']
+            this.pplace=data['presentationPlace']
+            this.staffname=data['indianStaff']
+            this.sttTime=data['startTime']
+           this.edTime=data['endTime']
+           this.dur=data['duration']
+           this.typ=data['type']
           
      })
     }
