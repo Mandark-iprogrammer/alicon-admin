@@ -1,0 +1,100 @@
+<!-- 
+<div class="card-header accordion-heading country" *ngFor="let docs1 of docs1">
+  <a  class="accordion-toggle" style="cursor: pointer;" (click)="abc(docs1.objectId);isCollapsed = !isCollapsed;" [attr.aria-expanded]="true" aria-controls="collapseExample">{{docs1.name}} - {{docs1.description }} - {{docs1.meetingDate }} - {{docs1.startTime }} </a>
+</div>
+<div id="collapseExample" [ngbCollapse]="isCollapsed">
+<div class="accordion-inner">
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <tr >
+        <th style="text-align: center;">Sr.No</th>
+        <th style="text-align: center;">Activity Order</th>
+        <th style="text-align: center;">Activity Section </th>
+        <th style="text-align: center;">Presentation Place</th>
+        <th style="text-align: center;">Indian Staff</th>
+        <th style="text-align: center;">Activity Start Time</th>
+        <th style="text-align: center;">Activity End Time</th>
+        <th style="text-align: center;">Activity Duration</th>
+        <th style="text-align: center;">Publish</th>
+        <th style="text-align: center;">Options</th>
+      </tr>
+      <tr *ngFor="let docs of docs ;let i=index">
+        <td style="text-align: center;">{{i+1}}</td>
+        <td style="text-align: center;">{{docs.order}}</td>
+        <td style="text-align: center;">{{docs.section}}</td>
+        <td style="text-align: center;">{{docs.presentationPlace}}</td>
+        <td style="text-align: center;">{{docs.indianStaff}}</td>
+        <td style="text-align: center;">{{docs.startTime}}</td>
+        <td style="text-align: center;">{{docs.endTime}}</td> 
+        <td style="text-align: center;">{{docs.duration}}</td> 
+        <td style="text-align: center;"><b>{{docs.isPublished}}</b></td> 
+        <td>
+          <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
+          <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
+        </td>
+  
+      </tr>
+  
+    </table>
+
+  </div>
+</div>
+</div> -->
+
+<div class="card">
+<div id="panel-group">
+  <div class="card" *ngFor="let docs1 of docs1; let i = index">
+    <div class="card-header" (click) = "abc(docs1.objectId);current = i">
+       <h5 class="mb-0">
+          <i class="fa fa-angle-down rotate-icon" 
+            [class.glyphicon-chevron-right] = "i != current"
+            [class.glyphicon-chevron-down] = "i == current" ></i>   {{docs1.name}} - {{docs1.description }} - {{docs1.meetingDate }} - {{docs1.startTime }} 
+       </h5>
+    </div>
+     <div id="collapse1" class="panel-collapse" [class.collapse]='current != i'>
+      <div class="panel-body">
+
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <tr >
+              <th style="text-align: center;">Sr.No</th>
+              <th style="text-align: center;">Activity Order</th>
+              <th style="text-align: center;">Activity Section </th>
+              <th style="text-align: center;">Presentation Place</th>
+              <th style="text-align: center;">Indian Staff</th>
+              <th style="text-align: center;">Activity Start Time</th>
+              <th style="text-align: center;">Activity End Time</th>
+              <th style="text-align: center;">Activity Duration</th>
+              <th style="text-align: center;">Publish</th>
+              <th style="text-align: center;">Options</th>
+            </tr>
+            <tr *ngFor="let docs of docs ;let i=index">
+              <td style="text-align: center;">{{i+1}}</td>
+              <td style="text-align: center;">{{docs.order}}</td>
+              <td style="text-align: center;">{{docs.section}}</td>
+              <td style="text-align: center;">{{docs.presentationPlace}}</td>
+              <td style="text-align: center;">{{docs.indianStaff}}</td>
+              <td style="text-align: center;">{{docs.startTime}}</td>
+              <td style="text-align: center;">{{docs.endTime}}</td> 
+              <td style="text-align: center;">{{docs.duration}}</td> 
+              <td style="text-align: center;"><b>{{docs.isPublished}}</b></td> 
+              <td>
+                <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
+                <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
+              </td>
+        
+            </tr>
+        
+          </table>
+        <!-- /.row -->
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
