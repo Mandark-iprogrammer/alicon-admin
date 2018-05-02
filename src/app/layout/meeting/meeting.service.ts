@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
 
 
 @Injectable()
@@ -17,18 +19,12 @@ export class MeetingService {
     this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
       this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
       this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting'
-
-     
-
-      
-   }
-   
-
+ }
   saveData(frm : any){
 
     if(frm.objectId==null){
    
-   let arr={
+    let arr={
       "name":frm.name,
       "description": frm.description,
       "remark":frm.remark,

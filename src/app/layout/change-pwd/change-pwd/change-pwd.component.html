@@ -1,0 +1,29 @@
+<div class="col-md-6 col-md-offset-3">
+  <h2>Change Password</h2>
+  <form  name="form" (ngSubmit)="frm.form.valid && register(frm.value)" #frm="ngForm" novalidate>
+      
+      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
+          <label for="password">Password</label>
+          <input type="password" class="form-control input-underline input-lg" name="password" [(ngModel)]="mpwd" #password="ngModel" required placeholder="Enter the Password"/>
+          <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
+        <label for="password">Confirm Password</label>
+        <input type="password" class="form-control input-underline input-lg" name="cnfPassword" [(ngModel)]="mCpwd" #password="ngModel" required placeholder="Enter the confirm Password"/>
+        <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+      </div>
+      <!-- <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+        <label for="username">Tags</label>
+        <input type="email" class="form-control input-underline input-lg"  name="tags" [(ngModel)]="tag" #tags="ngModel" required placeholder="Enter the tags"/>
+        <div *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</div>
+     </div> -->
+    
+    
+
+      <div class="form-group">
+          <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="Register">
+         
+          <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
+      </div>
+  </form>
+</div>

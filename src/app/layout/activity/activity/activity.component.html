@@ -90,14 +90,16 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label for="city"> Section: </label> 
-                    <input class="form-control input-underline input-lg" [(ngModel)]="sec" type="text" placeholder="Enter a activity section" name="section" #section="ngModel" ngModel  required />  
-                        <div id="errLast"></div>
+                    <input class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="sec" type="text" placeholder="Enter a activity section" name="section" #section="ngModel" ngModel  required />  
+                    <div *ngIf="section.errors?.pattern"> 
+                        Activity section not valid.
+                     </div>
             </div>
         </div>    
        
             <div class="form-group">
         
-                <input type="hidden"  name="objectId"  #objectId="ngModel" ngModel  [(ngModel)]="objID"/>
+                <input type="hidden"  name="objectId"  #objectId="ngModel" ngModel  [(ngModel)]="objID2"/>
                 <!-- <hr> -->
 
                </div>
@@ -105,27 +107,39 @@
        
                <div class="form-group">
                         <label for="phonenumber">Presentation Place: </label>
-                        <input required type="text" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity presentation place"/> 
+                        <input required type="text" pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity presentation place"/> 
+                        <div *ngIf="presentationPlace.errors?.pattern"> 
+                            Presentation Place not valid.
+                         </div>
                 </div>
         </div>
         <div class="col-md-2">
         
                 <div class="form-group">
                          <label for="phonenumber">Indian Staff: </label>
-                          <input required type="text" name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity indian staff name"/> 
+                          <input required type="text" pattern="[a-zA-Z .]*" name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity indian staff name"/> 
+                          <div *ngIf="indianStaff.errors?.pattern"> 
+                            Indian Staff Place not valid.
+                         </div>
                 </div>
         </div>        
         <div class="col-md-1">
                 <div class="form-group">
                     <label for="mnumber">Start Time: </label>
-                            <input required type="text" name="startTime" [(ngModel)]="sttTime"  #startTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a activity start time" /> 
+                            <input required type="text" name="startTime" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" [(ngModel)]="sttTime"  #startTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a activity start time" /> 
+                            <div *ngIf="endTime.errors?.pattern"> 
+                                Start timne not valid.
+                             </div>
                 </div>
         </div>
         <div class="col-md-1">
                 
                 <div class="form-group">
                     <label for="email"> End Time: </label> 
-                    <input required type="text" name="endTime" [(ngModel)]="edTime "  #endTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a activity start time" /> 
+                    <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="endTime" [(ngModel)]="edTime "  #endTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a activity start time" /> 
+                    <div *ngIf="endTime.errors?.pattern"> 
+                        End timne not valid.
+                     </div>
                 </div>
         </div>
         <div class="col-md-1">

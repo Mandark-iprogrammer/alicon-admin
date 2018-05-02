@@ -53,6 +53,10 @@ export class ViewUserComponent implements OnInit {
   }
   }
 
-
+  chPwd(_id:string)
+  {
+    console.log(_id)
+    this.router.navigate(['/changePwd',{ 'objectId': _id}]);
+  }
 
 }

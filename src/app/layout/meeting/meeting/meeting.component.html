@@ -6,22 +6,30 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="name">Meeting Name: </label>
-                            <input required type="text" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="60"/> 
+                            <input required type="text" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="60"/> 
                     </div>
+                    <div *ngIf="name.errors?.pattern"> 
+                        Meeting name not valid.
+                     </div> 
             </div>
             <div class="col-md-4">
                 <div class="form-group"> 	 
                     <label for="saddress"> Meeting Description: </label>
-                    <textarea class="form-control input-underline input-lg" rows="3" [(ngModel)]="desc" placeholder="Enter a meeting description" name="description" #description="ngModel" ngModel required></textarea>
+                    <textarea class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -]*" rows="3" [(ngModel)]="desc" placeholder="Enter a meeting description" name="description" #description="ngModel" ngModel required></textarea>
                         <!-- <textarea class="form-control input-underline input-lg" [(ngModel)]="desc" placeholder="Enter a meeting description" type="text" name="description" #description="ngModel" ngModel required /> 
                             <div id="errFirst"></div>     -->
+                            <div *ngIf="description.errors?.pattern"> 
+                                Meeting description name not valid.
+                             </div> 
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="city"> Remark: </label> 
-                        <input class="form-control input-underline input-lg" [(ngModel)]="remk" type="text" placeholder="Enter a meeting remark" name="remark" #remark="ngModel" ngModel  required />  
-                            <div id="errLast"></div>
+                        <input class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -/(/)]*" [(ngModel)]="remk" type="text" placeholder="Enter a meeting remark" name="remark" #remark="ngModel" ngModel  required />  
+                        <div *ngIf="remark.errors?.pattern"> 
+                            Meeting remark name not valid.
+                         </div>
                 </div>
             </div>
         </div>
@@ -40,14 +48,20 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="phonenumber">Venue: </label>
-                            <input required type="text" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter Meeting Venue"/> 
+                            <input required type="text" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter Meeting Venue"/> 
+                            <div *ngIf="venue.errors?.pattern"> 
+                                Meeting venue name not valid.
+                             </div>
                     </div>
     
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="mnumber">Start Time: </label>
-                            <input required type="text" name="startTime" [(ngModel)]="stTime "  #startTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time" /> 
+                            <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="startTime" [(ngModel)]="stTime "  #startTime="ngModel" ngModel  class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time" /> 
+                            <div *ngIf="startTime.errors?.pattern"> 
+                                Meeting Start Time not valid.
+                             </div>
                 </div>
             </div>
             <!-- <div class="form-group">
@@ -126,7 +140,7 @@
         
         <td>
           <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
-          
+          <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a>
         </td>
   
       </tr>

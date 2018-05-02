@@ -26,7 +26,7 @@ export class MeetingComponent implements OnInit {
   docs2:any
   nm:string
   message;
-  desc:string;remk:string;createby:string;objID:string;ven:string;stTime:string;stDate:string;mtDate:string
+  desc:string;remk:string;createby:string;objID:string;ven:string;stTime:string;stDate:Date;mtDate:Date
 
   
   constructor(
@@ -103,7 +103,7 @@ export class MeetingComponent implements OnInit {
                 this.ven=data['venue']
                 this.stTime=data['startTime']
                 this.stDate=data['startDate']
-              this.mtDate=data['meetingDate']
+                this.mtDate=data['meetingDate']
                 console.log(this.stDate)
                 //this.mtDate=data['meetingDate']
           })
@@ -115,29 +115,28 @@ export class MeetingComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.msgService.getPermission()
-    // this.msgService.receiveMessage()
-    // this.message = this.msgService.currentMessage
-    
+   
   }
 
 
   registerMeeting(frm :any){
     
     if(frm.objectId==null){
+        
       console.log(frm)
       this.meeting.saveData(frm).subscribe(
         res=>{
           console.log(res)
-          //this.router.navigate(['/meeting',{ 'objectId': res['objectId']}]);
-          //this.router.navigate(['activity'],{'objectId': res.objectId});
         },
-        err=>console.log(err),
+        err=>{
+          console.log(err)
+          this.toastr.success(err,'Meeting Register');
+        },
         ()=>{
         console.log("record saved")
-         this.router.navigate(['/viewMeeting']);
-         this.toastr.success('New Record Added Successfully','Meeting Register');
-         })
+        this.router.navigate(['/viewMeeting']);
+        this.toastr.success('New Record Added Successfully','Meeting Register');
+      })
 
         
  
@@ -259,6 +258,8 @@ export class MeetingComponent implements OnInit {
     this.router.navigate(['/activity',{ 'objectId': _id}]);
   }
  
+
+
 
   
 }

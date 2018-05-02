@@ -21,7 +21,7 @@ export class ActivityComponent implements OnInit {
   docs2:any
   nm:string;sttTime:string;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
-  ord:number;sec:string;objID:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;
+  ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;
   constructor(
     private http: HttpClient,
     private activity: ActivityService,
@@ -111,7 +111,7 @@ export class ActivityComponent implements OnInit {
              this.show = !this.show; 
             this.ord=data['order']
             this.sec=data['section']
-            this.objID=data['objectID']
+            this.objID2=data['objectID']
             this.pplace=data['presentationPlace']
             this.staffname=data['indianStaff']
             this.sttTime=data['startTime']
@@ -141,7 +141,7 @@ export class ActivityComponent implements OnInit {
       this.activity.saveData(frm).subscribe(
         res=>{
           console.log(res);
-          this.router.navigate(['/activity',{ 'objectId': res['objectId'],'meetingId':this.objID1}]);
+          //this.router.navigate(['/activity',{ 'objectId': res['objectId'],'meetingId':this.objID1}]);
         },
         err=>console.log(err),
         ()=>{
@@ -161,7 +161,7 @@ export class ActivityComponent implements OnInit {
         ()=>{
           console.log("record updated")
           //this.meeting.showMeeting();
-        //  this.router.navigate(['/viewActivity']);
+          //this.router.navigate(['/viewActivity']);
           this.toastr.success('New Record Updated Successfully','Activity Register');
           
         }
@@ -178,11 +178,11 @@ export class ActivityComponent implements OnInit {
   }
 
 
-  Onedit(_id:string)
+  Onedit(_id:string,meetingId:string)
   {
     console.log(_id)
     //this.meeting.objectId=Object.assign({},_id);
-    this.router.navigate(['/activity',{ 'objectId': _id}]);
+    this.router.navigate(['/activity',{'objectId': _id}]);
   }
 
 }

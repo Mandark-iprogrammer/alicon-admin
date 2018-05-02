@@ -69,9 +69,9 @@ export class ViewMeetingComponent implements OnInit {
       err=>console.log(err),
       ()=>{
         console.log("record deleted")
+        this.toastr.success('New Record deleted Successfully','Meeting Register');
         this.meeting.displayMeeting();
         this.router.navigate(['/viewMeeting']);
-        this.toastr.success('New Record deleted Successfully','Meeting Register');
       }
     )
   }
