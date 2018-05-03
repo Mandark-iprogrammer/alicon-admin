@@ -33,6 +33,9 @@ export class UserComponent implements OnInit {
       "lastName": frm.lastName,
       "username":frm.username,
       "password":frm.password,
+      "desigNation":frm.desigNation,
+      "phonenumber":frm.phonenumber,
+      "location":frm.location,
       "tags":arrr
     
    } 
@@ -56,6 +59,9 @@ export class UserComponent implements OnInit {
         "lastName": frm.lastName,
         "username":frm.username,
         "password":frm.password,
+        "desigNation":frm.desigNation,
+        "phonenumber":frm.phonenumber,
+        "location":frm.location,
         "tags":arrr
       
      } 

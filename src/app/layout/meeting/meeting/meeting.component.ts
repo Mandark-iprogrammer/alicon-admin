@@ -3,6 +3,8 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 
 var FCM = require('fcm-push');
 
@@ -14,7 +16,223 @@ var FCM = require('fcm-push');
 })
 
 export class MeetingComponent implements OnInit {
- 
+  
+  source: any;
+
+  defaultSettingsMeetings = {
+    columns: {
+      name: {
+        title: 'Meeting Name'
+      },
+      remark: {
+        title: 'Remark'
+      },
+      venue: {
+        title: 'Venue'
+      },
+      meetingDate: {
+        title: 'Meeting Date'
+      },
+      startTime: {
+        title: 'Meeting Start Time'
+      },
+      isPublished: {
+        title: 'Published'
+      }
+    },
+    mode: 'inline', // inline|external|click-to-edit
+    selectMode: 'single', // single|multi
+    hideHeader: false,
+   
+    hideSubHeader: false,
+    actions: {
+      columnTitle: 'Actions',
+      add: false,
+      edit: true,
+      delete: false,
+      custom: [],
+      position: 'right', // left|right
+    },
+    filter: {
+      inputClass: '',
+    },
+    edit: {
+      inputClass: '',
+      editButtonContent: 'Edit',
+      saveButtonContent: 'Update',
+      cancelButtonContent: 'Cancel',
+      confirmSave: true,
+    },
+    add: {
+      inputClass: '',
+      addButtonContent: 'Add New',
+      createButtonContent: 'Create',
+      cancelButtonContent: 'Cancel',
+      confirmCreate: true,
+    },
+    delete: {
+      deleteButtonContent: 'Delete',
+      confirmDelete: false,
+    },
+    attr: {
+      id: '',
+      class: 'table table-striped table-bordered',
+    },
+    noDataMessage: 'No data found',
+    
+    pager: {
+      display: true,
+      perPage: 10,
+    },
+    rowClassFunction: () => ""
+  };
+
+
+  defaultSettingsActivity = {
+    columns: {
+      section: {
+        title: 'Activity Section'
+      },
+      presentationPlace: {
+        title: 'Presentation Place'
+      },
+      indianStaff: {
+        title: 'Indian Staff'
+      },
+      startTime: {
+        title: 'Start Time'
+      },
+      endTime: {
+        title: 'End Time'
+      },
+      type:{
+        title:'Activity Type',
+        type: 'html',
+        editor: {
+          type: 'list',
+          config: {
+          list: [{ value: 'Presentation', title: 'Presentation' }, { value: 'q&a', title: 'q&a' }, {
+            value: 'Travel',title: 'Travel'},{  value: 'BreakTime',title: 'BreakTime'},{ value: 'Break Time with Team',title: 'Break Time with Team'}]
+          }
+        }
+      }
+      
+    },
+    mode: 'inline', // inline|external|click-to-edit
+    selectMode: 'single', // single|multi
+    hideHeader: false,
+   
+    hideSubHeader: false,
+    actions: {
+      columnTitle: 'Actions',
+      add: true,
+      edit: true,
+      delete: true,
+      custom: [],
+      position: 'right', // left|right
+    },
+    filter: {
+      inputClass: '',
+    },
+    edit: {
+      inputClass: '',
+      editButtonContent: 'Edit',
+      saveButtonContent: 'Update',
+      cancelButtonContent: 'Cancel',
+      confirmSave: true,
+    },
+    add: {
+      inputClass: '',
+      addButtonContent: 'Add New',
+      createButtonContent: 'Create',
+      cancelButtonContent: 'Cancel',
+      confirmCreate: true,
+    },
+    delete: {
+      deleteButtonContent: 'Delete',
+      confirmDelete: false,
+    },
+    attr: {
+      id: '',
+      class: 'table table-striped table-bordered',
+    },
+    noDataMessage: 'No data found',
+    
+    pager: {
+      display: true,
+      perPage: 10,
+    },
+    rowClassFunction: () => ""
+  };
+
+
+  defaultSettingsUsers = {
+    columns: {
+      firstName: {
+        title: 'First Name'
+      },
+      lastName: {
+        title: 'Last Name'
+      },
+      username: {
+        title: 'User Email'
+      },
+      desigNation: {
+        title: 'Designation'
+      },
+      phonenumber: {
+        title: 'Phone Number'
+      },
+      location: {
+        title: 'Location'
+      }
+    },
+    mode: 'inline', // inline|external|click-to-edit
+    selectMode: 'multi', // single|multi
+    hideHeader: false,
+    hideSubHeader: false,
+    actions: {
+      columnTitle: 'Actions',
+      add: false,
+      edit: false,
+      delete: false,
+      custom: [],
+      position: 'right', // left|right
+    },
+    filter: {
+      inputClass: '',
+    },
+    edit: {
+      inputClass: '',
+      editButtonContent: 'Edit',
+      saveButtonContent: 'Update',
+      cancelButtonContent: 'Cancel',
+      confirmSave: true,
+    },
+    add: {
+      inputClass: '',
+      addButtonContent: 'Add New',
+      createButtonContent: 'Create',
+      cancelButtonContent: 'Cancel',
+      confirmCreate: true,
+    },
+    delete: {
+      deleteButtonContent: 'Delete',
+      confirmDelete: false,
+    },
+    attr: {
+      id: '',
+      class: 'table table-striped table-bordered',
+    },
+    noDataMessage: 'No data found',
+    
+    pager: {
+      display: true,
+      perPage: 15,
+    },
+    rowClassFunction: () => ""
+  };
+
   public show:boolean = false;
   public show1:boolean = false;
   public show2:boolean = true;
@@ -27,14 +245,15 @@ export class MeetingComponent implements OnInit {
   nm:string
   message;
   desc:string;remk:string;createby:string;objID:string;ven:string;stTime:string;stDate:Date;mtDate:Date
-
-  
+  closeResult: string;
+ 
   constructor(
     private http: HttpClient,
     private meeting: MeetingService,
     private toastr: ToastrService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal
    
   ) { 
       this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
@@ -76,7 +295,8 @@ export class MeetingComponent implements OnInit {
                 this.docs2=data1['results']
                 this.show1 = !this.show1;
             });
-          this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+userId;
+         
+            this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+userId;
           
           return this.http.get(this.SERVER_URL,{
             headers:new HttpHeaders({
@@ -87,9 +307,9 @@ export class MeetingComponent implements OnInit {
          }).subscribe(data => {
                //console.log(this.dataformat(data['startDate']['iso']))    
                console.log(data)
-              
+                this.source=data
                this.docs1=data  
-            
+
                this.show = !this.show;
                //this.show2 = !this.show2;
                data['startDate']=this.dataformat(data['startDate']['iso'])
@@ -260,6 +480,22 @@ export class MeetingComponent implements OnInit {
  
 
 
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+}
 
+private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+}
   
 }

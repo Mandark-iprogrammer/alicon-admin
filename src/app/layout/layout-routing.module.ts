@@ -16,7 +16,7 @@ const routes: Routes = [
             { path : 'invitation',loadChildren : './invitation/invitation.module#InvitationModule'},
             {path : 'viewActivity',loadChildren: './view-activity/view-activity.module#ViewActivityModule'},
             {path: 'viewUsers',  loadChildren:'./view-user/view-user.module#ViewUserModule'},
-            {path: 'changePwd',  loadChildren:'./change-pwd/change-pwd.module#ChangePwdModule'},
+           // {path: 'changePwd',  loadChildren:'./change-pwd/change-pwd.module#ChangePwdModule'},
             {path: 'User',loadChildren:'./user/user.module#UserModule'}
             // { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             // { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },

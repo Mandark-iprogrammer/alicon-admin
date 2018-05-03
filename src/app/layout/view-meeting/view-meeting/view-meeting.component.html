@@ -1,6 +1,15 @@
-<div class="pull-right">
-    <a routerLink="/meeting"><button class="btn rounded-btn pull-right" > Add Meeting</button></a>
+<div class="row">
+  <div class="col-md-12">
+      <div class="pull-right" style="padding-bottom: 10px">
+          <a routerLink="/meeting"><button class="btn rounded-btn pull-right" > Add Meeting</button></a>
+      </div>
+  </div>
+  
 </div>
+
+<ng2-smart-table [settings]="defaultSettingsMeetings" [source]="docs" (custom)="onCustom($event)"></ng2-smart-table>
+
+<!-- <div class="row">
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
       <tr >
@@ -24,13 +33,14 @@
         <td style="text-align: center;">{{docs.startTime}}</td> 
         <td style="text-align: center;"><b>{{docs.isPublished}}</b></td> 
         <td>
-          <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
-          <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
-          <a class="btn text-success" (click)="OnView(docs.objectId)"> View Details</a>
+          <!-- <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
+          <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a> -->
+        <!--  <a class="btn text-success" (click)="OnView(docs.objectId)"> View Details</a>
         </td>
   
       </tr>
   
     </table>
   <!-- /.row -->
-  </div>
+  <!--</div>
+</div> -->

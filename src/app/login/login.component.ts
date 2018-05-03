@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
                 console.log(err)
                 console.log(err.error['error'])
                 this.router.navigate(['/login']);
-                this.toastr.success(err.error['error'],'Alicon Login');
+                this.toastr.error(err.error['error'],'Alicon Login');
             },
             ()=>{
                           

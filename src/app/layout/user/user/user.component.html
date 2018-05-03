@@ -1,47 +1,105 @@
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-10 ">
   <h2>Register User</h2>
   <form  name="form" (ngSubmit)="frm.form.valid && register(frm.value)" #frm="ngForm" novalidate>
-      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-          <label for="firstName">First Name</label>
-          <input type="text" class="form-control input-underline input-lg" name="firstName" [(ngModel)]="fName" #firstName="ngModel" required placeholder="Enter the first name" />
-          <div *ngIf="frm.submitted && !firstName.valid" class="help-block">First Name is required</div>
-      </div>
-      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-          <label for="lastName">Last Name</label>
-          <input type="text" class="form-control input-underline input-lg" name="lastName" [(ngModel)]="lName" #lastName="ngModel" required placeholder="Enter the last name" />
-          <div *ngIf="frm.submitted && !lastName.valid" class="help-block">Last Name is required</div>
-      </div>
-      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-          <label for="username">Username</label>
-          <input type="email" class="form-control input-underline input-lg"  name="username" [(ngModel)]="uname" #username="ngModel" required placeholder="Enter the username"/>
-          <div *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</div>
-      </div>
-      <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
-          <label for="password">Password</label>
-          <input type="password" class="form-control input-underline input-lg" name="password" [(ngModel)]="mpwd" #password="ngModel" required placeholder="Enter the first name"/>
-          <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
-      </div>
-      <!-- <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-        <label for="username">Tags</label>
-        <input type="email" class="form-control input-underline input-lg"  name="tags" [(ngModel)]="tag" #tags="ngModel" required placeholder="Enter the tags"/>
-        <div *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</div>
-     </div> -->
-     <label for="username">Tags</label>
-     <div *ngFor="let word2 of words2; let in=index" >
-        <div class="form-group">
-          
-          <input type="text" [(ngModel)]="words2[in].value" name="name[{{in}}]" class="form-control input-underline input-lg" #name="ngModel" required />
-          <a class="btn text-danger" (click)="removeNewChoice()">Remove Tags</a>
-          <!--<p [hidden]="words2[in].value">Field is required</p>
-          {{formRef.form.name1}}-->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control input-underline input-lg" name="firstName"  #firstName="ngModel" ngModel required placeholder="Enter the first name" />
+                    <div *ngIf="frm.submitted && !firstName.valid" class="help-block">First Name is required</div>
+            </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control input-underline input-lg" name="lastName"  #lastName="ngModel" ngModel required placeholder="Enter the last name" />
+                    <div *ngIf="frm.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                        <label for="lastName">Designation</label>
+                        <input type="text" class="form-control input-underline input-lg" name="desigNation"  #desigNation="ngModel" ngModel required placeholder="Enter the Designation" />
+                        <div *ngIf="frm.submitted && !desigNation.valid" class="help-block">Designation is required</div>
+                    </div>
+        </div>
+        <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                        <label for="lastName">Phone Number</label>
+                        <input type="text" class="form-control input-underline input-lg" name="phonenumber"  #phonenumber="ngModel" ngModel required placeholder="Enter the phonenumber" />
+                        <div *ngIf="frm.submitted && !phonenumber.valid" class="help-block">Phone Number is required</div>
+               </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                        <label for="lastName">Location</label>
+                        <input type="text" class="form-control input-underline input-lg" name="location"  #location="ngModel" ngModel required placeholder="Enter the location" />
+                        <div *ngIf="frm.submitted && !phonenumber.valid" class="help-block">Location is required</div>
+                    </div>
+        </div>
+        <div class="col-md-6">
+                <label for="username">Department</label>
+                <div *ngFor="let word2 of words2; let in=index" >
+                   <div class="form-group">
+                     
+                     <input type="text" [(ngModel)]="words2[in].value" name="name[{{in}}]" class="form-control input-underline input-lg" #name="ngModel" required placeholder="Enter the department name" />
+                     <a class="btn text-danger" (click)="removeNewChoice()">Remove Department</a>
+                     <a  class="btn text-success" (click)="add()">Add Department</a>
+                   </div>
+                </div>
+        </div>
+    </div>
+     
+     <div class="row">
+         <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
+                        <label for="username">Email Address</label>
+                        <input type="email" class="form-control input-underline input-lg"  name="username" #username="ngModel" ngModel required placeholder="Enter the username"/>
+                        <div *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</div>
+                    </div>
+         </div>
      </div>
-        <a  class="btn text-success" (click)="add()">Add Tags</a>
+     
+     <div class="row">
+         <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control input-underline input-lg" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
+                        <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+                    </div>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-md-6">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
+                        <label for="password">Confirm Password</label>
+                        <input type="password" class="form-control input-underline input-lg" name="cnf" #cnf  required placeholder="Enter the confirm password"/>
+                        <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+                   </div>
+         </div>
+     </div>
+      
+     <div class="row">
+         <div class="col-md-6">
+                <div class="form-group">
+                        <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="Register">
+                       
+                        <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
+                </div>
+         </div>
+     </div>
 
-      <div class="form-group">
-          <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="Register">
-         
-          <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
-      </div>
+     
+    
+
+     
+     
+       
+        
+     
   </form>
 </div>

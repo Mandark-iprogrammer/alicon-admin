@@ -116,6 +116,9 @@
     </div>
 </form><!-- ends register form -->
 
+<!-- 
+<ng2-smart-table [settings]="defaultSettingsMeetings" [source]="data" ></ng2-smart-table> -->
+
 <div class="table-responsive" *ngIf="show">
     <table class="table table-striped table-bordered">
       <tr >
@@ -139,8 +142,10 @@
         <td style="text-align: center;">{{stTime}}</td> 
         
         <td>
-          <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
-          <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a>
+          <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
+          <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>   
+          <!-- <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
+          <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a> -->
         </td>
   
       </tr>
@@ -153,14 +158,22 @@
   <div class="row mt-3" *ngIf="show1">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">Meeting Information</div>
+                <div class="card-header">Meeting Information
+                    <!-- <div class="pull-right">
+                            <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
+                            <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a>
+                    </div> -->
+                </div>
+                
                 <div class="card-body">
                     <ngb-tabset>
                         <ngb-tab title="Activity Details">
                             <ng-template ngbTabContent>
+
+                                    <ng2-smart-table [settings]="defaultSettingsActivity" [source]="docs2" ></ng2-smart-table> 
                                      <div class="table-responsive">
             
-            <table class="table table-striped table-bordered">
+            <!-- <table class="table table-striped table-bordered">
               <tr >
                 <th style="text-align: center;">Sr.No</th>
                 <th style="text-align: center;">Activity Order</th>
@@ -188,7 +201,7 @@
           
               </tr>
           
-            </table>
+            </table> -->
 
 
 
@@ -198,10 +211,45 @@
                         <ngb-tab>
                             <ng-template ngbTabTitle>Invitation</ng-template>
                             <ng-template ngbTabContent>
-                              
+                                    <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card mb-3">
+                                                   
+                                                    <!-- Large modal -->
+                                                    <div class="card-body">
+                                                        <button class="btn btn-primary" (click)="open(content)">Select Users</button>
+                                                        <ng-template class="modal-lg" #content let-c="close" let-d="dismiss" >
+                                                            <div class="modal-header modal-lg">
+                                                                <h4 class="modal-title">Select Users</h4>
+                                                                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                    <ng2-smart-table [settings]="defaultSettingsUsers" [source]="docs" ></ng2-smart-table> 
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                             </ng-template>
                         </ngb-tab>
-                        
+                        <ngb-tab>
+                                <ng-template ngbTabTitle>Pending Notification</ng-template>
+                                <ng-template ngbTabContent>
+                                  
+                                </ng-template>
+                         </ngb-tab>
+                         <ngb-tab>
+                                <ng-template ngbTabTitle>Upload Media</ng-template>
+                                <ng-template ngbTabContent>
+                                  
+                                </ng-template>
+                         </ngb-tab>
                     </ngb-tabset>
                 </div>
             </div>

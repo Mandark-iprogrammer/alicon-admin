@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { ToastrModule} from 'ngx-toastr';
-
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
     // for development
@@ -24,6 +24,7 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        Ng2SmartTableModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

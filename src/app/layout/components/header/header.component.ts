@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
     username:string
-
+    objectId:string
     constructor(private translate: TranslateService, public router: Router) {
 
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de', 'zh-CHS']);
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
         });
 
         this.username=localStorage.getItem('username');
-        
+        this.objectId=localStorage.getItem('objectId');
     }
 
     ngOnInit() {
@@ -60,4 +60,10 @@ export class HeaderComponent implements OnInit {
     changeLang(language: string) {
         this.translate.use(language);
     }
+    chPwd()
+    {
+     // console.log(_id)
+      this.router.navigate(['/changePwd',{ 'objectId': this.objectId}]);
+    }
+
 }

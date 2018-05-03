@@ -1,5 +1,5 @@
-<div class="col-md-6 col-md-offset-3">
-  <h2>Change Password</h2>
+<!-- <div class="col-md-6 col-md-offset-3">
+  <h2>Change Password for admin</h2>
   <form  name="form" (ngSubmit)="frm.form.valid && register(frm.value)" #frm="ngForm" novalidate>
       
       <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
@@ -20,10 +20,4 @@
     
     
 
-      <div class="form-group">
-          <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="Register">
-         
-          <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
-      </div>
-  </form>
-</div>
+      

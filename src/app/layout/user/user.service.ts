@@ -57,7 +57,7 @@ export class UserService {
   }
   else{
     
-   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+frm.objectId
+   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/parse/users/'+frm.objectId
    return this.http.put(this.SERVER_URL,frm,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',

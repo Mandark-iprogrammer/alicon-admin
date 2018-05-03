@@ -24,28 +24,23 @@ export class InvitationComponent implements OnInit {
   ) {
     this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
     this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users'
-    this.http.get(this.SERVER_URL,{
+    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/functions/user_tags'
+    this.http.post(this.SERVER_URL,'',{
          headers:new HttpHeaders({
-          'Content-Type':'application/json',
           'X-Parse-Application-Id':this.APP_ID,
           'X-Parse-REST-API-Key':this.MASTER_KEY,
-          'X-Parse-Revocable-Session':'1'
+          'Content-Type':'application/json',
+          
       })
       }).subscribe(data => {
-          //console.log(data)       
-          this.docs1=data['results']
-          this.docs1.forEach(element => {
-            if(element['tags']){
-            element['tags'].forEach(element1 => {
-              this.arr.push(element1)
-            });
-          }
-            
-          });
-         // console.log(this.arr)
-          this.unique = this.arr.filter( this.onlyUnique );
-          console.log(this.unique)
+          console.log(data)       
+         this.docs1=data['result']
+          console.log(this.docs1)
+          this.unique=JSON.parse(this.docs1)
+          console.log(this.unique.data)
+          // this.docs1['data'].forEach(element => {
+          //   console.log(element)
+          // });
      })
 
 

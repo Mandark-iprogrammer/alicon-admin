@@ -9,6 +9,79 @@ import { ToastrService } from 'ngx-toastr';
   providers:[MeetingService]
 })
 export class ViewMeetingComponent implements OnInit {
+ 
+ 
+ 
+  defaultSettingsMeetings = {
+    columns: {
+      name: {
+        title: 'Meeting Name'
+      },
+      remark: {
+        title: 'Remark'
+      },
+      venue: {
+        title: 'Venue'
+      },
+      meetingDate: {
+        title: 'Meeting Date'
+      },
+      startTime: {
+        title: 'Meeting Time'
+      }
+    },
+    mode: 'inline', // inline|external|click-to-edit
+    selectMode: 'single', // single|multi
+    hideHeader: false,
+    hideSubHeader: false,
+    actions: {
+      columnTitle: 'Actions',
+      add: true,
+      edit: false,
+      delete: false,
+      custom: [{
+        name: '',
+        title: 'View Details ',
+      }],
+      position: 'right', // left|right
+    },
+    filter: {
+      inputClass: '',
+    },
+    edit: {
+      inputClass: '',
+      editButtonContent: 'Edit',
+      saveButtonContent: 'Update',
+      cancelButtonContent: 'Cancel',
+      confirmSave: true,
+    },
+    add: {
+      inputClass: '',
+      addButtonContent: 'Add New',
+      createButtonContent: 'Create',
+      cancelButtonContent: 'Cancel',
+      confirmCreate: true,
+    },
+    delete: {
+      deleteButtonContent: 'Delete',
+      confirmDelete: false,
+    },
+    attr: {
+      id: '',
+      class: 'table table-striped table-bordered',
+    },
+    noDataMessage: 'No data found',
+    
+    pager: {
+      display: true,
+      perPage: 15,
+    },
+    rowClassFunction: () => ""
+  };
+ 
+ 
+ 
+ 
   docs:any
   dd:string
   mm:string
@@ -22,6 +95,7 @@ export class ViewMeetingComponent implements OnInit {
     this.meeting.displayMeeting().subscribe(data => {
       console.log(data) 
       this.docs=data['results'];
+
       this.docs.forEach(element => {
         element.startDate=this.dataformat(element.startDate.iso)
         if(element.meetingDate){
@@ -87,6 +161,11 @@ export class ViewMeetingComponent implements OnInit {
     let month = date.getMonth()+1;
     var dt = date.getDate();
     return dt+'/'+month+'/'+year; 
+  }
+
+  onCustom(event) {
+    this.router.navigate(['/meeting',{ 'objectId': event.data.objectId,'view':'view'}]);
+  
   }
   
 }

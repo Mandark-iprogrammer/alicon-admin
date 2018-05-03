@@ -1,7 +1,7 @@
-<div class="pull-right">
+<div class="pull-right" style="padding-bottom: 10px">
   <a routerLink="/User"><button class="btn rounded-btn pull-right" > Add User</button></a>
 </div>
-<div class="table-responsive">
+<!-- <div class="table-responsive">
   <table class="table table-striped table-bordered">
     <tr >
       <th style="text-align: center;">Sr.No</th>
@@ -19,9 +19,95 @@
       <td>
         <a class="btn" (click)="Onedit(docs.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
         <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
-        <a class="btn text-success" (click)="chPwd(docs.objectId)"> <i class="fa fa-fw fa-plus"></i> Change Password</a>
+       
       </td>
     </tr>
   </table>
-<!-- /.row -->
-</div>
+
+</div> -->
+<!-- <table [id]="tableId" [ngClass]="tableClass">
+
+    <thead ng2-st-thead *ngIf="!isHideHeader || !isHideSubHeader"
+                        [grid]="grid"
+                        [isAllSelected]="isAllSelected"
+                        [source]="source"
+                        [createConfirm]="createConfirm"
+                        (create)="create.emit($event)"
+                        (selectAllRows)="onSelectAllRows($event)"
+                        (sort)="sort($event)"
+                        (filter)="filter($event)">
+    </thead>
+  
+    <tbody ng2-st-tbody [grid]="grid"
+                        [source]="source"
+                        [deleteConfirm]="deleteConfirm"
+                        [editConfirm]="editConfirm"
+                        [rowClassFunction]="rowClassFunction"
+                        (edit)="edit.emit($event)"
+                        (delete)="delete.emit($event)"
+                        (custom)="custom.emit($event)"
+                        (userSelectRow)="onUserSelectRow($event)"
+                        (editRowSelect)="editRowSelect($event)"
+                        (multipleSelectRow)="multipleSelectRow($event)"
+                        (rowHover)="onRowHover($event)">
+    </tbody>
+  
+  </table>
+  
+  <ng2-smart-table-pager *ngIf="isPagerDisplay"
+                          [source]="source"
+                          [perPageSelect]="perPageSelect"
+                          (changePage)="changePage($event)">
+  </ng2-smart-table-pager> -->
+
+<ng2-smart-table class="table table-striped table-bordered" [settings]="defaultSettings" [source]="source" 
+                        (createConfirm)="addRecord($event)"
+                        (editConfirm)="updateRecord($event)"
+                        (create)="create.emit($event)"
+                        (edit)="edit.emit($event)"
+                        (delete)="delete.emit($event)"
+                        (custom)="custom.emit($event)"
+                        (userSelectRow)="onUserSelectRow($event)"
+                        (editRowSelect)="editRowSelect($event)"
+                        (multipleSelectRow)="multipleSelectRow($event)"
+                        (selectAllRows)="onSelectAllRows($event)"
+                        (sort)="sort($event)"
+                        (filter)="filter($event)"
+                        ></ng2-smart-table>
+
+
+
+<!-- <table [id]="tableId" [ngClass]="tableClass">
+
+    <thead ng2-st-thead 
+                        [grid]="grid"
+                        [isAllSelected]="isAllSelected"
+                        [source]="docs"
+                        [createConfirm]="createConfirm"
+                        (create)="create.emit($event)"
+                        (selectAllRows)="onSelectAllRows($event)"
+                        (sort)="sort($event)"
+                        (filter)="filter($event)">
+    </thead>
+  
+    <tbody ng2-st-tbody [grid]="grid"
+                        [source]="docs"
+                        [deleteConfirm]="deleteConfirm"
+                        [editConfirm]="editConfirm"
+                        [rowClassFunction]="rowClassFunction"
+                        (edit)="edit.emit($event)"
+                        (delete)="delete.emit($event)"
+                        (custom)="custom.emit($event)"
+                        (userSelectRow)="onUserSelectRow($event)"
+                        (editRowSelect)="editRowSelect($event)"
+                        (multipleSelectRow)="multipleSelectRow($event)"
+                        (rowHover)="onRowHover($event)">
+    </tbody>
+  
+  </table>
+  
+  <ng2-smart-table-pager *ngIf="isPagerDisplay"
+                          [source]="docs"
+                          [perPageSelect]="perPageSelect"
+                          (changePage)="changePage($event)">
+  </ng2-smart-table-pager> -->
