@@ -17,7 +17,8 @@ const routes: Routes = [
             {path : 'viewActivity',loadChildren: './view-activity/view-activity.module#ViewActivityModule'},
             {path: 'viewUsers',  loadChildren:'./view-user/view-user.module#ViewUserModule'},
            // {path: 'changePwd',  loadChildren:'./change-pwd/change-pwd.module#ChangePwdModule'},
-            {path: 'User',loadChildren:'./user/user.module#UserModule'}
+            {path: 'User',loadChildren:'./user/user.module#UserModule'},
+            {path:'push',loadChildren:'./push-notification/push-notification.module#PushNotificationModule'}
             // { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             // { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             // { path: 'forms', loadChildren: './form/form.module#FormModule' },

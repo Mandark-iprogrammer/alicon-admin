@@ -1,0 +1,35 @@
+
+ <form class="" >
+
+ 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="name">Notificaton Title: </label>
+                        <input required type="text" placeholder="Enter a notification title" name="title" #title class="form-control input-underline input-lg" maxlength="60"/> 
+                </div>
+                
+        </div>
+    </div>
+   
+        <div class="row">
+        <div class="col-md-4">
+            <div class="form-group"> 	 
+                <label for="saddress"> Notification Body: </label>
+                <textarea class="form-control input-underline input-lg"  rows="3"  placeholder="Enter a notification body" name="body" #body required></textarea>
+                   
+            </div>
+        </div>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <button type="button" class="btn btn rounded-btn btn-block" (click)="publish(title.value,body.value)">Send to all users</button>
+    </div>
+  </div>
+
+ </form>
+
+
+
+
