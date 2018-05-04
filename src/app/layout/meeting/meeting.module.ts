@@ -5,6 +5,8 @@ import { MeetingRoutingModule } from './meeting-routing.module';
 import { MeetingComponent } from './meeting/meeting.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { TagInputModule } from 'ngx-chips';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 @NgModule({
   imports: [
     CommonModule,
@@ -12,6 +14,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     FormsModule,
     ReactiveFormsModule,
     Ng2SmartTableModule,
+    Ng2AutoCompleteModule,
+    TagInputModule,
     NgbModule.forRoot(),
   ],
   declarations: [MeetingComponent]

@@ -4,7 +4,8 @@ import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivityService } from '../../activity/activity.service';
+import {CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent} from "ng-auto-complete";
 
 var FCM = require('fcm-push');
 
@@ -12,7 +13,7 @@ var FCM = require('fcm-push');
   selector: 'app-meeting',
   templateUrl: './meeting.component.html',
   styleUrls: ['./meeting.component.scss'],
-  providers:[MeetingService]
+  providers:[MeetingService,ActivityService]
 })
 
 export class MeetingComponent implements OnInit {
@@ -91,19 +92,24 @@ export class MeetingComponent implements OnInit {
   defaultSettingsActivity = {
     columns: {
       section: {
-        title: 'Activity Section'
+        title: 'Activity Section',
+        filter: false
       },
       presentationPlace: {
-        title: 'Presentation Place'
+        title: 'Presentation Place',
+        filter: false
       },
       indianStaff: {
-        title: 'Indian Staff'
+        title: 'Indian Staff',
+        filter: false
       },
       startTime: {
-        title: 'Start Time'
+        title: 'Start Time',
+        filter: false
       },
       endTime: {
-        title: 'End Time'
+        title: 'End Time',
+        filter: false
       },
       type:{
         title:'Activity Type',
@@ -114,7 +120,8 @@ export class MeetingComponent implements OnInit {
           list: [{ value: 'Presentation', title: 'Presentation' }, { value: 'q&a', title: 'q&a' }, {
             value: 'Travel',title: 'Travel'},{  value: 'BreakTime',title: 'BreakTime'},{ value: 'Break Time with Team',title: 'Break Time with Team'}]
           }
-        }
+        },
+        filter: false
       }
       
     },
@@ -127,23 +134,25 @@ export class MeetingComponent implements OnInit {
       columnTitle: 'Actions',
       add: true,
       edit: true,
-      delete: true,
+      delete: false,
       custom: [],
       position: 'right', // left|right
     },
     filter: {
-      inputClass: '',
+      inputClass: 'fa fa-search ',
+      
+      
     },
     edit: {
       inputClass: '',
-      editButtonContent: 'Edit',
+      editButtonContent: '<i class="fa fa-fw fa-edit"></i>',
       saveButtonContent: 'Update',
       cancelButtonContent: 'Cancel',
       confirmSave: true,
     },
     add: {
       inputClass: '',
-      addButtonContent: 'Add New',
+      addButtonContent: '<i class="fa fa-fw fa-plus"></i>',
       createButtonContent: 'Create',
       cancelButtonContent: 'Cancel',
       confirmCreate: true,
@@ -244,18 +253,58 @@ export class MeetingComponent implements OnInit {
   docs2:any
   nm:string
   message;
+  SERVER_URL1:any;
+  venues:any;
+  unique:any;
+  tag:any;
   desc:string;remk:string;createby:string;objID:string;ven:string;stTime:string;stDate:Date;mtDate:Date
   closeResult: string;
- 
+  meetingID:string;
   constructor(
     private http: HttpClient,
     private meeting: MeetingService,
     private toastr: ToastrService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    private modalService: NgbModal
-   
+    private modalService: NgbModal,
+    private activity : ActivityService
   ) { 
+      
+    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
+    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
+    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/functions/user_tags'
+   
+      this.http.post(this.SERVER_URL,'',{
+        headers:new HttpHeaders({
+        'Content-Type':'application/json',
+        'X-Parse-Application-Id':this.APP_ID,
+        'X-Parse-REST-API-Key':this.MASTER_KEY,
+      })
+     }).subscribe(data => {
+      console.log(data)       
+     this.docs=JSON.parse(data['result'])
+     this.unique=this.docs.data
+          console.log(this.unique)
+    })
+    
+    
+    this.SERVER_URL1 = 'http://192.168.151.156:1337/alicon/parse/functions/meeting_venues'
+    this.http.post(this.SERVER_URL1,'',{
+      headers:new HttpHeaders({
+      'Content-Type':'application/json',
+      'X-Parse-Application-Id':this.APP_ID,
+      'X-Parse-REST-API-Key':this.MASTER_KEY,
+    })
+   }).subscribe(data1 => {
+    console.log(data1)       
+   this.docs1=JSON.parse(data1['result'])
+   this.venues=this.docs1.data
+  
+        console.log(this.venues)
+  })
+    
+    
+    
       this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
       this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
       this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users?where={"isAdmin":false}'
@@ -273,12 +322,15 @@ export class MeetingComponent implements OnInit {
        })
 
 
-       this.activatedRoute.params.subscribe((params: Params) => {
+      this.activatedRoute.params.subscribe((params: Params) => {
         let userId = params['objectId'];
         let view = params['view'];
           console.log(userId);
-          if(view!=null){
-            this.show2 = !this.show2;
+          if(view==null){
+            this.show2 = true;
+          }
+          else{
+            this.show2 = !this.show2
           }
           
          if(userId!=null){
@@ -312,7 +364,7 @@ export class MeetingComponent implements OnInit {
 
                this.show = !this.show;
                //this.show2 = !this.show2;
-               data['startDate']=this.dataformat(data['startDate']['iso'])
+              // data['startDate']=this.dataformat(data['startDate']['iso'])
                data['meetingDate']=this.dataformat(data['meetingDate']['iso'])
                   
                 this.nm=data['name']
@@ -324,6 +376,7 @@ export class MeetingComponent implements OnInit {
                 this.stTime=data['startTime']
                 this.stDate=data['startDate']
                 this.mtDate=data['meetingDate']
+                this.tag=data['tags']
                 console.log(this.stDate)
                 //this.mtDate=data['meetingDate']
           })
@@ -475,7 +528,7 @@ export class MeetingComponent implements OnInit {
   {
     console.log(_id)
     //this.meeting.objectId=Object.assign({},_id);
-    this.router.navigate(['/activity',{ 'objectId': _id}]);
+    this.router.navigate(['/meeting',{ 'objectId': _id}]);
   }
  
 
@@ -497,5 +550,80 @@ private getDismissReason(reason: any): string {
         return  `with: ${reason}`;
     }
 }
+
+
+
+addRecord(event) {
+  
+  this.activatedRoute.params.subscribe((params: Params) => {
+    this.meetingID=params['objectId'];
+  });
+  var data = {
+              "section" : event.newData.section,
+              "presentationPlace" : event.newData.presentationPlace,
+              "indianStaff" : event.newData.indianStaff,
+              "startTime":event.newData.startTime,
+              "endTime":event.newData.endTime,
+              "type":event.newData.type,
+              "meetingId":{
+                "__type": "Pointer",
+                "className": "meeting",
+                "objectId":this.meetingID
+              }
+              };
+              console.log(data)
+              this.activity.saveData(data).subscribe(
+                res=>{
+                  console.log(res)
+                        },
+                err=>console.log(err),
+                ()=>{
+                 console.log("record saved")
+                 this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
+                 this.toastr.success('New Record Added Successfully','Activity Register');
+                 })
+
+}
+
+updateRecord(event){
+  this.activatedRoute.params.subscribe((params: Params) => {
+    this.meetingID=params['objectId'];
+  });
+  var data = {"section" : event.newData.section,
+              "presentationPlace" : event.newData.presentationPlace,
+              "indianStaff" : event.newData.indianStaff,
+              "startTime":event.newData.startTime,
+              "endTime":event.newData.endTime,
+              "type":event.newData.type,
+              "meetingId":{
+                "__type": "Pointer",
+                "className": "meeting",
+                "objectId":this.meetingID
+              },
+              objectId:event.newData.objectId,
+        
+  };
+  console.log(data)
+  this.source=data
+  this.activity.saveData(data).subscribe(
+    res=>{console.log(res)
+      this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
+    },
+    err=>console.log(err),
+    ()=>{
+      console.log("record updated")
+      //this.meeting.showMeeting();
+     // this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
+      this.toastr.success('New Record Updated Successfully','Activity Register');
+    
+      
+    }
+  )
+
+
+}
+
+
+
   
 }

@@ -36,7 +36,7 @@ export class ViewMeetingComponent implements OnInit {
     hideSubHeader: false,
     actions: {
       columnTitle: 'Actions',
-      add: true,
+      add: false,
       edit: false,
       delete: false,
       custom: [{
@@ -97,7 +97,7 @@ export class ViewMeetingComponent implements OnInit {
       this.docs=data['results'];
 
       this.docs.forEach(element => {
-        element.startDate=this.dataformat(element.startDate.iso)
+        //element.startDate=this.dataformat(element.startDate.iso)
         if(element.meetingDate){
           element.meetingDate=this.dataformat(element.meetingDate.iso)
         }

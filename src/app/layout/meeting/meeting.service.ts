@@ -23,7 +23,11 @@ export class MeetingService {
   saveData(frm : any){
 
     if(frm.objectId==null){
-   
+      let arrr=[];
+      console.log(frm.tags)
+      for(var i=0;i<frm.tags.length;i++){
+          arrr.push(frm.tags[i].value);
+      }
     let arr={
       "name":frm.name,
       "description": frm.description,
@@ -35,14 +39,15 @@ export class MeetingService {
         "objectId": this.objectID
       },
       "startTime":frm.startTime,
-      "startDate":{
-          "__type":"Date",
-          "iso":new Date(frm.startDate).toISOString()
-      },
+      // "startDate":{
+      //     "__type":"Date",
+      //     "iso":new Date(frm.startDate).toISOString()
+      // },
       "meetingDate":{
         "__type":"Date",
         "iso":new Date(frm.meetingDate).toISOString()
-    }
+    },
+    "tags":arrr
    }
    console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
@@ -54,7 +59,11 @@ export class MeetingService {
    })
   }
   else{
-   
+    let arrr=[];
+    console.log(frm.tags)
+    for(var i=0;i<frm.tags.length;i++){
+        arrr.push(frm.tags[i].value);
+    }
     let arr={
       
       "name":frm.name,
@@ -67,14 +76,15 @@ export class MeetingService {
         "objectId":this.objectID
       },
       "startTime":frm.startTime,
-      "startDate":{
-          "__type":"Date",
-          "iso":new Date(frm.startDate).toISOString()
-      },
+      // "startDate":{
+      //     "__type":"Date",
+      //     "iso":new Date(frm.startDate).toISOString()
+      // },
       "meetingDate":{
         "__type":"Date",
         "iso":new Date(frm.meetingDate).toISOString()
-    }
+    },
+    "tags":arrr
     
    } 
    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+frm.objectId

@@ -39,8 +39,6 @@ export class ViewUserComponent implements OnInit {
   isHideSubHeader: boolean;
   isPagerDisplay: boolean;
   rowClassFunction: Function;
-
-
   grid: Grid;
 
   docs: any
@@ -72,10 +70,13 @@ export class ViewUserComponent implements OnInit {
     hideSubHeader: false,
     actions: {
       columnTitle: 'Actions',
-      add: true,
-      edit: true,
+      add: false,
+      edit: false,
       delete: false,
-      custom: [],
+      custom: [{
+        name: '',
+        title: 'edit ',
+      }],
       position: 'right', // left|right
     },
     filter: {
@@ -318,6 +319,9 @@ export class ViewUserComponent implements OnInit {
 
 
   }
- 
+  onCustom(event) {
+    this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
+  
+  }
 
 }

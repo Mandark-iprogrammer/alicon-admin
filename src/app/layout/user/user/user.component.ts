@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { UserService } from '../user.service';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import {CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent} from "ng-auto-complete";
+ 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -10,31 +13,131 @@ import { Router,Params,ActivatedRoute } from '@angular/router';
   providers:[UserService]
 })
 export class UserComponent implements OnInit {
-
+  @ViewChild(NgAutocompleteComponent) public completer: NgAutocompleteComponent;
+  public show:boolean = true;
+  APP_ID :string
+  MASTER_KEY :string
+  SERVER_URL : string
+  docs:any
+  SERVER_URL1 : string
+  docs1:any
+  SERVER_URL2 : string
+  docs2:any
+  unique:any
+  locations:any
+  designations:any;fname:string;
+  lname:string;uname:string;objID1:string;des:string;pnumber:number;loc:string;dept:any
   constructor(
     private user: UserService,
     private http: HttpClient,
     private toastr: ToastrService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
-  ) { }
+  ) {
+    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
+    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
+    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/functions/user_tags'
+   
+      this.http.post(this.SERVER_URL,'',{
+        headers:new HttpHeaders({
+        'Content-Type':'application/json',
+        'X-Parse-Application-Id':this.APP_ID,
+        'X-Parse-REST-API-Key':this.MASTER_KEY,
+      })
+     }).subscribe(data => {
+      console.log(data)       
+     this.docs=JSON.parse(data['result'])
+     this.unique=this.docs.data
+          console.log(this.unique)
+    })
+
+
+    this.SERVER_URL1 = 'http://192.168.151.156:1337/alicon/parse/functions/user_locations'
+    this.http.post(this.SERVER_URL1,'',{
+      headers:new HttpHeaders({
+      'Content-Type':'application/json',
+      'X-Parse-Application-Id':this.APP_ID,
+      'X-Parse-REST-API-Key':this.MASTER_KEY,
+    })
+   }).subscribe(data1 => {
+    console.log(data1)       
+   this.docs1=JSON.parse(data1['result'])
+   this.locations=this.docs1.data
+  
+        console.log(this.locations)
+  })
+
+  this.SERVER_URL2 = 'http://192.168.151.156:1337/alicon/parse/functions/user_designations'
+      this.http.post(this.SERVER_URL2,'',{
+        headers:new HttpHeaders({
+        'Content-Type':'application/json',
+        'X-Parse-Application-Id':this.APP_ID,
+        'X-Parse-REST-API-Key':this.MASTER_KEY,
+      })
+    }).subscribe(data2 => {
+      console.log(data2)       
+    this.docs2=JSON.parse(data2['result'])
+    this.designations=this.docs2.data
+          console.log(this.designations)
+    })
+
+
+
+
+    this.activatedRoute.params.subscribe((params: Params) => {
+         
+         let objectId=params['objectId'];
+         if(objectId!=null){
+          this.show = !this.show;
+          this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
+          this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
+          this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users/'+objectId
+          this.http.get(this.SERVER_URL,{
+               headers:new HttpHeaders({
+                'Content-Type':'application/json',
+                'X-Parse-Application-Id':this.APP_ID,
+                'X-Parse-REST-API-Key':this.MASTER_KEY,
+                'X-Parse-Revocable-Session':'1'
+            })
+            }).subscribe(data => {
+                console.log(data)       
+                                        
+                  this.fname=data['firstName']
+                  this.lname=data['lastName']
+                  this.uname=data['username']
+                  this.objID1=data['objectId']
+                  this.des=data['designation']
+                  this.pnumber=data['phoneNumber']
+                 this.loc=data['location']
+                 this.dept=data['tags']
+                
+           })
+          }
+
+    });
+
+
+
+   }
+
+  
 
   ngOnInit() {
   }
 
   register(frm:any){
     let arrr=[];
-    console.log(this.words2)
-    for(var i=0;i<this.words2.length;i++){
-        arrr.push(this.words2[i].value);
+    console.log(frm.tags)
+    for(var i=0;i<frm.tags.length;i++){
+        arrr.push(frm.tags[i].value);
     }
     let arr={
       "firstName":frm.firstName,
       "lastName": frm.lastName,
       "username":frm.username,
       "password":frm.password,
-      "desigNation":frm.desigNation,
-      "phonenumber":frm.phonenumber,
+      "desigNation":frm.designation,
+      "phonenumber":frm.phoneNumber,
       "location":frm.location,
       "tags":arrr
     
@@ -59,8 +162,8 @@ export class UserComponent implements OnInit {
         "lastName": frm.lastName,
         "username":frm.username,
         "password":frm.password,
-        "desigNation":frm.desigNation,
-        "phonenumber":frm.phonenumber,
+        "designation":frm.designation,
+        "phoneNumber":frm.phoneNumber,
         "location":frm.location,
         "tags":arrr
       
@@ -83,18 +186,6 @@ export class UserComponent implements OnInit {
 
  
 
-words2 = [{value: ''}];;
-  
-add() {
-  //var newNo=this.words2.length + 1;
-  this.words2.push({value: ''});
-}
-removeNewChoice(){
-  var newNo=this.words2.length -1;
-  if(newNo !== 0){
-    this.words2.pop();
-  }
-}
 
 
 
