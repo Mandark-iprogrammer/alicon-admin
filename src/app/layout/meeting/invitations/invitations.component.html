@@ -1,0 +1,53 @@
+<div class="card-body">
+    <ngb-tabset>
+        <ngb-tab>
+            <ng-template ngbTabTitle>View invitations</ng-template>
+            <ng-template ngbTabContent>
+                <ng2-smart-table class="table table-striped table-bordered" [settings]="defaultSettings" [source]="docs1" 
+                      
+                        ></ng2-smart-table>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle>Send Invitations</ng-template>
+            <ng-template ngbTabContent>
+                <form class="" #frm="ngForm" (ngSubmit)="invitations(frm.value)" >
+
+                    <div class="row">
+                        <div class="col-md-6">
+                
+                            <div class="form-group">
+                                <label class="control-label" for="lastName">Select Users</label>
+                                <tag-input class="form-control input-underline input-lg"  name="users" #users  ngModel placeholder="Select Users for invitations">
+                                    <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="unique1">
+                                    </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                
+                        </div>
+                    </div>
+                
+                        <div class="form-group">
+                            <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="meetingID" />
+                
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6  text-center">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="submit" [disabled]="!frm.valid" class="btn rounded-btn btn-block" Value="Send">
+                                        </div>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </form>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+ </div>   
+
+
+

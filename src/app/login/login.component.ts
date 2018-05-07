@@ -29,11 +29,15 @@ export class LoginComponent implements OnInit {
 
     onLoggedin(frm:any) {
         console.log(frm.username)
-        this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
+        // this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
 
-        this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
+        // this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
        
-        this.SERVER_URL = "http://192.168.151.156:1337/alicon/parse/login?username="+frm.username+"&password="+frm.password
+        // this.SERVER_URL = "http://192.168.151.156:1337/alicon/parse/login?username="+frm.username+"&password="+frm.password
+        this.APP_ID = "129837njlasdjfpoia2p83u4jnlkj"
+        this.MASTER_KEY = "Elkl1j23l809uljn3lkj48unkjnkjh4234"
+        this.SERVER_URL = "http://13.126.191.252:1337/parse/login?username="+frm.username+"&password="+frm.password
+       // "http://192.168.151.156:1337/alicon/parse/login?username="+frm.username+"&password="+frm.password
         
          this.http.get(this.SERVER_URL,{
            headers:new HttpHeaders({
@@ -49,6 +53,7 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('isLoggedin', 'true');
                     localStorage.setItem('username',frm.username);
                     localStorage.setItem('objectId',res['objectId']);
+                    localStorage.setItem('sessionToken',res['sessionToken']);
                     this.username=frm.username;
                     this.objectId=res['objectId'];   
                     this.router.navigate(['/dashboard']);

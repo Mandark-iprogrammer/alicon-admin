@@ -69,8 +69,11 @@
          <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control input-underline input-lg" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
+                        <input type="password" class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
                         <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+                        <div *ngIf="password.errors?.pattern"> 
+                            Enter a Valid Password
+                         </div>
                     </div>
          </div>
      </div>
@@ -78,8 +81,11 @@
          <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
                         <label for="password">Confirm Password</label>
-                        <input type="password" class="form-control input-underline input-lg" name="cnf" #cnf  required placeholder="Enter the confirm password"/>
-                        <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+                        <input type="password" class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="cnf" #cnf="ngModel" ngModel  required placeholder="Enter the confirm password"/>
+                        <!-- <div *ngIf="frm.submitted && !cnf.valid" class="help-block">Password is required</div> -->
+                        <div *ngIf="cnf.errors?.pattern"> 
+                            Enter a Valid Confrim Password
+                         </div>
                    </div>
          </div>
      </div>

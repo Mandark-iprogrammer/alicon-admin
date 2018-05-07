@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { EqualValidatorDirective } from './user/equal-validator.directive';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +18,6 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
     TagInputModule,
     Ng2AutoCompleteModule
   ],
-  declarations: [UserComponent]
+  declarations: [UserComponent, EqualValidatorDirective]
 })
 export class UserModule { }

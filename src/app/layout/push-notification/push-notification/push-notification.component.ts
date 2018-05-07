@@ -34,7 +34,7 @@ export class PushNotificationComponent implements OnInit {
   ngOnInit() {
   }
 
-  publish(ti:string,bod:string ){
+  push_noti(ti:string,bod:string ){
 
     console.log(ti)
     console.log(bod)
@@ -99,9 +99,9 @@ export class PushNotificationComponent implements OnInit {
        // console.log(this.arr)
          // this.toastr.success('New Record Published Successfully','Meeting Register');
            
-       
-       
- 
+         this.toastr.success('Notification Send Successfully','Alicon Push Notification');
+         this.router.navigate(['/push']);
+
     }
  
 }

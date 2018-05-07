@@ -5,12 +5,15 @@ export class UserService {
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
+  sessionToken : string
   constructor(
     private http:HttpClient
   ) {
     this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
     this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
     this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users'
+    this.sessionToken=localStorage.getItem('sessionToken')
+    console.log(this.sessionToken)
   }
 
 
@@ -63,6 +66,7 @@ export class UserService {
     'Content-Type':'application/json',
     'X-Parse-Application-Id':this.APP_ID,
     'X-Parse-REST-API-Key':this.MASTER_KEY,
+    'X-Parse-Session-Token':this.sessionToken
    })
  })
 

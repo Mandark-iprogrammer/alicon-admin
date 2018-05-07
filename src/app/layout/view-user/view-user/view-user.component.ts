@@ -45,6 +45,7 @@ export class ViewUserComponent implements OnInit {
  // tableParamsFolders = {};
   defaultSettings = {
     columns: {
+     
       firstName: {
         title: 'First Name'
       },
@@ -119,9 +120,9 @@ export class ViewUserComponent implements OnInit {
     public router: Router
   ) { 
     this.user.displayUser().subscribe(data => {
-      console.log(data) 
+      
       this.source=data['results'];
-    
+      //console.log(this.source)
     })
   }
 

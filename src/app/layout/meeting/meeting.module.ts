@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TagInputModule } from 'ngx-chips';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { InvitationsComponent } from './invitations/invitations.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +19,6 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
     TagInputModule,
     NgbModule.forRoot(),
   ],
-  declarations: [MeetingComponent]
+  declarations: [MeetingComponent, InvitationsComponent]
 })
 export class MeetingModule { }
