@@ -1,0 +1,29 @@
+<form class="" #frm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control input-underline input-lg" id="name" placeholder="Bob" formControlName="name">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="form-group">
+        <label for="avatar">Meeting File</label>
+        <input type="file" class="form-control input-underline input-lg" id="avatar" (change)="onFileChange($event)" #fileInput>
+        <button type="button" class="btn btn-sm btn-default" (click)="clearFile()">clear file</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+
+      <button type="submit" [disabled]="form.invalid || loading" class="btn rounded-btn btn-block">Submit
+        <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+      </button>
+    </div>
+  </div>
+</form>

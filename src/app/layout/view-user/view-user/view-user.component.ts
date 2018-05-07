@@ -122,7 +122,7 @@ export class ViewUserComponent implements OnInit {
     this.user.displayUser().subscribe(data => {
       
       this.source=data['results'];
-      //console.log(this.source)
+      console.log(this.source)
     })
   }
 

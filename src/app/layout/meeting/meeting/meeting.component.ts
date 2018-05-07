@@ -383,10 +383,7 @@ export class MeetingComponent implements OnInit {
         })
       }
     });
-
-
-
-  }
+}
 
   ngOnInit() {
 

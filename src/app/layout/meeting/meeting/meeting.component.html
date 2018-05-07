@@ -161,6 +161,8 @@
                 <a class="btn" (click)="Onedit(objID)">
                     <i class="fa fa-fw fa-edit"></i>
                 </a>
+               <label>Publish</label> 
+               <ui-switch size="small" [checked]="true"></ui-switch>
                 <!-- <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>    -->
                 <!-- <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
           <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a> -->
@@ -269,12 +271,12 @@
                             </form>
                         </ng-template>
                     </ngb-tab>
-                    <ngb-tab>
+                    <!-- <ngb-tab>
                         <ng-template ngbTabTitle>Upload Media</ng-template>
                         <ng-template ngbTabContent>
-                            
+                            <app-file-upload></app-file-upload>
                         </ng-template>
-                    </ngb-tab>
+                    </ngb-tab> -->
                 </ngb-tabset>
                 </div>
             </div>

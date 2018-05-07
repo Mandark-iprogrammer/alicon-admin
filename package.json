@@ -25,6 +25,7 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "@types/angular-mocks": "^1.5.11",
+    "angular2-ui-switch": "^1.2.0",
     "angularfire2": "^5.0.0-rc.6.0",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",

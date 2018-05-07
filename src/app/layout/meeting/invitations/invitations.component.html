@@ -3,15 +3,34 @@
         <ngb-tab>
             <ng-template ngbTabTitle>View invitations</ng-template>
             <ng-template ngbTabContent>
-                <ng2-smart-table class="table table-striped table-bordered" [settings]="defaultSettings" [source]="docs1" 
+                <!-- <ng2-smart-table class="table table-striped table-bordered" [settings]="defaultSettings" [source]="docs1" 
                       
-                        ></ng2-smart-table>
+                        ></ng2-smart-table> -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <tr >
+                                <th style="text-align: center;">Sr.No</th>
+                                <th style="text-align: center;">Name</th>
+                                <th style="text-align: center;">Email </th>
+                                <th style="text-align: center;">Location</th>
+                              
+                              </tr>
+                              <tr *ngFor="let users1 of users1 ;let i=index">
+                                <td style="text-align: center;">{{i+1}}</td>
+                                <td style="text-align: center;">{{users1.firstName}} {{users1.lastName}}</td>
+                                <td style="text-align: center;">{{users1.username}}</td>
+                                <td style="text-align: center;">{{users1.location}}</td>
+                               
+                              </tr>
+                            </table>
+                          
+                          </div>
             </ng-template>
         </ngb-tab>
         <ngb-tab>
             <ng-template ngbTabTitle>Send Invitations</ng-template>
             <ng-template ngbTabContent>
-                <form class="" #frm="ngForm" (ngSubmit)="invitations(frm.value)" >
+                <!-- <form class="" #frm="ngForm" (ngSubmit)="invitations(frm.value)" >
 
                     <div class="row">
                         <div class="col-md-6">
@@ -43,8 +62,39 @@
                             </div>
                         </div>
                     
-                </form>
+                </form> -->
+                
+<ng2-smart-table class="table table-striped table-bordered" [settings]="defaultSettings" [source]="docs" 
+(createConfirm)="addRecord($event)"
+(editConfirm)="updateRecord($event)"
+(userRowSelect)="onUserRowSelect($event)"
+(create)="create.emit($event)"
+(edit)="edit.emit($event)"
+(delete)="delete.emit($event)"
+(custom)="custom.emit($event)"
+(userSelectRow)="onUserSelectRow($event)"
+(editRowSelect)="editRowSelect($event)"
+(multipleSelectRow)="multipleSelectRow($event)"
+(selectAllRows)="onSelectAllRows($event)"
+(sort)="sort($event)"
+(filter)="filter($event)"
+(custom)="onCustom($event)"
+>
+
+</ng2-smart-table> 
+<div class="row">
+    <div class="col-md-6  text-center">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="submit" (click)="abc($event)" class="btn rounded-btn btn-block" Value="Send">
+                </div>
+           </div>
+        </div>
+    </div>
+</div> 
             </ng-template>
+            
         </ngb-tab>
     </ngb-tabset>
  </div>   

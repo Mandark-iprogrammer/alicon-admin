@@ -8,6 +8,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TagInputModule } from 'ngx-chips';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 import { InvitationsComponent } from './invitations/invitations.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { UiSwitchModule } from 'angular2-ui-switch'
 @NgModule({
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { InvitationsComponent } from './invitations/invitations.component';
     Ng2AutoCompleteModule,
     TagInputModule,
     NgbModule.forRoot(),
+    UiSwitchModule
   ],
-  declarations: [MeetingComponent, InvitationsComponent]
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent]
 })
 export class MeetingModule { }

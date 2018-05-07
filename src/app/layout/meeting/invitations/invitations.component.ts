@@ -18,7 +18,7 @@ export class InvitationsComponent implements OnInit {
   SERVER_URL: string
   docs: any
   meetingID: string
-  docs1=[]
+  users1=[]
   unique1 = []
 
 
@@ -44,8 +44,8 @@ export class InvitationsComponent implements OnInit {
         title: 'Location'
       }
     },
-    mode: 'inline', // inline|external|click-to-edit
-    selectMode: 'single', // single|multi
+    mode: 'external', // inline|external|click-to-edit
+    selectMode: 'multi', // single|multi
     hideHeader: false,
     hideSubHeader: false,
     actions: {
@@ -53,10 +53,7 @@ export class InvitationsComponent implements OnInit {
       add: false,
       edit: false,
       delete: false,
-      custom: [{
-        name: '',
-        title: 'edit ',
-      }],
+      custom: [],
       position: 'right', // left|right
     },
     filter: {
@@ -150,10 +147,10 @@ export class InvitationsComponent implements OnInit {
               'X-Parse-REST-API-Key': this.MASTER_KEY,
               'X-Parse-Revocable-Session': '1'
             })
-          }).subscribe(data2 => {
+          }).subscribe(data => {
            // console.log(data2)
-            this.docs1.push(data2)
-            console.log(this.docs1)
+            this.users1.push(data)
+            console.log(this.users1)
           })
       });
     })
@@ -202,5 +199,13 @@ export class InvitationsComponent implements OnInit {
 
 
   }
+
+
+  onUserRowSelect(event){
+    console.log(event.selected)
+    }
+    abc(event){
+      console.log(event.selected)
+    }
 
 }
