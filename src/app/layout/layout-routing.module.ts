@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'dashboard' },
+            { path: '', redirectTo: 'viewUsers' },
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },    
             {path : 'group',loadChildren:'./group/group.module#GroupModule'},
             {path:'meeting',loadChildren:'./meeting/meeting.module#MeetingModule'},
@@ -18,13 +18,13 @@ const routes: Routes = [
             {path: 'viewUsers',  loadChildren:'./view-user/view-user.module#ViewUserModule'},
            // {path: 'changePwd',  loadChildren:'./change-pwd/change-pwd.module#ChangePwdModule'},
             {path: 'User',loadChildren:'./user/user.module#UserModule'},
-            {path:'push',loadChildren:'./push-notification/push-notification.module#PushNotificationModule'}
+            {path:'push',loadChildren:'./push-notification/push-notification.module#PushNotificationModule'},
             // { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             // { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             // { path: 'forms', loadChildren: './form/form.module#FormModule' },
             // { path: 'bs-element', loadChildren: './bs-element/bs-element.module#BsElementModule' },
             // { path: 'grid', loadChildren: './grid/grid.module#GridModule' },
-            // { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
+            { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             // { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' }
         ]
     }

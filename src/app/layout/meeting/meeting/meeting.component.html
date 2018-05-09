@@ -1,6 +1,31 @@
-<form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)" *ngIf="show2">
 
-    <div class="col-md-6">
+        
+<form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)" *ngIf="show2">
+        
+             <div class="row ">
+                    <!-- <div class="col-md-1">
+                            <input type="button" class="btn btn rounded-btn btn-block" Value="Back" (click)=cancel();>
+                    </div>     -->
+                    <div class="col-md-10">
+                            <h2>Meeting Register</h2>  
+                           
+                    <div class="form-group">
+                        
+                        <div class="row pull-right">
+                            <div class="col-md-6">
+                                <button type="submit"  [disabled]="!frm.valid" class="btn btn rounded-btn btn-block">{{sav}}</button>
+        
+                            </div>
+                          
+                            <div class="col-md-6">
+                                <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
+                            </div>
+                        </div>
+        
+                    </div>
+                    </div>
+            </div>
+        <div class="col-md-10 ">    
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -8,102 +33,93 @@
                     <input required type="text" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel"
                         ngModel class="form-control input-underline input-lg" maxlength="60" />
                 </div>
-                <div *ngIf="name.errors?.pattern">
+                <small  class="text-danger" *ngIf="name.errors?.pattern">
                     Meeting name not valid.
-                </div>
+                </small>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="saddress"> Meeting Description: </label>
-                    <textarea class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -]*" rows="3" [(ngModel)]="desc" placeholder="Enter a meeting description"
+                    <textarea class="form-control input-underline input-lg"  rows="2" [(ngModel)]="desc" placeholder="Enter a meeting description"
                         name="description" #description="ngModel" ngModel required></textarea>
                     <!-- <textarea class="form-control input-underline input-lg" [(ngModel)]="desc" placeholder="Enter a meeting description" type="text" name="description" #description="ngModel" ngModel required /> 
                             <div id="errFirst"></div>     -->
-                    <div *ngIf="description.errors?.pattern">
-                        Meeting description name not valid.
-                    </div>
+                           
                 </div>
             </div>
         </div>
         <div class="row">
-
             <div class="col-md-6">
+            <div class="form-group">
+                <label for="aemail"> Meeting Date: </label>
+                <div class="input-group datepicker-input">
+                    <input class="form-control input-underline input-lg" placeholder="dd/mm/yyyy"
+                    name="meetingDate" #meetingDate="ngModel" [(ngModel)]="dt" ngModel (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker">
+                    
+                </div>
+            </div>
+            </div>
+            <!-- <div class="col-md-6">
                 <div class="form-group">
                     <label for="aemail"> Meeting Date: </label>
                     <input class="form-control input-underline input-lg" [(ngModel)]="mtDate" required type="date" name="meetingDate" #meetingDate="ngModel"
                         ngModel required/>
                     <div class="status" id="status"></div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="mnumber">Meeting Time: </label>
-                    <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="startTime" [(ngModel)]="stTime "
+                    <!-- <label for="mnumber">Meeting Time: </label>
+                    <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="startTime" [(ngModel)]="stTime"
                         #startTime="ngModel" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time"
                     />
                     <div *ngIf="startTime.errors?.pattern">
                         Meeting Start Time not valid.
-                    </div>
+                    </div> -->
+                    <label for="mnumber">Meeting Time: </label>
+                    <ngb-timepicker [size]="small" [(ngModel)]="time1" name="startTime" [spinners]="true" #startTime="ngModel" ngModel [meridian]="true"  [ngModelOptions]="{standalone: false}" ></ngb-timepicker>
+                    
+                
                 </div>
             </div>
-            <!-- <div class="form-group">
-                <label for="email"> Start Date: </label> 
-            <div class="input-group datepicker-input">
-                <input class="form-control input-underline input-lg" placeholder="dd-mm-yyyy"
-                name="startDate"  #startDate="ngModel" ngModel [(ngModel)]="stDate" ngbDatepicker #d="ngbDatepicker" >
-                <button class="input-group-addon" (click)="d.toggle()" type="button">
-                    <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-                    <span class="fa fa-calendar"></span>
-                </button>
-            </div>
-        </div> -->
-            <!-- <div class="col-md-3">
-                <div class="form-group">
-                    <label for="email"> Start Date: </label> 
-                        <input class="form-control input-underline input-lg" [(ngModel)]="stDate" required type="date" name="startDate"  #startDate="ngModel" ngModel required/>   
-                            <div class="status" id="status"></div>
-                </div>
-
-            </div> -->
-
+            
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="city"> Remark: </label>
-                    <input class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -/(/)]*" [(ngModel)]="remk" type="text" placeholder="Enter a meeting remark"
+                    <input class="form-control input-underline input-lg"  [(ngModel)]="remk" type="text" placeholder="Enter a meeting remark"
                         name="remark" #remark="ngModel" ngModel required />
-                    <div *ngIf="remark.errors?.pattern">
-                        Meeting remark name not valid.
-                    </div>
+                       
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="phonenumber">Venue: </label>
 
-                    <input auto-complete required type="text" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg"
-                        maxlength="28" placeholder="Enter Meeting Venue" [source]="venues" />
-                    <div *ngIf="venue.errors?.pattern">
+                    <!-- <input auto-complete required type="text" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg"
+                        maxlength="28" placeholder="Enter Meeting Venue" [source]="venues" loading-text [tab-to-select]="false"/>
+                        <small  class="text-danger" *ngIf="venue.errors?.pattern">
                         Meeting venue name not valid.
-                    </div>
+                        </small> -->
+                        <ng2-completer type="text" [(ngModel)]="ven" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" ngModel placeholder="Enter Meeting Venue" [datasource]="venues" class="form-control input-underline input-lg" [minSearchLength]="2"></ng2-completer>
+                        <small  class="text-danger" *ngIf="venue.errors?.pattern">
+                                Meeting venue name not valid.
+                                </small>
+                </div>
+               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                      <label class="conttrol-label">{{pub}}</label> 
+                      <ui-switch size="small"  name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
                 </div>
 
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-6">
-
-                <div class="form-group">
-                    <label for="lastName">Department</label>
-                    <tag-input class="form-control input-underline input-lg" [(ngModel)]="tag" name="tags" #tags="ngModel" ngModel placeholder="Enter a department">
-                        <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="unique">
-                        </tag-input-dropdown>
-                    </tag-input>
-                </div>
-
-            </div>
-        </div> -->
 
 
 
@@ -111,26 +127,10 @@
             <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="objID" />
 
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6  text-center">
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <input type="submit" [disabled]="!frm.valid" class="btn btn rounded-btn btn-block" Value="Save">
-
-                    </div>
-                    <div class="col-md-6">
-                        <input type="button" [disabled]="!frm.valid" class="btn btn rounded-btn btn-block" Value="Publish" (click)=publish(frm.value);>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
+    
+    </div>    
 </form>
+
 <!-- ends register form -->
 
 <!-- 
@@ -156,13 +156,21 @@
             <td style="text-align: center;">{{ven}}</td>
             <td style="text-align: center;">{{mtDate}}</td>
             <td style="text-align: center;">{{stTime}}</td>
-
+            <!-- {{published}} [disabled]="published" -->
             <td>
-                <a class="btn" (click)="Onedit(objID)">
-                    <i class="fa fa-fw fa-edit"></i>
-                </a>
-               <label>Publish</label> 
-               <ui-switch size="small" [checked]="true"></ui-switch>
+                <tr>
+                    <th>Edit</th>
+                    <th>{{pub}}</th>
+                </tr>
+                <tr>
+                    <td> <a class="btn" (click)="Onedit(objID)">
+                            <i class="fa fa-fw fa-lg fa-edit"></i>
+                        </a></td>
+                    <td><ui-switch size="small"  (change)="onChange($event)" [checked]="published"></ui-switch></td>
+                </tr>
+
+                
+               
                 <!-- <a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a>    -->
                 <!-- <a class="btn text-success" [routerLink]="['/activity',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Activity</a>
           <a class="btn text-success" [routerLink]="['/invitation',{ 'meetingId': objID}]"> <i class="fa fa-fw fa-plus"></i> Add Invitation</a> -->

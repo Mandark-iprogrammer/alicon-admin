@@ -6,7 +6,8 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityService } from '../../activity/activity.service';
 import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent } from "ng-auto-complete";
-
+import { count } from 'rxjs/operator/count';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-invitations',
   templateUrl: './invitations.component.html',
@@ -20,8 +21,8 @@ export class InvitationsComponent implements OnInit {
   meetingID: string
   users1=[]
   unique1 = []
-
-
+  send =[]
+  username=[]
   defaultSettings = {
     columns: {
      
@@ -91,7 +92,7 @@ export class InvitationsComponent implements OnInit {
   };
 
 
-
+  notFound:string
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
@@ -103,10 +104,10 @@ export class InvitationsComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
 
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users?where={"isAdmin":false}'
     this.http.get(this.SERVER_URL, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -116,16 +117,12 @@ export class InvitationsComponent implements OnInit {
       })
     }).subscribe(data => {
       this.docs = data['results']
-      console.log(this.docs)
-      this.docs.forEach(element => {
-        this.unique1.push({ value: element.objectId, display: element.firstName + ' ' + element.lastName });
-
-      });
+     
     })
 
 
 
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/' + this.meetingID;
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
     this.http.get(this.SERVER_URL, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -135,11 +132,13 @@ export class InvitationsComponent implements OnInit {
       })
     }).subscribe(data => {
         console.log(data['meetingUsers']);
-      //this.docs1 = data['results']
-      //console.log(this.docs1)
+        if(data['meetingUsers']==null){
+          this.notFound="No person has been invited yet."
+        }
+        else{ 
       data['meetingUsers'].forEach(element => {
           console.log(element)
-          this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users/' + element;
+          this.SERVER_URL = environment.apiUrl+'/users/' + element;
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
@@ -148,11 +147,14 @@ export class InvitationsComponent implements OnInit {
               'X-Parse-Revocable-Session': '1'
             })
           }).subscribe(data => {
-           // console.log(data2)
-            this.users1.push(data)
+            //console.log(data)
+            
+           this.users1.push(data)
+            
             console.log(this.users1)
           })
       });
+    }
     })
 
   }
@@ -161,51 +163,110 @@ export class InvitationsComponent implements OnInit {
   ngOnInit() {
   }
 
-  invitations(frm: any) {
-    console.log(frm)
+  // invitations(frm: any) {
+  //   console.log(frm)
 
-    let arrr = [];
-    console.log(frm.users)
-    for (var i = 0; i < frm.users.length; i++) {
-      arrr.push(frm.users[i].value);
-    }
-    console.log(arrr);
-    let arr = {
+  //   let arrr = [];
+  //   console.log(frm.users)
+  //   for (var i = 0; i < frm.users.length; i++) {
+  //     arrr.push(frm.users[i].value);
+  //   }
+  //   console.log(arrr);
+  //   let arr = {
 
-      "meetingUsers": arrr
+  //     "meetingUsers": arrr
 
-    }
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/' + frm.objectId
-    return this.http.put(this.SERVER_URL, arr, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-Parse-Application-Id': this.APP_ID,
-        'X-Parse-REST-API-Key': this.MASTER_KEY,
-      })
-    }).subscribe(
-      res => console.log(res),
-      err => console.log(err),
-      () => {
-        console.log("record updated")
-        //this.meeting.showMeeting();
-        this.router.navigate(['/viewMeeting']);
-        this.toastr.success('New Record Updated Successfully', 'Meeting Register');
+  //   }
+  //   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/' + frm.objectId
+  //   return this.http.put(this.SERVER_URL, arr, {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'X-Parse-Application-Id': this.APP_ID,
+  //       'X-Parse-REST-API-Key': this.MASTER_KEY,
+  //     })
+  //   }).subscribe(
+  //     res => console.log(res),
+  //     err => console.log(err),
+  //     () => {
+  //       console.log("record updated")
+  //       //this.meeting.showMeeting();
+  //       this.router.navigate(['/viewMeeting']);
+  //       this.toastr.success('New Record Updated Successfully', 'Meeting Register');
 
+  //     }
+  //   )
+
+
+
+
+
+  // }
+
+
+    onUserRowSelect(event){
+     // this.send.length=0;
+    console.log(event)
+    //this.send.push(event.data)
+    if(event.isSelected===null){
+      if(event.selected.length==0){
+        this.username.length=0;
       }
-    )
-
-
-
-
-
-  }
-
-
-  onUserRowSelect(event){
-    console.log(event.selected)
+      for(var i=0;i<event.selected.length;i++){
+        this.send.push(event.selected[i].objectId)
+        this.username.push(event.selected[i].firstName +' '+event.selected[i].lastName)
+      }
+  
     }
-    abc(event){
-      console.log(event.selected)
+    else if(event.isSelected===true){       
+       this.send.push(event.data.objectId)
+       this.username.push(event.data.firstName +' '+event.data.lastName)
+    }
+    else if(event.isSelected==false){
+      var i = this.send.indexOf(event.data.objectId);
+      if(i != -1) {
+        this.send.splice(i, 1);
+      }
+      var k=this.username.indexOf(event.data.firstName+' '+event.data.lastName);
+      if(k != -1){
+        this.username.splice(k, 1);
+      }
+
+
+      console.log(this.username)
+    }
+           
+    }
+    abc(){
+      this.activatedRoute.params.subscribe((params: Params) => {
+        this.meetingID = params['objectId'];
+      });
+      console.log(this.send)
+      
+     // this.send.length=0;
+      let arr = 
+        {
+          "meetingUsers": {"__op":"AddUnique", "objects": this.send
+        }
+      }
+      console.log(arr)
+      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
+      return this.http.put(this.SERVER_URL, arr, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-Parse-Application-Id': this.APP_ID,
+          'X-Parse-REST-API-Key': this.MASTER_KEY,
+        })
+      }).subscribe(
+        res => console.log(res),
+        err => console.log(err),
+        () => {
+          console.log("record updated")
+          //this.meeting.showMeeting();
+          this.router.navigate(['/viewMeeting']);
+          this.toastr.success('New Record Updated Successfully', 'Meeting Register');
+  
+        }
+      )
     }
 
 }

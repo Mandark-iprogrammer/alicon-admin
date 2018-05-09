@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class UserService {
   APP_ID :string
@@ -9,9 +10,9 @@ export class UserService {
   constructor(
     private http:HttpClient
   ) {
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users'
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL = environment.apiUrl+'/users'
     this.sessionToken=localStorage.getItem('sessionToken')
     console.log(this.sessionToken)
   }
@@ -30,7 +31,7 @@ export class UserService {
 
   deleteUsers(obj : string){
 
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users/'+obj
+    this.SERVER_URL = environment.apiUrl+'/users/'+obj
     return this.http.delete(this.SERVER_URL,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
@@ -60,7 +61,7 @@ export class UserService {
   }
   else{
     
-   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/parse/users/'+frm.objectId
+   this.SERVER_URL = environment.apiUrl+'/users/'+frm.objectId
    return this.http.put(this.SERVER_URL,frm,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',

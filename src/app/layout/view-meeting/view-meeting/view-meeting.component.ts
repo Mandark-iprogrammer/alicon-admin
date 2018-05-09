@@ -10,8 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ViewMeetingComponent implements OnInit {
  
- 
- 
   defaultSettingsMeetings = {
     columns: {
       name: {
@@ -79,9 +77,6 @@ export class ViewMeetingComponent implements OnInit {
     rowClassFunction: () => ""
   };
  
- 
- 
- 
   docs:any
   dd:string
   mm:string
@@ -110,12 +105,8 @@ export class ViewMeetingComponent implements OnInit {
             element.isPublished="Yes";
           }
         }
-        
-      
-      });
-      
-      console.log(this.docs) 
-      
+       });
+     console.log(this.docs) 
     })
   }
 
@@ -165,7 +156,6 @@ export class ViewMeetingComponent implements OnInit {
 
   onCustom(event) {
     this.router.navigate(['/meeting',{ 'objectId': event.data.objectId,'view':'view'}]);
-  
   }
   
 }

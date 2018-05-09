@@ -15,7 +15,9 @@
                                 <th style="text-align: center;">Location</th>
                               
                               </tr>
+                              {{notFound}}
                               <tr *ngFor="let users1 of users1 ;let i=index">
+                                 
                                 <td style="text-align: center;">{{i+1}}</td>
                                 <td style="text-align: center;">{{users1.firstName}} {{users1.lastName}}</td>
                                 <td style="text-align: center;">{{users1.username}}</td>
@@ -30,6 +32,18 @@
         <ngb-tab>
             <ng-template ngbTabTitle>Send Invitations</ng-template>
             <ng-template ngbTabContent>
+                    <div class="row">
+                            <div class="col-md-12 text-center">
+                    
+                                <div class="form-group">
+                                    <label class="control-label" for="lastName">Selected Users</label>
+                                    <tag-input [removable]="false" [ngModel]="username" class="form-control input-underline input-lg"  name="users" #users  ngModel placeholder="Select Users for invitations">
+                                        
+                                    </tag-input>
+                                </div>
+                    
+                            </div>
+                        </div>
                 <!-- <form class="" #frm="ngForm" (ngSubmit)="invitations(frm.value)" >
 
                     <div class="row">
@@ -87,7 +101,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-6">
-                    <input type="submit" (click)="abc($event)" class="btn rounded-btn btn-block" Value="Send">
+                    <input type="submit" (click)="abc()" class="btn rounded-btn btn-block" Value="Send">
                 </div>
            </div>
         </div>

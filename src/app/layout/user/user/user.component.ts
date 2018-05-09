@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent} from "ng-auto-complete";
- 
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -15,6 +15,7 @@ import {CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComp
 export class UserComponent implements OnInit {
   @ViewChild(NgAutocompleteComponent) public completer: NgAutocompleteComponent;
   public show:boolean = true;
+  public reg:string="Register"
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
@@ -34,11 +35,10 @@ export class UserComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/functions/user_tags'
-   
-      this.http.post(this.SERVER_URL,'',{
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL = environment.apiUrl+'/functions/user_tags'
+        this.http.post(this.SERVER_URL,'',{
         headers:new HttpHeaders({
         'Content-Type':'application/json',
         'X-Parse-Application-Id':this.APP_ID,
@@ -46,13 +46,13 @@ export class UserComponent implements OnInit {
       })
      }).subscribe(data => {
       console.log(data)       
-     this.docs=JSON.parse(data['result'])
-     this.unique=this.docs.data
-          console.log(this.unique)
+       this.docs=JSON.parse(data['result'])
+       this.unique=this.docs.data
+       console.log(this.unique)
     })
 
 
-    this.SERVER_URL1 = 'http://192.168.151.156:1337/alicon/parse/functions/user_locations'
+    this.SERVER_URL1 = environment.apiUrl+'/functions/user_locations'
     this.http.post(this.SERVER_URL1,'',{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -67,7 +67,7 @@ export class UserComponent implements OnInit {
         console.log(this.locations)
   })
 
-  this.SERVER_URL2 = 'http://192.168.151.156:1337/alicon/parse/functions/user_designations'
+  this.SERVER_URL2 = environment.apiUrl+'/functions/user_designations'
       this.http.post(this.SERVER_URL2,'',{
         headers:new HttpHeaders({
         'Content-Type':'application/json',
@@ -89,9 +89,8 @@ export class UserComponent implements OnInit {
          let objectId=params['objectId'];
          if(objectId!=null){
           this.show = !this.show;
-          this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-          this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-          this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/users/'+objectId
+          
+          this.SERVER_URL = environment.apiUrl+'/users/'+objectId
           this.http.get(this.SERVER_URL,{
                headers:new HttpHeaders({
                 'Content-Type':'application/json',
@@ -101,7 +100,7 @@ export class UserComponent implements OnInit {
             })
             }).subscribe(data => {
                 console.log(data)       
-                                        
+                  this.reg="Update"                      
                   this.fname=data['firstName']
                   this.lname=data['lastName']
                   this.uname=data['username']
@@ -184,6 +183,9 @@ export class UserComponent implements OnInit {
 
   }
 
+  cancel(){
+    this.router.navigate(['/viewUsers']);
+  }
  
 
 

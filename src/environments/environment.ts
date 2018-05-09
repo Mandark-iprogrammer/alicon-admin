@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: true,
+  apiUrl: 'http://192.168.151.156:1337/alicon/parse',
+  APP_ID:'ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON',
+  MASTER_KEY:'ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON'
 };

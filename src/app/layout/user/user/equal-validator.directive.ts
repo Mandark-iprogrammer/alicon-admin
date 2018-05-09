@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[appEqualValidator]'
+  selector: '[EqualValidator]'
 })
-export class EqualValidatorDirective {
+export class EqualValidator {
 
   constructor() { }
 

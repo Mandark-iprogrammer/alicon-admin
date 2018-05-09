@@ -1,19 +1,43 @@
-<div class="col-md-10 ">
-  <h2>Register User</h2>
+
+        
+ 
   <form  name="form" (ngSubmit)="frm.form.valid && register(frm.value)" #frm="ngForm" novalidate>
+        <h2>Register User</h2>
+        <div class="row ">
+                    
+                <div class="col-md-10">
+                <div class="row pull-right">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="{{reg}}">
+                                    
+                                    <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                                <input type="button"  class="btn rounded-btn btn-block" value="Cancel" (click)="cancel()">
+                                
+                                <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+             </div>       
+    <div class="col-md-10 ">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                     <label for="firstName">First Name</label>
                     <input type="text" class="form-control input-underline input-lg" [(ngModel)]="fname" name="firstName"  #firstName="ngModel" ngModel required placeholder="Enter the first name" />
-                    <div *ngIf="frm.submitted && !firstName.valid" class="help-block">First Name is required</div>
+                    <small  class="text-danger" *ngIf="frm.submitted && !firstName.valid" class="help-block">First Name is required</small>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                     <label for="lastName">Last Name</label>
                     <input type="text" class="form-control input-underline input-lg" [(ngModel)]="lname" name="lastName"  #lastName="ngModel" ngModel required placeholder="Enter the last name" />
-                    <div *ngIf="frm.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+                    <small  class="text-danger" *ngIf="frm.submitted && !lastName.valid" class="help-block">Last Name is required</small>
              </div>
         </div>
     </div>
@@ -21,16 +45,17 @@
         <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                         <label for="lastName">Designation</label>
+                         <ng2-completer type="text" [(ngModel)]="des" pattern="[a-zA-Z ]*" name="designation"  #designation="ngModel" ngModel required placeholder="Enter the Designation" [datasource]="designations" class="form-control input-underline input-lg" [minSearchLength]="2"></ng2-completer>
                        
-                        <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="des" name="designation"  #designation="ngModel" ngModel required placeholder="Enter the Designation" [source]="designations" />
-                        <div *ngIf="frm.submitted && !designation.valid" class="help-block">Designation is required</div>
+                        <!-- <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="des" name="designation"  #designation="ngModel" ngModel required placeholder="Enter the Designation" [source]="designations" /> -->
+                        <small  class="text-danger" *ngIf="frm.submitted && !designation.valid" class="help-block">Designation is required</small>
                     </div>
         </div>
         <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                         <label for="lastName">Phone Number</label>
                         <input type="text" class="form-control input-underline input-lg"  [(ngModel)]="pnumber" name="phoneNumber"  #phoneNumber="ngModel" ngModel required placeholder="Enter the phonenumber" />
-                        <div *ngIf="frm.submitted && !phoneNumber.valid" class="help-block">Phone Number is required</div>
+                        <small  class="text-danger" *ngIf="frm.submitted && !phoneNumber.valid" class="help-block">Phone Number is required</small>
                </div>
         </div>
     </div>
@@ -38,8 +63,8 @@
         <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                         <label for="lastName">Location</label>
-                        <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="loc" name="location" required placeholder="Enter the location" #location="ngModel" ngModel [source]="locations" />
-                        
+                        <!-- <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="loc" name="location" required placeholder="Enter the location" #location="ngModel" ngModel [source]="locations" /> -->
+                        <ng2-completer type="text" [(ngModel)]="loc" name="location" required placeholder="Enter the location" #location="ngModel" ngModel [datasource]="locations" class="form-control input-underline input-lg" [minSearchLength]="2"></ng2-completer>
                     </div>
         </div>
         <div class="col-md-6">
@@ -60,7 +85,7 @@
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                         <label for="username">Email Address</label>
                         <input type="email" class="form-control input-underline input-lg"  [(ngModel)]="uname" name="username" #username="ngModel" ngModel required placeholder="Enter the username"/>
-                        <div *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</div>
+                        <small  class="text-danger" *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</small>
                     </div>
          </div>
      </div>
@@ -69,44 +94,22 @@
          <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
+                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
                         <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
-                        <div *ngIf="password.errors?.pattern"> 
-                            Enter a Valid Password
-                         </div>
+                      
                     </div>
          </div>
      </div>
      <div class="row" *ngIf="show">
          <div class="col-md-6">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !cnf.valid }">
                         <label for="password">Confirm Password</label>
-                        <input type="password" class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="cnf" #cnf="ngModel" ngModel  required placeholder="Enter the confirm password"/>
+                        <input type="password" class="form-control input-underline input-lg"  name="cnf" #cnf="ngModel" ngModel  required placeholder="Enter the confirm password"/>
                         <!-- <div *ngIf="frm.submitted && !cnf.valid" class="help-block">Password is required</div> -->
-                        <div *ngIf="cnf.errors?.pattern"> 
-                            Enter a Valid Confrim Password
-                         </div>
+                       
                    </div>
          </div>
      </div>
-      
-     <div class="row">
-         <div class="col-md-6">
-                <div class="form-group">
-                        <input type="submit" [disabled]="!frm.form.valid" class="btn rounded-btn btn-block" value="Register">
-                       
-                        <!-- <a [routerLink]="['/login']" class="btn btn-link">Cancel</a> -->
-                </div>
-         </div>
-     </div>
-
-     
     
-
-     
-     
-       
-        
-     
+    </div>   
   </form>
-</div>

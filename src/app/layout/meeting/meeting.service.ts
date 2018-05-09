@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -16,18 +16,23 @@ export class MeetingService {
   ) {
     this.objectID=localStorage.getItem('objectId');
     console.log(this.objectID)
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-      this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-      this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting'
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting'
  }
   saveData(frm : any){
 
     if(frm.objectId==null){
+
+
+      var a=this.formatAMPM(frm.startTime.hour,frm.startTime.minute);
+    console.log(a)
+
       let arrr=[];
-      console.log(frm.tags)
-      for(var i=0;i<frm.tags.length;i++){
-          arrr.push(frm.tags[i].value);
-      }
+      // console.log(frm.tags)
+      // for(var i=0;i<frm.tags.length;i++){
+      //     arrr.push(frm.tags[i].value);
+      // }
     let arr={
       "name":frm.name,
       "description": frm.description,
@@ -38,7 +43,8 @@ export class MeetingService {
         "className": "_User",
         "objectId": this.objectID
       },
-      "startTime":frm.startTime,
+      "isPublished":frm.isPublished,
+      "startTime":a,
       // "startDate":{
       //     "__type":"Date",
       //     "iso":new Date(frm.startDate).toISOString()
@@ -47,7 +53,7 @@ export class MeetingService {
         "__type":"Date",
         "iso":new Date(frm.meetingDate).toISOString()
     },
-    "tags":arrr
+    //"tags":arrr
    }
    console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
@@ -59,11 +65,13 @@ export class MeetingService {
    })
   }
   else{
+    var a=this.formatAMPM(frm.startTime.hour,frm.startTime.minute);
+    console.log(a)
     let arrr=[];
-    console.log(frm.tags)
-    for(var i=0;i<frm.tags.length;i++){
-        arrr.push(frm.tags[i].value);
-    }
+    // console.log(frm.tags)
+    // for(var i=0;i<frm.tags.length;i++){
+    //     arrr.push(frm.tags[i].value);
+    // }
     let arr={
       
       "name":frm.name,
@@ -75,7 +83,8 @@ export class MeetingService {
         "className": "_User",
         "objectId":this.objectID
       },
-      "startTime":frm.startTime,
+      "isPublished":frm.isPublished,
+      "startTime":a,
       // "startDate":{
       //     "__type":"Date",
       //     "iso":new Date(frm.startDate).toISOString()
@@ -84,10 +93,10 @@ export class MeetingService {
         "__type":"Date",
         "iso":new Date(frm.meetingDate).toISOString()
     },
-    "tags":arrr
+   // "tags":arrr
     
    } 
-   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+frm.objectId
+   this.SERVER_URL = environment.apiUrl+'/classes/meeting/'+frm.objectId
    return this.http.put(this.SERVER_URL,arr,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',
@@ -105,6 +114,9 @@ export class MeetingService {
 
   publishData(frm : any){
     if(frm.objectId==null){
+      if(frm.isPublished==""){
+        frm.isPublished=false;
+      }
    let arr={
       "name":frm.name,
       "description": frm.description,
@@ -136,6 +148,10 @@ export class MeetingService {
    })
   }
   else{
+    if(frm.isPublished==""){
+      frm.isPublished=false;
+    }
+    
     let arr={
       "name":frm.name,
       "description": frm.description,
@@ -174,7 +190,7 @@ export class MeetingService {
   }
 
   displayMeeting(){
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting?order=-createdAt'
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting?order=-createdAt'
     return this.http.get(this.SERVER_URL,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -186,7 +202,7 @@ export class MeetingService {
 
   deleteMeeting(obj : string){
 
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+obj
+    this.SERVER_URL = environment.apiUrl+'classes/meeting/'+obj
     return this.http.delete(this.SERVER_URL,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
@@ -197,5 +213,15 @@ export class MeetingService {
 
   }
 
-
+  formatAMPM(hour,minute) {
+    var hours = hour;
+    var minutes = minute;
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    hours = hours < 10 ? '0'+hours : hours;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 }

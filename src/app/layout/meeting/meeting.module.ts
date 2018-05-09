@@ -9,7 +9,8 @@ import { TagInputModule } from 'ngx-chips';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import { UiSwitchModule } from 'angular2-ui-switch'
+import { UiSwitchModule } from 'angular2-ui-switch';
+import { Ng2CompleterModule } from "ng2-completer";
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +19,7 @@ import { UiSwitchModule } from 'angular2-ui-switch'
     ReactiveFormsModule,
     Ng2SmartTableModule,
     Ng2AutoCompleteModule,
+    Ng2CompleterModule,
     TagInputModule,
     NgbModule.forRoot(),
     UiSwitchModule

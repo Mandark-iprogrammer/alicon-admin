@@ -4,7 +4,7 @@ import { routerTransition } from '../router.animations';
 import { LoginService } from './login.service';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-
+import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -29,14 +29,12 @@ export class LoginComponent implements OnInit {
 
     onLoggedin(frm:any) {
         console.log(frm.username)
-        // this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-
-        // this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-       
-        // this.SERVER_URL = "http://192.168.151.156:1337/alicon/parse/login?username="+frm.username+"&password="+frm.password
-        this.APP_ID = "129837njlasdjfpoia2p83u4jnlkj"
-        this.MASTER_KEY = "Elkl1j23l809uljn3lkj48unkjnkjh4234"
-        this.SERVER_URL = "http://13.126.191.252:1337/parse/login?username="+frm.username+"&password="+frm.password
+        this.APP_ID = environment.APP_ID;
+        this.MASTER_KEY =  environment.MASTER_KEY;
+        this.SERVER_URL = environment.apiUrl+"/login?username="+frm.username+"&password="+frm.password
+        // this.APP_ID = "129837njlasdjfpoia2p83u4jnlkj"
+        // this.MASTER_KEY = "Elkl1j23l809uljn3lkj48unkjnkjh4234"
+        // this.SERVER_URL = "http://13.126.191.252:1337/parse/login?username="+frm.username+"&password="+frm.password
        // "http://192.168.151.156:1337/alicon/parse/login?username="+frm.username+"&password="+frm.password
         
          this.http.get(this.SERVER_URL,{
@@ -56,7 +54,7 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('sessionToken',res['sessionToken']);
                     this.username=frm.username;
                     this.objectId=res['objectId'];   
-                    this.router.navigate(['/dashboard']);
+                    this.router.navigate(['/viewUsers']);
                     this.toastr.success('Logged in Successfully','Alicon Login');
                 }
             },

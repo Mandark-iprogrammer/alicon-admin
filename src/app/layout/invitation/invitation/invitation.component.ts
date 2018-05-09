@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,Params,ActivatedRoute } from '@angular/router';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-invitation',
@@ -22,9 +22,9 @@ export class InvitationComponent implements OnInit {
     private http: HttpClient,
     private activatedRoute: ActivatedRoute
   ) {
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/functions/user_tags'
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL = environment.apiUrl+'/functions/user_tags'
     this.http.post(this.SERVER_URL,'',{
          headers:new HttpHeaders({
           'X-Parse-Application-Id':this.APP_ID,
@@ -42,14 +42,7 @@ export class InvitationComponent implements OnInit {
           //   console.log(element)
           // });
      })
-
-
-
-
-
-
-
-    //using queryparams
+   //using queryparams
     this.activatedRoute.params.subscribe((params: Params) => {
       console.log(params)
       let userId = params['meetingId'];
@@ -57,9 +50,8 @@ export class InvitationComponent implements OnInit {
       
       console.log(userId);
       if(userId!=null){
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/'+userId
+   
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting/'+userId
     this.http.get(this.SERVER_URL,{
          headers:new HttpHeaders({
           'Content-Type':'application/json',
