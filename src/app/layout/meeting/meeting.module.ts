@@ -11,6 +11,10 @@ import { InvitationsComponent } from './invitations/invitations.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { UiSwitchModule } from 'angular2-ui-switch';
 import { Ng2CompleterModule } from "ng2-completer";
+import { FileSelectDirective,
+  FileDropDirective,FileUploader } from 'ng2-file-upload';
+import { TimepickerComponent } from './meeting/timepicker/timepicker.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +28,10 @@ import { Ng2CompleterModule } from "ng2-completer";
     NgbModule.forRoot(),
     UiSwitchModule
   ],
-  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent]
+ 
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent],
+  entryComponents: [
+    TimepickerComponent,
+    ],
 })
 export class MeetingModule { }

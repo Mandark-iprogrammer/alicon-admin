@@ -58,7 +58,7 @@ export class ViewUserComponent implements OnInit {
       desigNation: {
         title: 'Designation'
       },
-      phonenumber: {
+      phoneNumber: {
         title: 'Phone Number'
       },
       location: {

@@ -13,8 +13,7 @@ export class UserService {
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     this.SERVER_URL = environment.apiUrl+'/users'
-    this.sessionToken=localStorage.getItem('sessionToken')
-    console.log(this.sessionToken)
+    
   }
 
 
@@ -43,7 +42,8 @@ export class UserService {
   }
 
   saveData(frm : any){
-    if(frm.objectId==null){
+    console.log(frm)
+    if(frm.objectId==null || frm.objectId===undefined){
   //  let arr={
   //   "firstName":frm.firstName,
   //   "lastName": frm.lastName,
@@ -60,14 +60,15 @@ export class UserService {
    })
   }
   else{
-    
+    this.sessionToken=localStorage.getItem('sessionToken')
+    console.log(this.sessionToken)
+    console.log(this.sessionToken)
    this.SERVER_URL = environment.apiUrl+'/users/'+frm.objectId
    return this.http.put(this.SERVER_URL,frm,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',
     'X-Parse-Application-Id':this.APP_ID,
-    'X-Parse-REST-API-Key':this.MASTER_KEY,
-    'X-Parse-Session-Token':this.sessionToken
+    'X-Parse-Master-Key':this.MASTER_KEY
    })
  })
 

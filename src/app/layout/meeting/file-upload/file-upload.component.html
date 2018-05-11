@@ -1,10 +1,10 @@
-<form class="" #frm="ngForm" (ngSubmit)="onSubmit()">
+<form class="" #frm="ngForm" (ngSubmit)="onSubmit(frm.value)">
   <div class="row">
     <div class="col-md-6">
 
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control input-underline input-lg" id="name" placeholder="Bob" formControlName="name">
+        <label for="name">Title</label>
+        <input type="text" class="form-control input-underline input-lg" name="fileTitle" #fileTitle="ngModel" ngModel placeholder="Enter File Title">
       </div>
     </div>
   </div>
@@ -12,18 +12,46 @@
     <div class="col-md-6">
 
       <div class="form-group">
-        <label for="avatar">Meeting File</label>
-        <input type="file" class="form-control input-underline input-lg" id="avatar" (change)="onFileChange($event)" #fileInput>
-        <button type="button" class="btn btn-sm btn-default" (click)="clearFile()">clear file</button>
+        <label for="name">File Description</label>
+        <input type="text" class="form-control input-underline input-lg" #fileDescription="ngModel" ngModel name="fileDescription"
+          placeholder="Enter File Description">
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-6">
-
-      <button type="submit" [disabled]="form.invalid || loading" class="btn rounded-btn btn-block">Submit
-        <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
-      </button>
+      <div class="form-group">
+        <!-- ng2FileSelect [uploader]="uploader"  -->
+        <input type="file" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
+          accept="image/jpg,image/jpeg,application/pdf" />
+        <!-- <input type="file" id="photo" name="photo" ng2FileSelect [uploader]="uploader" /> -->
+      </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <div ng2FileDrop style="height:70px" [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}" (fileOver)="fileOverAnother($event)"
+          [uploader]="uploader" class="well my-drop-zone">
+          Drop a file here
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <button type="submit" [disabled]="!frm.valid" class="btn btn rounded-btn btn-block">Upload</button>
+      <!-- <button type="button" class="btn btn-success btn-xs"
+      (click)="upload(fileTitle.value,fileDescription.value,uploader.value)" >
+  <span class="glyphicon glyphicon-upload"></span> Upload
+</button> -->
+    </div>
+  </div>
+  <button type="button" class="btn btn-success btn-s" (click)="upload()">
+    Upload with method 2
+  </button>
 </form>

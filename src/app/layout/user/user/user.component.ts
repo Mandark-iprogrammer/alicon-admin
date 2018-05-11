@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
   unique:any
   locations:any
   designations:any;fname:string;
-  lname:string;uname:string;objID1:string;des:string;pnumber:number;loc:string;dept:any
+  lname:string;uname:string;objID1:string;des:string;pnumber:number;loc:string;dept=[];
   constructor(
     private user: UserService,
     private http: HttpClient,
@@ -105,7 +105,7 @@ export class UserComponent implements OnInit {
                   this.lname=data['lastName']
                   this.uname=data['username']
                   this.objID1=data['objectId']
-                  this.des=data['designation']
+                  this.des=data['desigNation']
                   this.pnumber=data['phoneNumber']
                  this.loc=data['location']
                  this.dept=data['tags']
@@ -128,21 +128,28 @@ export class UserComponent implements OnInit {
     let arrr=[];
     console.log(frm.tags)
     for(var i=0;i<frm.tags.length;i++){
-        arrr.push(frm.tags[i].value);
+        if(frm.tags[i].value){
+          arrr.push(frm.tags[i].value);
+        } 
+        else{
+          arrr.push(frm.tags[i]);
+        } 
+      
     }
     let arr={
       "firstName":frm.firstName,
       "lastName": frm.lastName,
       "username":frm.username,
+      "email":frm.username,
       "password":frm.password,
       "desigNation":frm.designation,
-      "phonenumber":frm.phoneNumber,
+      "phoneNumber":frm.phoneNumber,
       "location":frm.location,
       "tags":arrr
-    
+      
    } 
     console.log(arr);
-    if(frm.objectId==null){
+    if(frm.objectId==null || frm.objectId===undefined){
       console.log(frm)
       this.user.saveData(arr).subscribe(
         res=>{
@@ -156,18 +163,20 @@ export class UserComponent implements OnInit {
          })
  
     }else{
+      
       let arr={
         "firstName":frm.firstName,
         "lastName": frm.lastName,
-        "username":frm.username,
+        "email":frm.username,
         "password":frm.password,
+        "objectId":frm.objectId,
         "designation":frm.designation,
         "phoneNumber":frm.phoneNumber,
         "location":frm.location,
         "tags":arrr
       
      } 
-      console.log(frm.objectId);
+      console.log(arr);
       this.user.saveData(arr).subscribe(
         res=>console.log(res),
         err=>console.log(err),

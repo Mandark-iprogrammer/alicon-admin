@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ViewMeetingComponent implements OnInit {
  
+  dt: string | number;
   defaultSettingsMeetings = {
     columns: {
       name: {
@@ -151,6 +152,8 @@ export class ViewMeetingComponent implements OnInit {
     let year = date.getFullYear();
     let month = date.getMonth()+1;
     var dt = date.getDate();
+   // dt = dt < 10 ? '0'+dt : dt;
+   // month=month < 10 ? '0'+month : month;
     return dt+'/'+month+'/'+year; 
   }
 

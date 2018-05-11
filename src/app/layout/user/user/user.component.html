@@ -27,86 +27,121 @@
     <div class="col-md-10 ">
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                    <label for="firstName">First Name</label>
-                    <input type="text" class="form-control input-underline input-lg" [(ngModel)]="fname" name="firstName"  #firstName="ngModel" ngModel required placeholder="Enter the first name" />
-                    <small  class="text-danger" *ngIf="frm.submitted && !firstName.valid" class="help-block">First Name is required</small>
+            <div class="form-group">
+                    <label for="firstName">First Name <font color="red">*</font>:</label>
+                    <input type="text" pattern="[a-zA-Z ]*" class="form-control input-underline input-lg" [(ngModel)]="fname" name="firstName"  #firstName="ngModel" ngModel required placeholder="Enter the first name" />
+                    <small  class="text-danger" *ngIf="firstName.errors?.pattern">
+                            Enter the valid First Name
+                        </small>
+                    <small class="text-danger" [hidden]="firstName.valid || (firstName.pristine && !frm.submitted)">
+                        First Name is required
+                     </small>
+                    
             </div>
         </div>
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control input-underline input-lg" [(ngModel)]="lname" name="lastName"  #lastName="ngModel" ngModel required placeholder="Enter the last name" />
-                    <small  class="text-danger" *ngIf="frm.submitted && !lastName.valid" class="help-block">Last Name is required</small>
+            <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !lastName.valid }">
+                    <label for="lastName">Last Name <font color="red">*</font>:</label>
+                    <input type="text" class="form-control input-underline input-lg" pattern="[a-zA-Z ]*" [(ngModel)]="lname" name="lastName"  #lastName="ngModel" ngModel required placeholder="Enter the last name" />
+                    <!-- <small  class="text-danger" *ngIf="!frm.submitted && lastName.valid" class="help-block">Last Name is required</small> -->
+                    <small  class="text-danger" *ngIf="lastName.errors?.pattern">
+                            Enter the valid First Name
+                        </small>
+                    <small class="text-danger" [hidden]="lastName.valid || (lastName.pristine && !frm.submitted)">
+                       Last Name is required
+                    </small>
+                   
              </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                        <label for="lastName">Designation</label>
+                        <label for="lastName">Designation <font color="red">*</font>:</label>
                          <ng2-completer type="text" [(ngModel)]="des" pattern="[a-zA-Z ]*" name="designation"  #designation="ngModel" ngModel required placeholder="Enter the Designation" [datasource]="designations" class="form-control input-underline input-lg" [minSearchLength]="2"></ng2-completer>
                        
                         <!-- <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="des" name="designation"  #designation="ngModel" ngModel required placeholder="Enter the Designation" [source]="designations" /> -->
-                        <small  class="text-danger" *ngIf="frm.submitted && !designation.valid" class="help-block">Designation is required</small>
+                        <small class="text-danger" [hidden]="designation.valid || (designation.pristine && !frm.submitted)">
+                            Designation is required
+                         </small>
                     </div>
         </div>
         <div class="col-md-6">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                        <label for="lastName">Phone Number</label>
-                        <input type="text" class="form-control input-underline input-lg"  [(ngModel)]="pnumber" name="phoneNumber"  #phoneNumber="ngModel" ngModel required placeholder="Enter the phonenumber" />
-                        <small  class="text-danger" *ngIf="frm.submitted && !phoneNumber.valid" class="help-block">Phone Number is required</small>
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !phoneNumber.valid }">
+                        <label for="lastName">Phone Number <font color="red">*</font>:</label>
+                        <input type="text" pattern="[0-9]*" class="form-control input-underline input-lg"  [(ngModel)]="pnumber" name="phoneNumber"  #phoneNumber="ngModel" ngModel required placeholder="Enter the phone number" maxlength="10" />
+                        <small class="text-danger" [hidden]="phoneNumber.valid || (phoneNumber.pristine && !frm.submitted)">
+                            Phone Number is required
+                         </small>
                </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                        <label for="lastName">Location</label>
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !location.valid }">
+                        <label for="lastName">Location <font color="red">*</font>:</label>
                         <!-- <input auto-complete  class="form-control input-underline input-lg"  [(ngModel)]="loc" name="location" required placeholder="Enter the location" #location="ngModel" ngModel [source]="locations" /> -->
                         <ng2-completer type="text" [(ngModel)]="loc" name="location" required placeholder="Enter the location" #location="ngModel" ngModel [datasource]="locations" class="form-control input-underline input-lg" [minSearchLength]="2"></ng2-completer>
+                        <small class="text-danger" [hidden]="location.valid || (location.pristine && !frm.submitted)">
+                            Location is required
+                         </small>
                     </div>
         </div>
         <div class="col-md-6">
             <div class="form-group" >
-                    <label for="lastName">Department</label>
-                      <tag-input class="form-control input-underline input-lg" name="tags"  [(ngModel)]="dept" #tags="ngModel" ngModel placeholder="Enter the department">
+                    <label for="lastName">Department <font color="red">*</font>:</label>
+                      <tag-input class="form-control input-underline input-lg" [placeholder]="'Add department'" [secondaryPlaceholder]="'Department'" name="tags"  [(ngModel)]="dept" #tags="ngModel" ngModel required placeholder="Enter the department">
                         <tag-input-dropdown [showDropdownIfEmpty]="true"
                                             [autocompleteItems]="unique">
                         </tag-input-dropdown>
                     </tag-input>
+                   
                 </div>
+                 <!-- <small class="text-danger" [hidden]="tags.valid || (tags.pristine && !frm.submitted)">
+                        Department is required</i>.
+                    </small> -->
         </div>
        
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="objID1" />
+
     </div>
      
      <div class="row">
          <div class="col-md-6">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
-                        <label for="username">Email Address</label>
-                        <input type="email" class="form-control input-underline input-lg"  [(ngModel)]="uname" name="username" #username="ngModel" ngModel required placeholder="Enter the username"/>
-                        <small  class="text-danger" *ngIf="frm.submitted && !username.valid" class="help-block">Username is required</small>
+                        <label for="username">Email Address <font color="red">*</font>:</label>
+                        <input type="email" class="form-control input-underline input-lg"  [(ngModel)]="uname"  name="username" #username="ngModel" ngModel required placeholder="Enter the email address"/>
+                        <small class="text-danger" [hidden]="username.valid || (username.pristine && !frm.submitted)">
+                            Email is required and format should be <i>john@doe.com</i>.
+                        </small>
+                        
                     </div>
          </div>
      </div>
-     
+     <!-- pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$"* -->
      <div class="row" *ngIf="show">
          <div class="col-md-6">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !password.valid }">
-                        <label for="password">Password</label>
-                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel" ngModel required placeholder="Enter the first name"/>
-                        <div *ngIf="frm.submitted && !password.valid" class="help-block">Password is required</div>
+                <div class="form-group" >
+                        <label for="password">Password<font color="red">*</font>:</label>
+                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" minlength="8"/>
+                        <small  class="text-danger" *ngIf="password.errors?.pattern">
+                            Password is not valid at least one Special Symbool,One Capital Letter, One number
+                        </small>
                       
                     </div>
          </div>
      </div>
      <div class="row" *ngIf="show">
          <div class="col-md-6">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !cnf.valid }">
-                        <label for="password">Confirm Password</label>
-                        <input type="password" class="form-control input-underline input-lg"  name="cnf" #cnf="ngModel" ngModel  required placeholder="Enter the confirm password"/>
+                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !confirmPassword.valid }">
+                        <label for="password">Retype Password<font color="red">*</font>:</label>
+                        <input type="password" class="form-control input-underline input-lg" validateEqual="password"  name="confirmPassword" #confirmPassword="ngModel" ngModel  required placeholder="Retype password"/>
                         <!-- <div *ngIf="frm.submitted && !cnf.valid" class="help-block">Password is required</div> -->
-                       
+                        <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !frm.submitted)">
+                            Password mismatch
+                        </small>
                    </div>
          </div>
      </div>

@@ -117,7 +117,7 @@ export class InvitationsComponent implements OnInit {
       })
     }).subscribe(data => {
       this.docs = data['results']
-     
+      
     })
 
 
@@ -150,7 +150,7 @@ export class InvitationsComponent implements OnInit {
             //console.log(data)
             
            this.users1.push(data)
-            
+           
             console.log(this.users1)
           })
       });
@@ -161,6 +161,7 @@ export class InvitationsComponent implements OnInit {
 
 
   ngOnInit() {
+    
   }
 
   // invitations(frm: any) {
@@ -206,9 +207,13 @@ export class InvitationsComponent implements OnInit {
     onUserRowSelect(event){
      // this.send.length=0;
     console.log(event)
+   
     //this.send.push(event.data)
     if(event.isSelected===null){
+      this.username.length=0;
+
       if(event.selected.length==0){
+      
         this.username.length=0;
       }
       for(var i=0;i<event.selected.length;i++){
@@ -237,12 +242,16 @@ export class InvitationsComponent implements OnInit {
            
     }
     abc(){
+     
+      if( this.send.length==0){
+        this.toastr.error('Select atleast one user');
+        return false
+      }
       this.activatedRoute.params.subscribe((params: Params) => {
         this.meetingID = params['objectId'];
       });
       console.log(this.send)
-      
-     // this.send.length=0;
+     
       let arr = 
         {
           "meetingUsers": {"__op":"AddUnique", "objects": this.send
@@ -262,8 +271,8 @@ export class InvitationsComponent implements OnInit {
         () => {
           console.log("record updated")
           //this.meeting.showMeeting();
-          this.router.navigate(['/viewMeeting']);
-          this.toastr.success('New Record Updated Successfully', 'Meeting Register');
+          this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+          this.toastr.success('Invivation Send Successsfully');
   
         }
       )

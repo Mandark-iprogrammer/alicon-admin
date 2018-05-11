@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class ActivityService {
   APP_ID :string
@@ -11,9 +11,9 @@ export class ActivityService {
     private http:HttpClient
   ) { 
 
-    this.APP_ID = "ObQCLvdrqRekAzP7LWcZYPmzMYIDEALOGRPAALICON"
-    this.MASTER_KEY = "ErgFlrkodmUKTHVnRh0vJ8LzzVboP9VXUGmkALICON"
-    this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/activity'
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL =  environment.apiUrl+'/classes/activity'
 
   }
 
@@ -62,7 +62,7 @@ export class ActivityService {
   //     "duration":frm.duration
     
   //  } 
-   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/activity/'+frm.objectId
+   this.SERVER_URL = environment.apiUrl+'/classes/activity/'+frm.objectId
    return this.http.put(this.SERVER_URL,frm,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',
@@ -84,6 +84,18 @@ export class ActivityService {
       'X-Parse-REST-API-Key':this.MASTER_KEY,
      })
    })
+  }
+
+
+  deleteData(frm:any){
+    this.SERVER_URL = environment.apiUrl+'/classes/activity/'+frm.objectId
+    return this.http.delete(this.SERVER_URL,{
+     headers:new HttpHeaders({
+     'Content-Type':'application/json',
+     'X-Parse-Application-Id':this.APP_ID,
+     'X-Parse-REST-API-Key':this.MASTER_KEY,
+    })
+  })
   }
 
 }

@@ -33,17 +33,13 @@
             <ng-template ngbTabTitle>Send Invitations</ng-template>
             <ng-template ngbTabContent>
                     <div class="row">
-                            <div class="col-md-12 text-center">
-                    
+                        <div class="col-md-12 text-center">
                                 <div class="form-group">
-                                    <label class="control-label" for="lastName">Selected Users</label>
-                                    <tag-input [removable]="false" [ngModel]="username" class="form-control input-underline input-lg"  name="users" #users  ngModel placeholder="Select Users for invitations">
-                                        
-                                    </tag-input>
-                                </div>
-                    
+                                <tag-input style="color: red;" class="text-danger" [disable]="true" [removable]="false" [placeholder]="'Select users'" [secondaryPlaceholder]="'Users'" [ngModel]="username" class="form-control input-underline input-lg"   >
+                                </tag-input>
                             </div>
                         </div>
+                    </div>
                 <!-- <form class="" #frm="ngForm" (ngSubmit)="invitations(frm.value)" >
 
                     <div class="row">
