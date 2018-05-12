@@ -17,6 +17,8 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
 import { Cell, DefaultEditor, Editor} from 'ng2-smart-table';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
+import { CustomEditorComponent } from './custom-editor/custom-editor.component';
+import { Timepicker1Component } from './timepicker1/timepicker1.component';
 var FCM = require('fcm-push');
 
 @Component({
@@ -191,6 +193,7 @@ export class MeetingComponent implements OnInit {
   SERVER_URL1: any;
   venues: any;
   unique: any;
+  minDate:any;
   pub:string = "Publish"
   defaultSettingsActivity:any
  //public mtDate1:Date
@@ -198,6 +201,7 @@ export class MeetingComponent implements OnInit {
   published:boolean = false
   tag: any;
   mtDate1:any;
+  order:number;
   public dt:Date
   desc: string; remk: string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
   closeResult: string;
@@ -212,9 +216,15 @@ export class MeetingComponent implements OnInit {
     private activity: ActivityService
   ) {
 
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
+
+    this.minDate = {"year": year,"month": month,"day": dt};
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
-} 
+    } 
    // console.log(date)
 
     this.APP_ID = environment.APP_ID;
@@ -305,6 +315,11 @@ export class MeetingComponent implements OnInit {
    //this.activityStaff=["Mr.R.K. Mehra", "Mr. Vimal Gupta & Team", "Mr. Shyamanandan Yadav & Tea", "Mr. Kirad", "Mr. Kirad1", "Mr.R.K.Mehra", "Mehra R.K..", "M.K. Mehra", "demo", "Mr.Mandar Kirad", "asdasd", "Mr.MB Kirad", "Mr.R.K.Mishra", "Mr.Kirad", ""]
   this.defaultSettingsActivity = {
     columns: {
+      sequenceNumber: {
+        title: 'Sr No.',
+        required:'required',
+        filter: false
+      },
       section: {
         title: 'Activity Section',
         required:'required',
@@ -340,29 +355,61 @@ export class MeetingComponent implements OnInit {
       },
       startTime: {
         title: 'Start Time',
-        
+        // editor: {
+        //   type: 'custom',
+        //   component: Timepicker1Component,
+        // },
+       // editable:false,
         filter: false
       },
       endTime: {
         title: 'End Time',
-       
+        // editor: {
+        //   type: 'custom',
+        //   component: TimepickerComponent,
+        // },
+        // editable:false,
         filter: false
       },
       type: {
-        title: 'Activity Type',
+        title: 'Activity Type-Subtype',
         type: 'html',
         editor: {
-          type: 'list',
-          config: {
-            selectText: '...Select Type...',
-            list: [{ value: 'Presentation', title: 'PRESENTATION' }, { value: 'q&a', title: 'Q&A' }, {
-              value: 'Travel', title: 'TRAVEL'
-            }, { value: 'BreakTime', title: 'BREAK-TIME' }, { value: 'Break Time with Team', title: 'BREAK TIME WITH TEAM' }]
-          }
+          type: 'custom',
+          component: CustomEditorComponent,
         },
-        filter: false
-      }
-
+        filter:false
+        },
+      
+      
+      // type: {
+      //   title: 'Activity Type',
+      //   type: 'html',
+      //   editor: {
+      //     type: 'list',
+      //     config: {
+      //       selectText: '...Select Type...',
+      //       list: [{ value: 'Presentation', title: 'PRESENTATION' }, { value: 'q&a', title: 'Q&A' }, {
+      //         value: 'Travel', title: 'TRAVEL'
+      //       }, { value: 'BreakTime', title: 'BREAK-TIME' }, { value: 'Break Time with Team', title: 'BREAK TIME WITH TEAM' }]
+      //     }
+      //   },
+      //   filter: false
+      // },
+      // subtype: {
+      //   title: 'Activity Sub Type',
+      //   type: 'html',
+      //   editor: {
+      //     type: 'list',
+      //     config: {
+      //       selectText: '...Select Type...',
+      //       list: [{ value: 'Presentation', title: 'PRESENTATION' }, { value: 'q&a', title: 'Q&A' }, {
+      //         value: 'Travel', title: 'TRAVEL'
+      //       }, { value: 'BreakTime', title: 'BREAK-TIME' }, { value: 'Break Time with Team', title: 'BREAK TIME WITH TEAM' }]
+      //     }
+      //   },
+      //   filter: false
+      // }
     },
     mode: 'inline', // inline|external|click-to-edit
     selectMode: 'single', // single|multi
@@ -423,8 +470,11 @@ export class MeetingComponent implements OnInit {
       let userId = params['objectId'];
       let view = params['view'];
       console.log(userId);
-      if (view == null) {
+      console.log(view)
+      if (view === undefined) {
         this.show2 = true;
+        this.show = !this.show
+        this.show1 = !this.show1
       }
       else {
         this.show2 = !this.show2
@@ -454,12 +504,13 @@ export class MeetingComponent implements OnInit {
             'X-Parse-REST-API-Key': this.MASTER_KEY,
           })
         }).subscribe(data => {
-           
+         
           console.log(data)
           this.source = data
           this.docs1 = data
 
           this.show = !this.show;
+          
           this.sav="Update"
           this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
           data['meetingDate'] = this.dataformat(data['meetingDate']['iso'])
@@ -693,8 +744,33 @@ convertTime12to24(time12h) {
   }
 
   addRecord(event) {
+
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.meetingID = params['objectId'];
+    });
+    this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + this.meetingID + '"}}'
+        this.http.get(this.SERVER_URL, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-Parse-Application-Id': this.APP_ID,
+            'X-Parse-REST-API-Key': this.MASTER_KEY,
+            'X-Parse-Revocable-Session': '1'
+          })
+        }).subscribe(data1 => {
+          console.log(data1)
+          this.docs2 = data1['results']
+          //this.order=data1['results']['order'];
+          
+          //console.log(this.order)
+        });
+
+
     console.log(event)
     //this.currentRow = event.data;
+    if(event.newData.seqNumbner==""){
+      this.toastr.error('Sequence Number is required');
+      return false;
+    }
     if(event.newData.section==""){
       this.toastr.error('Activity Section is required');
       return false;
@@ -719,21 +795,66 @@ convertTime12to24(time12h) {
       this.toastr.error('Activity Type is required');
       return false;
     }
-    
 
+    const [time, modifier] = event.newData.startTime.split(' ');
+  let [hours, minute] = time.split(':');
+  if (modifier === 'pm') {
+    if(hours==="12"){
+      hours="12"
+      hours=parseInt(hours)
+    }
+    else{
+      hours = parseInt(hours, 10) + 12;
+    }
+  }
+  //return { "hour":hours,"minute":minutes}
+    let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
+   
+    console.log("startMinutes-->"+startMinutes);
+    const [endtime, endmodifier] = event.newData.endTime.split(' ');
+    let [endhours, endminute] = endtime.split(':');
+    if (endmodifier === 'pm') {
+      if(endhours==="12"){
+        endhours="12"
+        endhours=parseInt(hours)
+      }
+      else{
+      endhours = parseInt(endhours, 10) + 12;
+      }
+    }
+   
+    let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
+
+    console.log("endMinutes-->"+endMinutes);
+    console.log("Duration-->"+(endMinutes-startMinutes))
+    let duration=endMinutes-startMinutes;
+
+
+
+  //   var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
+  //   var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
+   var abc=event.newData.type.split('-');
+   console.log(abc[0]);
+   console.log(abc[1]);
+  
     if (window.confirm('Are you sure want to save?')) {
       console.log(event.newData)
       event.confirm.resolve(event.newData);
       this.activatedRoute.params.subscribe((params: Params) => {
         this.meetingID = params['objectId'];
       });
+    
       var data = {
+        "sequenceNumber":event.newData.sequenceNumber,
         "section": event.newData.section,
         "presentationPlace": event.newData.presentationPlace,
         "indianStaff": event.newData.indianStaff,
         "startTime": event.newData.startTime,
         "endTime": event.newData.endTime,
-        "type": event.newData.type,
+        "order":this.docs2.length+1,
+        "type": abc[0],
+        "duration":duration,
+        "subType":abc[1],
         "meetingId": {
           "__type": "Pointer",
           "className": "meeting",
@@ -754,9 +875,9 @@ convertTime12to24(time12h) {
         })
         console.log(this.docs2)
         
-    } 
-   // this.source = event.newData;
-   // event.confirmCreate(event.newData)
+   } 
+   this.source = event.newData;
+  // event.confirmCreate(event.newData)
    
 
   }
@@ -794,12 +915,52 @@ convertTime12to24(time12h) {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
+
+    const [time, modifier] = event.newData.startTime.split(' ');
+    let [hours, minute] = time.split(':');
+    if (modifier === 'pm') {
+      if(hours==="12"){
+        hours="12"
+        hours=parseInt(hours)
+      }
+      else{
+        hours = parseInt(hours, 10) + 12;
+      }
+    }
+    //return { "hour":hours,"minute":minutes}
+      let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
+     
+      console.log("startMinutes-->"+startMinutes);
+      const [endtime, endmodifier] = event.newData.endTime.split(' ');
+      let [endhours, endminute] = endtime.split(':');
+      if (endmodifier === 'pm') {
+        if(endhours==="12"){
+          endhours="12"
+          endhours=parseInt(hours)
+        }
+        else{
+        endhours = parseInt(endhours, 10) + 12;
+        }
+      }
+     
+      let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
+  
+      console.log("endMinutes-->"+endMinutes);
+      console.log("Duration-->"+(endMinutes-startMinutes))
+      let duration=endMinutes-startMinutes;
+
+
+
+    // var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
+    // var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
     var data = {
+      "sequenceNumber":event.newData.seqNumbner,
       "section": event.newData.section,
       "presentationPlace": event.newData.presentationPlace,
       "indianStaff": event.newData.indianStaff,
       "startTime": event.newData.startTime,
       "endTime": event.newData.endTime,
+      "duration":duration,
       "type": event.newData.type,
       "meetingId": {
         "__type": "Pointer",
@@ -828,6 +989,7 @@ convertTime12to24(time12h) {
     )
 
   }
+  this.source = event.newData;
   }
 
 
@@ -1008,4 +1170,34 @@ convertTime12to24(time12h) {
         
       }
     }
+
+
+    formatAMPM(hour,minute) {
+      var hours = hour;
+      var minutes = minute;
+      console.log(minutes);
+  
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes=minutes%10;
+     
+      if(minutes=="00"){
+        minutes="00"  
+      }
+      else {
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+      }
+    
+      hours = hours < 10 ? '0'+hours : hours;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+    }
+
+
+
+    onEdit(event){
+      console.log(event)
+    }
+
 }

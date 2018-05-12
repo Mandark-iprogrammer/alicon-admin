@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input ,OnChanges} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
@@ -99,7 +99,7 @@ export class InvitationsComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-
+   
 
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
@@ -162,6 +162,12 @@ export class InvitationsComponent implements OnInit {
 
   ngOnInit() {
     
+   
+   
+  }
+  ngOnChanges(){
+   
+    
   }
 
   // invitations(frm: any) {
@@ -207,7 +213,9 @@ export class InvitationsComponent implements OnInit {
     onUserRowSelect(event){
      // this.send.length=0;
     console.log(event)
-   
+    // if(this.username.length>0){
+    //   this.username.length=0;
+    // }
     //this.send.push(event.data)
     if(event.isSelected===null){
       this.username.length=0;
@@ -276,6 +284,15 @@ export class InvitationsComponent implements OnInit {
   
         }
       )
+    }
+
+    fetchNews(event)
+    { 
+      console.log(event)
+      if(event.activeId=="ngb-tab-4"){
+        this.username.length=0;
+      }
+    
     }
 
 }

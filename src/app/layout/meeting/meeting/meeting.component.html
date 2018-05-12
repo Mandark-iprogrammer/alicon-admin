@@ -62,7 +62,7 @@
                     
                 </div>-->
                 <div class="input-group datepicker-input">
-                    <input class="form-control input-underline input-lg" required placeholder="dd/mm/yyyy" name="meetingDate"
+                    <input class="form-control input-underline input-lg" (click)="d.toggle()"[minDate]="minDate" required placeholder="dd/mm/yyyy" name="meetingDate"
                     #meetingDate="ngModel" [(ngModel)]="dt" ngModel ngbDatepicker #d="ngbDatepicker" readonly>
                     <button class="input-group-addon" (click)="d.toggle()" type="button">
                         <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
@@ -225,7 +225,7 @@
                     <ngb-tab title="Activity Details">
                         <ng-template ngbTabContent>
                                 
-                            <ng2-smart-table [settings]="defaultSettingsActivity" [source]="docs2" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)" (deleteConfirm)="deleteRecord($event)" ></ng2-smart-table>
+                            <ng2-smart-table [settings]="defaultSettingsActivity" (edit)="onEdit($event)"  [source]="docs2" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)" (deleteConfirm)="deleteRecord($event)" ></ng2-smart-table>
                             <div class="table-responsive">
 
                                 <!-- <table class="table table-striped table-bordered">

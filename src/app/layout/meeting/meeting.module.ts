@@ -14,6 +14,8 @@ import { Ng2CompleterModule } from "ng2-completer";
 import { FileSelectDirective,
   FileDropDirective,FileUploader } from 'ng2-file-upload';
 import { TimepickerComponent } from './meeting/timepicker/timepicker.component';
+import { CustomEditorComponent } from './meeting/custom-editor/custom-editor.component';
+import { Timepicker1Component } from './meeting/timepicker1/timepicker1.component';
 
 @NgModule({
   imports: [
@@ -29,9 +31,9 @@ import { TimepickerComponent } from './meeting/timepicker/timepicker.component';
     UiSwitchModule
   ],
  
-  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent],
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component],
   entryComponents: [
-    TimepickerComponent,
+    CustomEditorComponent,TimepickerComponent,Timepicker1Component
     ],
 })
 export class MeetingModule { }

@@ -16,7 +16,10 @@ import "rxjs/add/operator/map";
 })
 export class FileUploadComponent implements OnInit {
 
-
+  uploader: FileUploader = new FileUploader({
+    allowedMimeType: ['image/png','image/jpg','application/pdf'], //will be loaded only PNG files
+    maxFileSize: 3*1024*1024 // 5 MB
+});
   // public uploader:FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
@@ -72,7 +75,7 @@ export class FileUploadComponent implements OnInit {
     var formData = new FormData();
     // const files: File = inputEl.files[0];
     formData.append('meetingFile', this.meetingFile);
-    formData.append('meetingId', "1AqzhGMYOg");//1AqzhGMYOg
+    formData.append('meetingId', this.meetingID);//1AqzhGMYOg
     formData.append('fileDescription', frm.fileDescription);
     formData.append('fileTitle', frm.fileTitle);
 

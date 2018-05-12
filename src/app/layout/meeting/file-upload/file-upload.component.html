@@ -23,7 +23,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <!-- ng2FileSelect [uploader]="uploader"  -->
-        <input type="file" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
+        <input type="file" ng2FileSelect [uploader]="uploader" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
           accept="image/jpg,image/jpeg,application/pdf" />
         <!-- <input type="file" id="photo" name="photo" ng2FileSelect [uploader]="uploader" /> -->
       </div>
@@ -51,7 +51,5 @@
 </button> -->
     </div>
   </div>
-  <button type="button" class="btn btn-success btn-s" (click)="upload()">
-    Upload with method 2
-  </button>
+ 
 </form>

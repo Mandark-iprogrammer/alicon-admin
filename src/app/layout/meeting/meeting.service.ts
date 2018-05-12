@@ -96,14 +96,14 @@ export class MeetingService {
    // "tags":arrr
     
    } 
-   this.SERVER_URL = environment.apiUrl+'/classes/meeting/'+frm.objectId
-   return this.http.put(this.SERVER_URL,arr,{
-    headers:new HttpHeaders({
-    'Content-Type':'application/json',
-    'X-Parse-Application-Id':this.APP_ID,
-    'X-Parse-REST-API-Key':this.MASTER_KEY,
-   })
- })
+          this.SERVER_URL = environment.apiUrl+'/classes/meeting/'+frm.objectId
+          return this.http.put(this.SERVER_URL,arr,{
+            headers:new HttpHeaders({
+            'Content-Type':'application/json',
+            'X-Parse-Application-Id':this.APP_ID,
+            'X-Parse-REST-API-Key':this.MASTER_KEY,
+          })
+        })
 
   }
 
@@ -216,15 +216,20 @@ export class MeetingService {
   formatAMPM(hour,minute) {
     var hours = hour;
     var minutes = minute;
+    console.log(minutes);
+
     var ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    if('0'+minutes){
-      minutes=minutes  
+    minutes=minutes%10;
+   
+    if(minutes=="00"){
+      minutes="00"  
     }
-    else{
+    else {
       minutes = minutes < 10 ? '0'+minutes : minutes;
     }
+  
     hours = hours < 10 ? '0'+hours : hours;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;

@@ -1,5 +1,5 @@
 <div class="card-body">
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="fetchNews($event)">
         <ngb-tab>
             <ng-template ngbTabTitle>View invitations</ng-template>
             <ng-template ngbTabContent>
@@ -29,9 +29,9 @@
                           </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab>
-            <ng-template ngbTabTitle>Send Invitations</ng-template>
-            <ng-template ngbTabContent>
+        <ngb-tab >
+            <ng-template ngbTabTitle >Send Invitations</ng-template>
+            <ng-template ngbTabContent >
                     <div class="row">
                         <div class="col-md-12 text-center">
                                 <div class="form-group">
