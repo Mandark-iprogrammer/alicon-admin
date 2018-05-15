@@ -16,6 +16,7 @@ import { FileSelectDirective,
 import { TimepickerComponent } from './meeting/timepicker/timepicker.component';
 import { CustomEditorComponent } from './meeting/custom-editor/custom-editor.component';
 import { Timepicker1Component } from './meeting/timepicker1/timepicker1.component';
+import { ActivityComponent } from './activity/activity.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,7 @@ import { Timepicker1Component } from './meeting/timepicker1/timepicker1.componen
     UiSwitchModule
   ],
  
-  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component],
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component, ActivityComponent],
   entryComponents: [
     CustomEditorComponent,TimepickerComponent,Timepicker1Component
     ],

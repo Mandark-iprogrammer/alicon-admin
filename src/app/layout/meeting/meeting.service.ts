@@ -182,12 +182,8 @@ export class MeetingService {
     'X-Parse-REST-API-Key':this.MASTER_KEY,
    })
  })
-
   }
-
-
-
-  }
+}
 
   displayMeeting(){
     this.SERVER_URL = environment.apiUrl+'/classes/meeting?order=-createdAt'
@@ -201,7 +197,6 @@ export class MeetingService {
   }
 
   deleteMeeting(obj : string){
-
     this.SERVER_URL = environment.apiUrl+'classes/meeting/'+obj
     return this.http.delete(this.SERVER_URL,{
      headers:new HttpHeaders({

@@ -34,7 +34,6 @@
             <h4>Activity Details</h4>
             <table class="table table-striped table-bordered">
               <tr >
-                <th style="text-align: center;">Sr.No</th>
                 <th style="text-align: center;">Activity Order</th>
                 <th style="text-align: center;">Activity Section </th>
                 <th style="text-align: center;">Presentation Place</th>
@@ -46,7 +45,6 @@
                
               </tr>
               <tr *ngFor="let docs2 of docs2 ;let i=index">
-                <td style="text-align: center;">{{i+1}}</td>
                 <td style="text-align: center;">{{docs2.order}}</td>
                 <td style="text-align: center;">{{docs2.section}}</td>
                 <td style="text-align: center;">{{docs2.presentationPlace}}</td>
@@ -57,7 +55,7 @@
                 <td>
                         <a class="btn" (click)="Onedit(docs2.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
                         <a class="btn text-danger"(click)="Ondelete(docs2.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
-                    </td>
+                </td>
             </tr>
             </table>
   </div>

@@ -225,42 +225,8 @@
                     <ngb-tab title="Activity Details">
                         <ng-template ngbTabContent>
                                 
-                            <ng2-smart-table [settings]="defaultSettingsActivity" (edit)="onEdit($event)"  [source]="docs2" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)" (deleteConfirm)="deleteRecord($event)" ></ng2-smart-table>
-                            <div class="table-responsive">
-
-                                <!-- <table class="table table-striped table-bordered">
-              <tr >
-                <th style="text-align: center;">Sr.No</th>
-                <th style="text-align: center;">Activity Order</th>
-                <th style="text-align: center;">Activity Section </th>
-                <th style="text-align: center;">Presentation Place</th>
-                <th style="text-align: center;">Indian Staff</th>
-                <th style="text-align: center;">Activity Start Time</th>
-                <th style="text-align: center;">Activity End Time</th>
-                <th style="text-align: center;">Activity Duration</th>
-                <th style="text-align: center;">Options</th>
-              </tr>
-              <tr *ngFor="let docs2 of docs2 ;let i=index">
-                <td style="text-align: center;">{{i+1}}</td>
-                <td style="text-align: center;">{{docs2.order}}</td>
-                <td style="text-align: center;">{{docs2.section}}</td>
-                <td style="text-align: center;">{{docs2.presentationPlace}}</td>
-                <td style="text-align: center;">{{docs2.indianStaff}}</td>
-                <td style="text-align: center;">{{docs2.startTime}}</td>
-                <td style="text-align: center;">{{docs2.endTime}}</td> 
-                <td style="text-align: center;">{{docs2.duration}}</td> 
-                <td>
-                    <a class="btn" (click)="Onedit(docs2.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
-                    <a class="btn text-danger"(click)="Ondelete(docs2.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
-                </td>
-          
-              </tr>
-          
-            </table> -->
-
-
-
-                            </div>
+                            <!-- <ng2-smart-table [settings]="defaultSettingsActivity" (edit)="onEdit($event)"  [source]="docs2" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)" (deleteConfirm)="deleteRecord($event)" ></ng2-smart-table> -->
+                            <app-activity></app-activity>
                         </ng-template>
                     </ngb-tab>
                     <ngb-tab>

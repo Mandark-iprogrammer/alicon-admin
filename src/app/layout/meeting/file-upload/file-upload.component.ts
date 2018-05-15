@@ -30,7 +30,9 @@ export class FileUploadComponent implements OnInit {
   APP_ID: string
   MASTER_KEY: string
   SERVER_URL: string
+  SERVER_URL1: string
   sToken: string
+  docs:any
   meetingID: string
   meetingFile: File;
   public fileOverAnother(e: any): void {
@@ -55,6 +57,22 @@ export class FileUploadComponent implements OnInit {
     this.APP_ID = '129837njlasdjfpoia2p83u4jnlkj';
     this.MASTER_KEY = 'Elkl1j23l809uljn3lkj48unkjnkjh4234';
     this.SERVER_URL = 'http://13.126.191.252:1337/uploadImage'
+
+    
+    this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"1AqzhGMYOg"}'
+   // this.SERVER_URL1 = environment.apiUrl+'/users?where={"isAdmin":false}'
+    this.http.get(this.SERVER_URL1, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-Parse-Application-Id': this.APP_ID,
+        'X-Parse-REST-API-Key': this.MASTER_KEY,
+        'X-Parse-Revocable-Session': '1'
+      })
+    }).subscribe(data => {
+      console.log(data)
+      this.docs = data['results']
+  })
+    
 
 
 

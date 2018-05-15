@@ -1,0 +1,137 @@
+
+<table class="table table-striped table-bordered" *ngIf="add_edit">
+    <form class="" #frm="ngForm" (ngSubmit)="registerActivity(frm.value)">
+       
+        <div class="row">
+                
+            <input type="hidden"  name="meetingId"  #meetingId="ngModel" ngModel  [(ngModel)]="objID1"/>
+         <div class="col-md-1">
+             <div class="form-group"> 	 
+                 <label for="saddress">Seq Order: </label>
+                     <input class="form-control input-underline input-lg" [(ngModel)]="ord" placeholder="order" type="number" name="order" #order="ngModel" ngModel required /> 
+                         <div id="errFirst"></div>    
+             </div>
+         </div>    
+         <div class="col-md-2">
+             <div class="form-group">
+                 <label for="city"> Section: </label> 
+                     <input class="form-control input-underline input-lg" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="sec" type="text" placeholder="Enter a activity section" name="section" #section="ngModel" ngModel  required />  
+                     <div *ngIf="section.errors?.pattern"> 
+                         Activity section not valid.
+                      </div>
+             </div>
+         </div>    
+        
+             <div class="form-group">
+         
+                 <input type="hidden"  name="objectId"  #objectId="ngModel" ngModel  [(ngModel)]="objID2"/>
+                 <!-- <hr> -->
+  
+                </div>
+         <div class="col-md-2">
+        
+                <div class="form-group">
+                         <label for="phonenumber">Presentation Place: </label>
+                         <input required type="text" pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity presentation place"/> 
+                         <div *ngIf="presentationPlace.errors?.pattern"> 
+                             Presentation Place not valid.
+                          </div>
+                 </div>
+         </div>
+         <div class="col-md-2">
+         
+                 <div class="form-group">
+                          <label for="phonenumber">Indian Staff: </label>
+                           <input required type="text" pattern="[a-zA-Z .]*" name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter activity indian staff name"/> 
+                           <div *ngIf="indianStaff.errors?.pattern"> 
+                             Indian Staff Place not valid.
+                          </div>
+                 </div>
+         </div>        
+         <div class="col-md-2">
+                 <div class="form-group">
+                     <label for="mnumber">Start Time: </label>
+                        <ngb-timepicker   [size]="small" [(ngModel)]="time1" name="startTime" [spinners]="true" #startTime [meridian]="true" required [ngModelOptions]="{standalone: false}" ></ngb-timepicker>
+                 </div>
+                 
+         </div>
+         <div class="col-md-2">
+            <div class="form-group">
+                <label for="email"> End Time: </label> 
+                <ngb-timepicker    [size]="small" [(ngModel)]="time2" name="endTime" [spinners]="true" #startTime [meridian]="true" required [ngModelOptions]="{standalone: false}" ></ngb-timepicker>
+            </div>
+         </div>
+        
+         <div class="col-md-1">
+                 <div class="form-group">
+                         <label for="zipcode">Type: </label>
+                         <select name="type" [(ngModel)]="typ" #type="ngModel" (change)="subtype($event)" placeholder="Select Activity" ngModel class="form-control input-underline input-lg"  >
+                                 <option  value="" disabled >-----Select-----</option>
+                                 <option  value="Presentation">Presentation</option>
+                                 <option  value="q&a">Q&A</option>
+                                 <option  value="Travel">Travelling Activity</option>
+                                 <option  value="BreakTime">Break Time</option>
+                                 <option  value="Break Time with Team">TeamBreak</option>
+                                                           
+                             </select>   
+                 </div>
+                 <label for="zipcode">Sub Type : </label>
+                        <select name="subType" [(ngModel)]="subtyp" #subType="ngModel" placeholder="Select Activity" ngModel class="form-control input-underline input-lg"  >
+                                <option  value="" disabled >-----Select-----</option>
+                                <option *ngFor="let sutype of sutype" value="{{sutype.value}}">{{sutype.value}}</option>
+                                                          
+                            </select>   
+
+             </div> 
+            
+     </div>
+     <div class="row">
+             <div class="col-md-2">
+                 <div class="form-group">
+                           <button type="submit" [disabled]="!frm.valid"  class="btn btn rounded-btn btn-block" >{{Msg}}</button>
+                       </div>
+             </div>
+         </div>  
+  </form><!-- ends register form -->
+  </table>
+<div class="pull-right" style="padding-bottom: 10px">
+    <a (click)="canceledit()"><button class="btn rounded-btn pull-right" > Cancel</button></a>
+    <a (click)="addedit()"><button class="btn rounded-btn pull-right" > Add Activity</button></a>
+</div>
+
+ <div class="table-responsive" >
+ 
+  <table class="table table-striped table-bordered">
+    <tr >
+     
+      <th style="text-align: center;">Activity Order</th>
+      <th style="text-align: center;">Activity Section </th>
+      <th style="text-align: center;">Presentation Place</th>
+      <th style="text-align: center;">Indian Staff</th>
+      <th style="text-align: center;">Activity Start Time</th>
+      <th style="text-align: center;">Activity End Time</th>
+     
+      <th style="text-align: center;">Options</th>
+     
+    </tr>
+    <tr *ngFor="let docs2 of docs2 ;let i=index">
+     
+      <td style="text-align: center;">{{docs2.order}}</td>
+      <td style="text-align: center;">{{docs2.section}}</td>
+      <td style="text-align: center;">{{docs2.presentationPlace}}</td>
+      <td style="text-align: center;">{{docs2.indianStaff}}</td>
+      <td style="text-align: center;">{{docs2.startTime1}}</td>
+      <td style="text-align: center;">{{docs2.endTime1}}</td> 
+    
+      <td>
+              <a class="btn" (click)="Onedit(docs2.objectId)"> <i class="fa fa-fw fa-edit"></i></a>
+              <a class="btn text-danger"(click)="Ondelete(docs2.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
+      </td>
+  </tr>
+  </table>
+</div>
+
+
+
+
+

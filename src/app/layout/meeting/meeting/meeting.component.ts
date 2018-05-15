@@ -178,7 +178,7 @@ export class MeetingComponent implements OnInit {
 
   public show: boolean = false;
   public show1: boolean = false;
-  public show2: boolean = true;
+  public show2: boolean = false;
 
   APP_ID: string
   MASTER_KEY: string
@@ -353,21 +353,21 @@ export class MeetingComponent implements OnInit {
         // },
         filter: false
       },
-      startTime: {
+      startTime1: {
         title: 'Start Time',
-        // editor: {
-        //   type: 'custom',
-        //   component: Timepicker1Component,
-        // },
+        editor: {
+          type: 'custom',
+          component: Timepicker1Component,
+        },
        // editable:false,
         filter: false
       },
-      endTime: {
+      endTime1: {
         title: 'End Time',
-        // editor: {
-        //   type: 'custom',
-        //   component: TimepickerComponent,
-        // },
+        editor: {
+          type: 'custom',
+          component: TimepickerComponent,
+        },
         // editable:false,
         filter: false
       },
@@ -467,17 +467,23 @@ export class MeetingComponent implements OnInit {
 
 
     this.activatedRoute.params.subscribe((params: Params) => {
+      console.log(params)
       let userId = params['objectId'];
       let view = params['view'];
       console.log(userId);
       console.log(view)
-      if (view === undefined) {
-        this.show2 = true;
-        this.show = !this.show
-        this.show1 = !this.show1
+      if (view === "view") {
+        console.log("in view")
+        this.show2 = this.show2
+        this.show1 = true;
+        this.show = true;
+       
       }
       else {
-        this.show2 = !this.show2
+        
+        this.show2 = true;
+        this.show1 = this.show1;
+        this.show = this.show;
       }
 
       if (userId != null) {
@@ -492,7 +498,8 @@ export class MeetingComponent implements OnInit {
         }).subscribe(data1 => {
           console.log(data1)
           this.docs2 = data1['results']
-          this.show1 = !this.show1;
+          
+          
         });
 
         this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + userId;
@@ -509,7 +516,7 @@ export class MeetingComponent implements OnInit {
           this.source = data
           this.docs1 = data
 
-          this.show = !this.show;
+         
           
           this.sav="Update"
           this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
