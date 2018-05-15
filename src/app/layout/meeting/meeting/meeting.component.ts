@@ -202,6 +202,7 @@ export class MeetingComponent implements OnInit {
   tag: any;
   mtDate1:any;
   order:number;
+  notFound:string
   public dt:Date
   desc: string; remk: string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
   closeResult: string;
@@ -242,58 +243,58 @@ export class MeetingComponent implements OnInit {
     })
 
 
-    this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
-    this.http.post(this.SERVER_URL1, '', {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-Parse-Application-Id': this.APP_ID,
-        'X-Parse-REST-API-Key': this.MASTER_KEY,
-      })
-    }).subscribe(data1 => {
-      this.docs1 = JSON.parse(data1['result'])
-      this.venues = this.docs1.data
-    })
+    // this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
+    // this.http.post(this.SERVER_URL1, '', {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     'X-Parse-Application-Id': this.APP_ID,
+    //     'X-Parse-REST-API-Key': this.MASTER_KEY,
+    //   })
+    // }).subscribe(data1 => {
+    //   this.docs1 = JSON.parse(data1['result'])
+    //   this.venues = this.docs1.data
+    // })
 
     //aunto complete activity staff
 
-  this.SERVER_URL1 = environment.apiUrl+'/functions/activity_staff'
-  this.http.post(this.SERVER_URL1, '', {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-Parse-Application-Id': this.APP_ID,
-      'X-Parse-REST-API-Key': this.MASTER_KEY,
-    })
-  }).subscribe(data4 => {
-    this.docs4 = JSON.parse(data4['result'])
-  //  console.log(this.docs4)
-    this.activityStaff = this.docs4.data
-   // console.log(JSON.stringify(this.activityStaff))
-   // console.log(this.activityStaff)
-    this.activityStaff.forEach(element => {
-        this.act.push({"indianStaff":element})
-    });
+  // this.SERVER_URL1 = environment.apiUrl+'/functions/activity_staff'
+  // this.http.post(this.SERVER_URL1, '', {
+  //   headers: new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'X-Parse-Application-Id': this.APP_ID,
+  //     'X-Parse-REST-API-Key': this.MASTER_KEY,
+  //   })
+  // }).subscribe(data4 => {
+  //   this.docs4 = JSON.parse(data4['result'])
+  // //  console.log(this.docs4)
+  //   this.activityStaff = this.docs4.data
+  //  // console.log(JSON.stringify(this.activityStaff))
+  //  // console.log(this.activityStaff)
+  //   this.activityStaff.forEach(element => {
+  //       this.act.push({"indianStaff":element})
+  //   });
     
-    console.log(this.act)
-  })
+  //   console.log(this.act)
+  // })
 
   //Presentation Place
-  this.SERVER_URL1 = environment.apiUrl+'/functions/activity_presentation_places'
-  this.http.post(this.SERVER_URL1, '', {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-Parse-Application-Id': this.APP_ID,
-      'X-Parse-REST-API-Key': this.MASTER_KEY,
-    })
-  }).subscribe(data3 => {
-    this.docs3 =  JSON.parse(data3['result'])
-  //  console.log(this.docs3.data)
-   this.pplace=this.docs3.data
-  // console.log(this.pplace)
-   this.pplace.forEach(element1 => {
-    this.pp.push({"presentationPlace":element1})
-      });
+  // this.SERVER_URL1 = environment.apiUrl+'/functions/activity_presentation_places'
+  // this.http.post(this.SERVER_URL1, '', {
+  //   headers: new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'X-Parse-Application-Id': this.APP_ID,
+  //     'X-Parse-REST-API-Key': this.MASTER_KEY,
+  //   })
+  // }).subscribe(data3 => {
+  //   this.docs3 =  JSON.parse(data3['result'])
+  // //  console.log(this.docs3.data)
+  //  this.pplace=this.docs3.data
+  // // console.log(this.pplace)
+  //  this.pplace.forEach(element1 => {
+  //   this.pp.push({"presentationPlace":element1})
+  //     });
 
-  })
+  // })
 
     
     this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
@@ -1152,11 +1153,11 @@ convertTime12to24(time12h) {
           this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
           if(event==true){
             this.pub="Published"
-          this.toastr.success('Record Published Successfully', 'Meeting Register');
+          this.toastr.success('Record Published Successfully');
           }
           else{
             this.pub="UnPublished"
-            this.toastr.success('Record UnPublished..! ', 'Meeting Register');
+            this.toastr.success('Record UnPublished..! ');
             
           }
           //location.reload();

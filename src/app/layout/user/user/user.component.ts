@@ -159,7 +159,7 @@ export class UserComponent implements OnInit {
         ()=>{
          console.log("record saved")
          this.router.navigate(['/viewUsers']);
-         this.toastr.success('New Record Added Successfully','User Register');
+         this.toastr.success('New Record Added Successfully');
          })
  
     }else{
@@ -171,7 +171,7 @@ export class UserComponent implements OnInit {
         "password":frm.password,
         "objectId":frm.objectId,
         "designation":frm.designation,
-        "phoneNumber":frm.phoneNumber,
+        "phoneNumber":parseInt(frm.phoneNumber),
         "location":frm.location,
         "tags":arrr
       
@@ -184,7 +184,7 @@ export class UserComponent implements OnInit {
           console.log("record updated")
           //this.meeting.showMeeting();
           this.router.navigate(['/viewUsers']);
-          this.toastr.success('New Record Updated Successfully','User Register');
+          this.toastr.success('New Record Updated Successfully');
           
         }
       )

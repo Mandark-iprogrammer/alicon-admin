@@ -6,7 +6,10 @@ export class ActivityService {
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
+  SERVER_URL3 : string
   objectId:any
+  d1:any
+  d2:any
   constructor(
     private http:HttpClient
   ) { 
@@ -20,14 +23,16 @@ export class ActivityService {
 
 
   saveData(frm : any){
-    if(frm.objectId==null){
+    if(frm.objectId==null  || frm.objectId==""){
       var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
       var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
+      var stttTime=this.formatAMPM(frm.startTime.hour,frm.startTime.minute)
+      var edddTime=this.formatAMPM(frm.endTime.hour,frm.endTime.minute)
       console.log(a)
       console.log(b)
-      var d1 = new Date(a); // 10:09 to
-      var d2 = new Date(b); // 10:20 is 11 mins
-      var diff = d2 - d1;
+      this.d1 = new Date(a); // 10:09 to
+      this.d2 = new Date(b); // 10:20 is 11 mins
+      var diff = this.d2 - this.d1;
       if (diff > 60e3) {
         var c=Math.floor(diff / 60e3)
       }
@@ -40,11 +45,13 @@ export class ActivityService {
         "className": "meeting",
         "objectId": frm.meetingId
       },
-      "order":frm.order,
+      "sequenceNumber":parseInt(frm.order),
       "type":frm.type,
       "section": frm.section,
       "presentationPlace":frm.presentationPlace,
       "indianStaff":frm.indianStaff,
+      "startTime":stttTime,
+      "endTime":edddTime,
       "startTime1":{
         "__type":"Date",
         "iso":a
@@ -68,11 +75,13 @@ export class ActivityService {
   else{
     var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
     var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
+    var stttTime=this.formatAMPM(frm.startTime.hour,frm.startTime.minute)
+    var edddTime=this.formatAMPM(frm.endTime.hour,frm.endTime.minute)
     console.log(a)
       console.log(b)
-      var d1 = new Date(a); // 10:09 to
-      var d2 = new Date(b); // 10:20 is 11 mins
-      var diff = d2 - d1;
+      this.d1 = new Date(a); // 10:09 to
+      this.d2 = new Date(b); // 10:20 is 11 mins
+      diff = this.d2 - this.d1;
       if (diff > 60e3) {
         var c=Math.floor(diff / 60e3)
       }
@@ -83,9 +92,11 @@ export class ActivityService {
         "className": "meeting",
         "objectId": frm.meetingId
       },
-      "order":frm.order,
+      "sequenceNumber":parseInt(frm.order),
       "section": frm.section,
       "type":frm.type,
+      "startTime":stttTime,
+      "endTime":edddTime,
       "presentationPlace":frm.presentationPlace,
       "indianStaff":frm.indianStaff,
       "startTime1":{
@@ -126,8 +137,8 @@ export class ActivityService {
 
 
   deleteData(frm:any){
-    this.SERVER_URL = environment.apiUrl+'/classes/activity/'+frm.objectId
-    return this.http.delete(this.SERVER_URL,{
+    this.SERVER_URL3 = environment.apiUrl+'/classes/activity/'+frm.objectId
+    return this.http.delete(this.SERVER_URL3,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
      'X-Parse-Application-Id':this.APP_ID,
@@ -144,9 +155,26 @@ export class ActivityService {
     return dateiso;
     
     }
+    formatAMPM(hour,minute) {
+      var hours = hour;
+      var minutes = minute;
+      console.log(minutes);
   
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      //minutes=minutes%10;
+     
+      if(minutes=="00"){
+        minutes="00"  
+      }
+      else {
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+      }
+    
+      hours = hours < 10 ? '0'+hours : hours;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+    }
    
-
-
-
 }

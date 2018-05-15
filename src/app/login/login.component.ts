@@ -55,14 +55,14 @@ export class LoginComponent implements OnInit {
                     this.username=frm.username;
                     this.objectId=res['objectId'];   
                     this.router.navigate(['/viewUsers']);
-                    this.toastr.success('Logged in Successfully','Alicon Login');
+                    this.toastr.success('Logged in Successfully');
                 }
             },
             err=>{
                 console.log(err)
                 console.log(err.error['error'])
                 this.router.navigate(['/login']);
-                this.toastr.error(err.error['error'],'Alicon Login');
+                this.toastr.error(err.error['error']);
             },
             ()=>{
                           

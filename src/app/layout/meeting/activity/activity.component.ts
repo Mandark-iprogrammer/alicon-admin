@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnChanges } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { ActivityService } from './activity.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,9 +11,11 @@ import { environment } from '../../../../environments/environment';
   providers:[ActivityService]
 })
 export class ActivityComponent implements OnInit {
+  notFound: string;
   public show:boolean = true;
   public show1:boolean = true;
   public add_edit:boolean = false;
+  public showCancel:boolean=false;
   public Msg = "Save"
   APP_ID :string
   MASTER_KEY :string
@@ -21,11 +23,13 @@ export class ActivityComponent implements OnInit {
   docs:any
   docs1:any
   docs2:any
+  docs3:any;
   sutype=[];
   nm:string;sttTime:string;
   time1:any;time2:any;
+  msg:string;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
-  ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;
+  ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;subtyp:string
   constructor(
     private http: HttpClient,
     private activity: ActivityService,
@@ -37,57 +41,73 @@ export class ActivityComponent implements OnInit {
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     this.SERVER_URL =  environment.apiUrl+'/classes/activity'
+   
+   // this.ngOnInit();
+
     this.activatedRoute.params.subscribe((params: Params) => {
-      console.log(params)
-      let userId = params['meetingId'];
-      let objectId=params['objectId'];
-      this.objID1=params['objectId'];
-      console.log(userId);
-     
-
-    if(objectId){
-    this.SERVER_URL =  environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+objectId+'"}}'
-    this.http.get(this.SERVER_URL,{
-         headers:new HttpHeaders({
-          'Content-Type':'application/json',
-          'X-Parse-Application-Id':this.APP_ID,
-          'X-Parse-REST-API-Key':this.MASTER_KEY,
-          'X-Parse-Revocable-Session':'1'
-      })
-      }).subscribe(data1 => {
-          console.log(data1)       
-          this.docs2=data1['results']
-          console.log(this.docs2)
-         
-          this.docs2.forEach(element => {
-              if(element['startTime1']){
-                console.log(element['startTime1']['iso'])
-                element['startTime1']=this.formatAMPM(element['startTime1']['iso'])
-                 element['endTime1']=this.formatAMPM(element['endTime1']['iso'])
-              }
-              
-          });
-         
-      });
-  }
-
-
-    });
-
-
-
+      // console.log(params)
+       let userId = params['meetingId'];
+       let objectId=params['objectId'];
+       this.objID1=params['objectId'];
+      // console.log(userId);
+      
+ 
+     if(objectId){
+     this.SERVER_URL =  environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+objectId+'"}}'
+     this.http.get(this.SERVER_URL,{
+          headers:new HttpHeaders({
+           'Content-Type':'application/json',
+           'X-Parse-Application-Id':this.APP_ID,
+           'X-Parse-REST-API-Key':this.MASTER_KEY,
+           'X-Parse-Revocable-Session':'1'
+       })
+       }).subscribe(data1 => {
+         if(data1['results'].length==0){
+           this.notFound="No Activity has been Created yet.";
+          // this.ngOnInit();
+         }
+         else{
+           this.notFound="";
+          // this.ngOnInit();
+           console.log(data1)       
+           this.docs2=data1['results']
+           console.log(this.docs2)
+          
+           this.docs2.forEach(element => {
+               if(element['startTime1']){
+                 console.log(element['startTime1']['iso'])
+                 element['startTime1']=this.formatAMPM(element['startTime1']['iso'])
+                  element['endTime1']=this.formatAMPM(element['endTime1']['iso'])
+               }
+               if(element['presentationPlace']===""){
+                 element['presentationPlace']="-";
+               }
+               if(element['indianStaff']===""){
+                 element['indianStaff']="-";
+               }
+           });
+         } 
+       });
+       
+   }
+ 
+ 
+     });
 
 
    }
 
   ngOnInit() {
+    
   }
+ 
 
   registerActivity(frm:any){
     console.log(frm)
 
 
-    if(frm.objectId==null){
+    if(frm.objectId=="null" || frm.objectId==""){
+     
       console.log(frm)
       this.activity.saveData(frm).subscribe(
         res=>{
@@ -98,14 +118,16 @@ export class ActivityComponent implements OnInit {
         ()=>{
          console.log("record saved")
           //this.meeting.showMeeting();
-         
-          this.toastr.success('New Record Added Successfully','Activity Register');
-          
+         // this.ngOnInit();
+
+          this.toastr.success('New Record Added Successfully');
+          this.add_edit=false;
         }
       )
- 
+  
     }else{
       console.log(frm.objectId);
+      console.log(frm);
       this.activity.saveData(frm).subscribe(
         res=>console.log(res),
         err=>console.log(err),
@@ -113,8 +135,9 @@ export class ActivityComponent implements OnInit {
           console.log("record updated")
           //this.meeting.showMeeting();
           //this.router.navigate(['/viewActivity']);
-          this.toastr.success('New Record Updated Successfully','Activity Register');
-          
+         // this.ngOnInit();
+          this.toastr.success('New Record Updated Successfully');
+           this.add_edit=false;
         }
       )
     }
@@ -131,6 +154,7 @@ export class ActivityComponent implements OnInit {
 
   Onedit(_id:string,meetingId:string)
   {
+    this.showCancel=true;
     this.add_edit=true; 
     this.Msg="Update"; 
     console.log(_id)
@@ -150,18 +174,19 @@ export class ActivityComponent implements OnInit {
              //data['meetingDate']=this.dataformat(data['meetingDate']['iso'])
              this.show1 = !this.show1; 
              this.show = !this.show; 
-            this.ord=data['order']
+            this.ord=data['sequenceNumber']
             this.sec=data['section']
-            this.objID2=data['objectID']
+            this.objID2=data['objectId']
             this.pplace=data['presentationPlace']
             this.staffname=data['indianStaff']
             this.sttTime=this.formatAMPM(data['startTime1']['iso'])
             this.edTime=this.formatAMPM(data['endTime1']['iso'])
-            this.time1=this.convertTime12to24(this.sttTime)
-            this.time2=this.convertTime12to24(this.edTime)
+            this.time1=this.convertTime12to24(data['startTime1']['iso'])
+            this.time2=this.convertTime12to24(data['endTime1']['iso'])
            this.dur=data['duration']
            this.typ=data['type']
-          
+           this.subtyp=data['subType']
+           this.subtype1(this.typ) 
      })
    
     //this.meeting.objectId=Object.assign({},_id);
@@ -169,11 +194,39 @@ export class ActivityComponent implements OnInit {
   }
 
   addedit(){
+   // this.ngOnInit();
       this.add_edit=true;
-      
+      this.showCancel=true;
+      this.Msg="Save";
+      this.ord=null;
+    this.sec="";
+     this.objID2="";
+     this.pplace="";
+     this.staffname="";
+     this.sttTime="";
+     this.edTime="";
+     this.time1="";
+     this.time2="";
+    this.dur=""
+    this.typ=""
+    this.subtyp="" 
   }
   canceledit(){
+    this.showCancel=false;
+   // this.ngOnInit();
     this.add_edit=false;
+    this.ord=null;
+    this.sec="";
+     this.objID2="";
+     this.pplace="";
+     this.staffname="";
+     this.sttTime="";
+     this.edTime="";
+     this.time1="";
+     this.time2="";
+    this.dur=""
+    this.typ=""
+    this.subtyp=""
   }
 
 
@@ -183,17 +236,34 @@ export class ActivityComponent implements OnInit {
     
     var d = new Date(dateiso);
     var ampm = (d.getHours() >= 12) ? "pm":"am";
-    var hrs = (d.getHours() >= 12) ? d.getHours()-12 : d.getHours();
-      return hrs+':'+d.getMinutes()+' '+ampm;
-    }
+    var hours = d.getHours();
+    var minutes =d.getMinutes();
+    console.log(minutes)
 
-    convertTime12to24(time12h) {
-      const [time, modifier] = time12h.split(' ');
-      let [hours, minutes] = time.split(':');
-      if (modifier === 'PM') {
-        hours = parseInt(hours, 10) + 12;
-      }
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+   // minutes=minutes%10;
     
+   var min= minutes < 10 ? ("0"+minutes) : minutes;
+   var hrs= hours < 10 ? '0'+hours : hours;
+    if(minutes<10 || hours<10){
+      return hrs+':'+min+' '+ampm;
+    }
+    else{
+      return hours+':'+minutes+' '+ampm;
+    } 
+      
+  }
+
+    convertTime12to24(dateiso) {
+      // const [time, modifier] = time12h.split(' ');
+      // let [hours, minutes] = time.split(':');
+      // if (modifier === 'PM') {
+      //   hours = parseInt(hours, 10) + 12;
+      // }
+      var d = new Date(dateiso);
+      var hours = d.getHours();
+      var minutes =d.getMinutes();
       return { "hour":hours,"minute":minutes,"second":"00"}
       //return hours + ':' + minutes;
     }
@@ -205,15 +275,54 @@ export class ActivityComponent implements OnInit {
         this.sutype.push({"value":"Presentation"})
       }
       else if(event.target.value==="Travel"){
-        this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Auto"})
+        this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Rickshaw"})
       }
       else if(event.target.value==="q&a"){
         this.sutype.push({"value":"Q&A"})
       }
-      else if(event.target.value==="TeamBreak"){
+      else if(event.target.value==="Break"){
         this.sutype.push({"value":"Tea"},{"value":"Lunch"})
       }
      // console.log(this.sutype)
     }
 
+    subtype1(value){
+      console.log(value)
+      this.sutype.length=0;
+      if(value==="Presentation"){
+        this.sutype.push({"value":"Presentation"})
+      }
+      else if(value==="Travel"){
+        this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Auto"})
+      }
+      else if(value==="q&a"){
+        this.sutype.push({"value":"Q&A"})
+      }
+      else if(value==="TeamBreak"){
+        this.sutype.push({"value":"Tea"},{"value":"Lunch"})
+      }
+     // console.log(this.sutype)
+    }
+
+    Ondelete(id:string){
+      if (window.confirm('Are you sure want to Delete?')) {
+      var data = {
+        objectId: id,
+  
+      };
+      console.log(data)
+      this.activity.deleteData(data).subscribe(
+        res => {
+          console.log(res)
+          //this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+        },
+        err => console.log(err),
+        () => {
+          console.log("record deleted")
+         // this.ngOnInit();
+          this.toastr.success('Record deleted Successfully');
+        })
+       }
+    }
+    
 }
