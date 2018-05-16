@@ -63,6 +63,9 @@ export class ViewUserComponent implements OnInit {
       },
       location: {
         title: 'Location'
+      },
+      tags:{
+        title:'Department'
       }
     },
     mode: 'inline', // inline|external|click-to-edit

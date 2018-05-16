@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
         }).subscribe(
             res=>{
                 console.log(res)
-                if(res['username']==frm.username){
+                if(res['username']==frm.username && res['isAdmin']==true){
                     localStorage.setItem('isLoggedin', 'true');
                     localStorage.setItem('username',frm.username);
                     localStorage.setItem('objectId',res['objectId']);
@@ -56,6 +56,9 @@ export class LoginComponent implements OnInit {
                     this.objectId=res['objectId'];   
                     this.router.navigate(['/viewUsers']);
                     this.toastr.success('Logged in Successfully');
+                }
+                else{
+                    this.toastr.error('This is not admin Login');
                 }
             },
             err=>{

@@ -143,9 +143,10 @@ export class UserComponent implements OnInit {
       "email":frm.username,
       "password":frm.password,
       "desigNation":frm.designation,
-      "phoneNumber":frm.phoneNumber,
+      "phoneNumber":parseInt(frm.phoneNumber),
       "location":frm.location,
-      "tags":arrr
+      "tags":arrr,
+      "isAdmin":false
       
    } 
     console.log(arr);
@@ -163,19 +164,18 @@ export class UserComponent implements OnInit {
          })
  
     }else{
-      
       let arr={
         "firstName":frm.firstName,
         "lastName": frm.lastName,
         "email":frm.username,
         "password":frm.password,
         "objectId":frm.objectId,
-        "designation":frm.designation,
+        "desigNation":frm.designation,
         "phoneNumber":parseInt(frm.phoneNumber),
         "location":frm.location,
-        "tags":arrr
-      
-     } 
+        "tags":arrr,
+       "isAdmin":false
+      } 
       console.log(arr);
       this.user.saveData(arr).subscribe(
         res=>console.log(res),
@@ -185,7 +185,6 @@ export class UserComponent implements OnInit {
           //this.meeting.showMeeting();
           this.router.navigate(['/viewUsers']);
           this.toastr.success('New Record Updated Successfully');
-          
         }
       )
     }

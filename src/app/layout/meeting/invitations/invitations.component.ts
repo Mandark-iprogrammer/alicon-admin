@@ -43,6 +43,9 @@ export class InvitationsComponent implements OnInit {
       },
       location: {
         title: 'Location'
+      },
+      tags:{
+        title:'Department'
       }
     },
     mode: 'external', // inline|external|click-to-edit
@@ -226,20 +229,20 @@ export class InvitationsComponent implements OnInit {
       }
       for(var i=0;i<event.selected.length;i++){
         this.send.push(event.selected[i].objectId)
-        this.username.push(event.selected[i].firstName +' '+event.selected[i].lastName)
+        this.username.push(event.selected[i].username)
       }
   
     }
     else if(event.isSelected===true){       
        this.send.push(event.data.objectId)
-       this.username.push(event.data.firstName +' '+event.data.lastName)
+       this.username.push(event.data.username)
     }
     else if(event.isSelected==false){
       var i = this.send.indexOf(event.data.objectId);
       if(i != -1) {
         this.send.splice(i, 1);
       }
-      var k=this.username.indexOf(event.data.firstName+' '+event.data.lastName);
+      var k=this.username.indexOf(event.data.username);
       if(k != -1){
         this.username.splice(k, 1);
       }

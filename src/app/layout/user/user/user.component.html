@@ -30,10 +30,10 @@
                     <input type="text" class="form-control input-underline input-lg" pattern="[a-zA-Z ]*" [(ngModel)]="lname" name="lastName"  #lastName="ngModel" ngModel required placeholder="Enter the last name" />
                     <!-- <small  class="text-danger" *ngIf="!frm.submitted && lastName.valid" class="help-block">Last Name is required</small> -->
                     <small  class="text-danger" *ngIf="lastName.errors?.pattern">
-                            Enter the valid First Name
+                            Enter the valid Last Name
                         </small>
                         <small class="text-danger" *ngIf="lastName.errors?.required">
-                                last Name is required
+                                Last Name is required
                              </small>
                    
              </div>
@@ -115,13 +115,14 @@
          <div class="col-md-4" *ngIf="show">
                 <div class="form-group" >
                         <label for="password">Password<font color="red">*</font></label>
-                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" minlength="6"/>
+                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" maxlength="6" />
                         <small  class="text-danger" *ngIf="password.errors?.pattern">
-                            Password is not valid at least one Special Symbool
+                                Need atleast one special charachter
                         </small>
                         <small class="text-danger" *ngIf="password.errors?.required">
                                 Password is Required
                           </small>
+                         
                     </div>
          </div>
          <div class="col-md-4" *ngIf="show">

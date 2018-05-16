@@ -4,11 +4,13 @@ import { ActivityService } from './activity.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import {NgbModal, ModalDismissReasons,NgbModalRef, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.scss'],
-  providers:[ActivityService]
+  providers:[ActivityService,NgbModal,NgbActiveModal]
 })
 export class ActivityComponent implements OnInit {
   notFound: string;
@@ -21,13 +23,15 @@ export class ActivityComponent implements OnInit {
   MASTER_KEY :string
   SERVER_URL : string
   docs:any
-  docs1:any
+  docs1:any     
   docs2:any
+  closeResult:any;
   docs3:any;
   sutype=[];
   nm:string;sttTime:string;
   time1:any;time2:any;
   msg:string;
+  modalReference: NgbModalRef;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
   ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;subtyp:string
   constructor(
@@ -35,7 +39,9 @@ export class ActivityComponent implements OnInit {
     private activity: ActivityService,
     public router: Router,
     private toastr: ToastrService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal,
+    private actModel: NgbActiveModal,
   ) {
 
     this.APP_ID = environment.APP_ID;
@@ -43,6 +49,15 @@ export class ActivityComponent implements OnInit {
     this.SERVER_URL =  environment.apiUrl+'/classes/activity'
    
    // this.ngOnInit();
+
+   this.ngOnChanges();
+
+   }
+
+  ngOnInit() {
+    
+  }
+  ngOnChanges(){
 
     this.activatedRoute.params.subscribe((params: Params) => {
       // console.log(params)
@@ -93,55 +108,9 @@ export class ActivityComponent implements OnInit {
  
  
      });
-
-
-   }
-
-  ngOnInit() {
-    
   }
- 
-
-  registerActivity(frm:any){
-    console.log(frm)
 
 
-    if(frm.objectId=="null" || frm.objectId==""){
-     
-      console.log(frm)
-      this.activity.saveData(frm).subscribe(
-        res=>{
-          console.log(res);
-          //this.router.navigate(['/activity',{ 'objectId': res['objectId'],'meetingId':this.objID1}]);
-        },
-        err=>console.log(err),
-        ()=>{
-         console.log("record saved")
-          //this.meeting.showMeeting();
-         // this.ngOnInit();
-
-          this.toastr.success('New Record Added Successfully');
-          this.add_edit=false;
-        }
-      )
-  
-    }else{
-      console.log(frm.objectId);
-      console.log(frm);
-      this.activity.saveData(frm).subscribe(
-        res=>console.log(res),
-        err=>console.log(err),
-        ()=>{
-          console.log("record updated")
-          //this.meeting.showMeeting();
-          //this.router.navigate(['/viewActivity']);
-         // this.ngOnInit();
-          this.toastr.success('New Record Updated Successfully');
-           this.add_edit=false;
-        }
-      )
-    }
-  }
 
   dataformat(date1:string){
     let date = new Date(date1);
@@ -152,8 +121,42 @@ export class ActivityComponent implements OnInit {
   }
 
 
-  Onedit(_id:string,meetingId:string)
+  Onedit(_id:string,content)
   {
+    this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      this.ord=null;
+    this.sec="";
+     this.objID2="";
+     this.pplace="";
+     this.staffname="";
+     this.sttTime="";
+     this.edTime="";
+     this.time1="";
+     this.time2="";
+    this.dur=""
+    this.msg=""
+    this.typ=""
+    this.subtyp="" 
+      
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+      this.ord=null;
+      this.sec="";
+       this.objID2="";
+       this.pplace="";
+       this.staffname="";
+       this.sttTime="";
+       this.edTime="";
+       this.time1="";
+       this.time2="";
+      this.dur=""
+      this.msg=""
+      this.typ=""
+      this.subtyp="" 
+      
+    })
     this.showCancel=true;
     this.add_edit=true; 
     this.Msg="Update"; 
@@ -193,11 +196,13 @@ export class ActivityComponent implements OnInit {
    // this.router.navigate(['/activity',{'objectId': _id}]);
   }
 
-  addedit(){
-   // this.ngOnInit();
-      this.add_edit=true;
-      this.showCancel=true;
-      this.Msg="Save";
+  
+  
+  openLg(content) {
+    this.Msg="Save";
+    this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
       this.ord=null;
     this.sec="";
      this.objID2="";
@@ -209,27 +214,59 @@ export class ActivityComponent implements OnInit {
      this.time2="";
     this.dur=""
     this.typ=""
+    this.msg=""
     this.subtyp="" 
-  }
-  canceledit(){
-    this.showCancel=false;
-   // this.ngOnInit();
-    this.add_edit=false;
-    this.ord=null;
-    this.sec="";
-     this.objID2="";
-     this.pplace="";
-     this.staffname="";
-     this.sttTime="";
-     this.edTime="";
-     this.time1="";
-     this.time2="";
-    this.dur=""
-    this.typ=""
-    this.subtyp=""
+      console.log(this.closeResult)
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+      console.log(this.closeResult)
+    })
   }
 
+  registerActivity(frm:any){
+    console.log(frm)
 
+
+    if(frm.objectId=="null" || frm.objectId==""){
+     
+      console.log(frm)
+      this.activity.saveData(frm).subscribe(
+        res=>{
+          console.log(res);
+          //this.router.navigate(['/activity',{ 'objectId': res['objectId'],'meetingId':this.objID1}]);
+        },
+        err=>console.log(err),
+        ()=>{
+          
+         console.log("record saved")
+          //this.meeting.showMeeting();
+         // this.ngOnInit();
+         this.ngOnChanges();
+       
+          this.toastr.success('New Record Added Successfully');
+          this.modalReference.close();
+         
+        }
+      )
+  
+    }else{
+      console.log(frm.objectId);
+      console.log(frm);
+      this.activity.saveData(frm).subscribe(
+        res=>console.log(res),
+        err=>console.log(err),
+        ()=>{
+          console.log("record updated")
+          //this.meeting.showMeeting();
+          //this.router.navigate(['/viewActivity']);
+          this.ngOnChanges();
+          this.toastr.success('New Record Updated Successfully');
+           this.add_edit=false;
+           this.modalReference.close();
+        }
+      )
+    }
+  }
 
   formatAMPM(dateiso){
     
@@ -298,7 +335,7 @@ export class ActivityComponent implements OnInit {
       else if(value==="q&a"){
         this.sutype.push({"value":"Q&A"})
       }
-      else if(value==="TeamBreak"){
+      else if(value==="Break"){
         this.sutype.push({"value":"Tea"},{"value":"Lunch"})
       }
      // console.log(this.sutype)
@@ -319,7 +356,7 @@ export class ActivityComponent implements OnInit {
         err => console.log(err),
         () => {
           console.log("record deleted")
-         // this.ngOnInit();
+          this.ngOnChanges();
           this.toastr.success('Record deleted Successfully');
         })
        }

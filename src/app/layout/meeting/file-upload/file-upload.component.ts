@@ -36,7 +36,9 @@ export class FileUploadComponent implements OnInit {
   meetingID: string
   meetingFile: File;
   public fileOverAnother(e: any): void {
+    console.log(e)
     this.hasAnotherDropZoneOver = e;
+    
   }
 
   public fileChange(e) {

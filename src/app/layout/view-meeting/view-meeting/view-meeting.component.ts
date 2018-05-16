@@ -1,16 +1,26 @@
 import { Component, OnInit,Output } from '@angular/core';
 import { MeetingService } from '../../meeting/meeting.service';
-import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import {NgbModal, ModalDismissReasons,NgbModalRef, NgbActiveModal, NgbDateParserFormatter, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../../environments/environment';
+import { NgbDateFRParserFormatter } from '../../meeting/meeting/ngb-date-fr-parser-formatter';
+import { NgbDateNativeAdapter } from '../../meeting/meeting/ngb-d-datepicker-dapter';
+
 @Component({
   selector: 'app-view-meeting',
   templateUrl: './view-meeting.component.html',
   styleUrls: ['./view-meeting.component.scss'],
-  providers:[MeetingService]
+  providers:[MeetingService,NgbModal,NgbActiveModal,{provide: NgbDateParserFormatter, useClass: NgbDateFRParserFormatter},
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class ViewMeetingComponent implements OnInit {
- 
-  dt: string | number;
+  nm: any;
+  source: Object;
+  closeResult:any;
+
   defaultSettingsMeetings = {
     columns: {
       name: {
@@ -77,17 +87,52 @@ export class ViewMeetingComponent implements OnInit {
     },
     rowClassFunction: () => ""
   };
- 
+  modalReference: NgbModalRef;
+  SERVER_URL1: any;
+  venues: any;
+  unique: any;
+  minDate:any;
+  pub:string = "Publish"
+  defaultSettingsActivity:any
+ //public mtDate1:Date
+  sav:string = "Save"
+  published:boolean = false
+  tag: any;
+  mtDate1:any;
+  order:number;
+  notFound:string
+  public dt:Date;
+  desc: string; remk: string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
+  
+  meetingID: string;
+  
   docs:any
+  docs1:any
   dd:string
   mm:string
   yyyy:string
+  APP_ID: string
+  MASTER_KEY: string
+  SERVER_URL: string
   @Output() view:string;
   constructor(
     private meeting : MeetingService,
     private toastr: ToastrService,
-    public router: Router
+    public router: Router,
+    private modalService: NgbModal,
+    private actModel: NgbActiveModal,
+    private http: HttpClient,
+    private activatedRoute: ActivatedRoute,
   ) { 
+
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
+
+    this.minDate = {"year": year,"month": month,"day": dt};
+
+
     this.meeting.displayMeeting().subscribe(data => {
       console.log(data) 
       this.docs=data['results'];
@@ -109,6 +154,77 @@ export class ViewMeetingComponent implements OnInit {
        });
      console.log(this.docs) 
     })
+
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
+    this.http.post(this.SERVER_URL1, '', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-Parse-Application-Id': this.APP_ID,
+        'X-Parse-REST-API-Key': this.MASTER_KEY,
+      })
+    }).subscribe(data1 => {
+      this.docs1 = JSON.parse(data1['result'])
+      this.venues = this.docs1.data
+    })
+
+
+    this.activatedRoute.params.subscribe((params: Params) => {
+      let userId = params['objectId'];
+
+      if (userId != null) {
+        
+        
+
+        this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + userId;
+
+        return this.http.get(this.SERVER_URL, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-Parse-Application-Id': this.APP_ID,
+            'X-Parse-REST-API-Key': this.MASTER_KEY,
+          })
+        }).subscribe(data => {
+         
+          console.log(data)
+          this.source = data
+          this.docs1 = data
+          this.sav="Update"
+          this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
+          data['meetingDate'] = this.dataformat(data['meetingDate']['iso'])
+          this.nm = data['name']
+          this.desc = data['description']
+          this.remk = data['remark']
+          //this.createby=data['createdBy']['objectId']
+          this.objID = data['objectId']
+          this.ven = data['venue']
+          this.stTime = data['startTime']
+          this.time1=this.convertTime12to24(data['startTime'])
+          this.stDate = data['startDate']
+          this.mtDate = data['meetingDate']
+          
+        // this.dt = new Date("'"+this.mtDate+"'");
+          this.dt = new Date(this.mtDate1.toString());
+          console.log(this.dt)
+      
+          this.tag = data['tags']
+          if(data['isPublished']==false){
+            this.published=false;
+            
+            this.pub="UnPublish"
+          }
+          else{
+            this.published=true;
+           
+            this.pub="Published"
+          }
+          
+       
+        })
+      }
+    });
+
   }
 
   ngOnInit() {
@@ -161,4 +277,109 @@ export class ViewMeetingComponent implements OnInit {
     this.router.navigate(['/meeting',{ 'objectId': event.data.objectId,'view':'view'}]);
   }
   
+  openLg(content) {
+   // this.Msg="Save";
+    this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    //   this.ord=null;
+    // this.sec="";
+    //  this.objID2="";
+    //  this.pplace="";
+    //  this.staffname="";
+    //  this.sttTime="";
+    //  this.edTime="";
+    //  this.time1="";
+    //  this.time2="";
+    // this.dur=""
+    // this.typ=""
+    // this.msg=""
+    // this.subtyp="" 
+      console.log(this.closeResult)
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+      console.log(this.closeResult)
+    })
+  }
+
+  convertTime12to24(time12h) {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+    return { "hour":hours,"minute":minutes}
+    //return hours + ':' + minutes;
+  }
+
+  registerMeeting(frm: any) {
+    console.log(frm)
+    if(frm.isPublished==""){
+      frm.isPublished=false;
+    }
+     if (frm.objectId == null) {
+       console.log(frm)
+       this.meeting.saveData(frm).subscribe(
+         res => {
+           console.log(res)
+           this.router.navigate(['/meeting', { 'objectId': res['objectId'], 'view': 'view' }]);
+         },
+         err => {
+           console.log(err)
+           this.toastr.success(err, 'Meeting Register');
+         },
+         () => {
+           console.log("record saved")
+          
+           this.toastr.success('New Record Added Successfully');
+           this.modalReference.close();
+         })
+     } else {
+       console.log(frm.objectId);
+       this.meeting.saveData(frm).subscribe(
+         res => {
+           console.log(res),
+           this.router.navigate(['/meeting', { 'objectId': frm.objectId, 'view': 'view' }]); 
+         },
+         err => console.log(err),
+         () => {
+           console.log("record updated")
+           //this.meeting.showMeeting();
+          
+           this.toastr.success('Record Updated Successfully');
+           this.modalReference.close();
+         }
+       )
+     }
+   }
+
+   dataformat1(date1: string) {
+    let date = new Date(date1);
+   
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
+    // // if (dt < 10) {
+    // //   dt = '0' + dt;
+    // // }
+    // // if (month < 10) {
+    // //   month = '0' + month;
+    // // }
+    // return {"day":28 ,"month":5 ,"year":2018};
+    //return new Date(dt + '/' + month + '/' + year);
+   // console.log(dt + '/' + month + '/' + year)
+    //return date;
+   return year+'-' + month + '-'+dt;
+  }
+  onChange1(event){
+    if(event==true){
+      this.pub="Published"
+      this.published=true;
+    }
+    else{
+      this.pub="UnPublished"
+      this.published=false;
+    }
+  }
+
 }

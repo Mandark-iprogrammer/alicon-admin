@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,OnChanges } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityService } from '../../activity/activity.service';
 import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent } from "ng-auto-complete";
 import { environment } from '../../../../environments/environment';
@@ -189,6 +189,7 @@ export class MeetingComponent implements OnInit {
   docs3:any
   docs4:any
   nm: string
+  nm1:string
   message;
   SERVER_URL1: any;
   venues: any;
@@ -204,9 +205,10 @@ export class MeetingComponent implements OnInit {
   order:number;
   notFound:string
   public dt:Date
-  desc: string; remk: string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
+  desc: string;desc1:string;ven1:string ;remk: string;remk1:string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
   closeResult: string;
   meetingID: string;
+  modalReference: NgbModalRef;
   constructor(
     private http: HttpClient,
     private meeting: MeetingService,
@@ -243,17 +245,17 @@ export class MeetingComponent implements OnInit {
     })
 
 
-    // this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
-    // this.http.post(this.SERVER_URL1, '', {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'X-Parse-Application-Id': this.APP_ID,
-    //     'X-Parse-REST-API-Key': this.MASTER_KEY,
-    //   })
-    // }).subscribe(data1 => {
-    //   this.docs1 = JSON.parse(data1['result'])
-    //   this.venues = this.docs1.data
-    // })
+    this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
+    this.http.post(this.SERVER_URL1, '', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-Parse-Application-Id': this.APP_ID,
+        'X-Parse-REST-API-Key': this.MASTER_KEY,
+      })
+    }).subscribe(data1 => {
+      this.docs1 = JSON.parse(data1['result'])
+      this.venues = this.docs1.data
+    })
 
     //aunto complete activity staff
 
@@ -466,102 +468,104 @@ export class MeetingComponent implements OnInit {
   };
 
 
-
-    this.activatedRoute.params.subscribe((params: Params) => {
-      console.log(params)
-      let userId = params['objectId'];
-      let view = params['view'];
-      console.log(userId);
-      console.log(view)
-      if (view === "view") {
-        console.log("in view")
-        this.show2 = this.show2
-        this.show1 = true;
-        this.show = true;
-       
-      }
-      else {
-        
-        this.show2 = true;
-        this.show1 = this.show1;
-        this.show = this.show;
-      }
-
-      if (userId != null) {
-        this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + userId + '"}}'
-        this.http.get(this.SERVER_URL, {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'X-Parse-Application-Id': this.APP_ID,
-            'X-Parse-REST-API-Key': this.MASTER_KEY,
-            'X-Parse-Revocable-Session': '1'
-          })
-        }).subscribe(data1 => {
-          console.log(data1)
-          this.docs2 = data1['results']
-          
-          
-        });
-
-        this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + userId;
-
-        return this.http.get(this.SERVER_URL, {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'X-Parse-Application-Id': this.APP_ID,
-            'X-Parse-REST-API-Key': this.MASTER_KEY,
-          })
-        }).subscribe(data => {
-         
-          console.log(data)
-          this.source = data
-          this.docs1 = data
-
-         
-          
-          this.sav="Update"
-          this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
-          data['meetingDate'] = this.dataformat(data['meetingDate']['iso'])
-
-          this.nm = data['name']
-          this.desc = data['description']
-          this.remk = data['remark']
-          //this.createby=data['createdBy']['objectId']
-          this.objID = data['objectId']
-          this.ven = data['venue']
-          this.stTime = data['startTime']
-          this.time1=this.convertTime12to24(data['startTime'])
-          this.stDate = data['startDate']
-          this.mtDate = data['meetingDate']
-          
-        // this.dt = new Date("'"+this.mtDate+"'");
-          this.dt = new Date(this.mtDate1.toString());
-          console.log(this.dt)
-      
-          this.tag = data['tags']
-          if(data['isPublished']==false){
-            this.published=false;
-            
-            this.pub="UnPublish"
-          }
-          else{
-            this.published=true;
-           
-            this.pub="Published"
-          }
-          
-         
-        })
-      }
-    });
-    
-   
-
-
-
+  this.ngOnChanges();
+ 
+ 
 }
 
+ngOnChanges(){
+  this.activatedRoute.params.subscribe((params: Params) => {
+    console.log(params)
+    let userId = params['objectId'];
+    let view = params['view'];
+    console.log(userId);
+    console.log(view)
+    if (view === "view") {
+      console.log("in view")
+      this.show2 = this.show2
+      this.show1 = true;
+      this.show = true;
+     
+    }
+    else {
+      
+      this.show2 = true;
+      this.show1 = this.show1;
+      this.show = this.show;
+    }
 
+    if (userId != null) {
+      this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + userId + '"}}'
+      this.http.get(this.SERVER_URL, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-Parse-Application-Id': this.APP_ID,
+          'X-Parse-REST-API-Key': this.MASTER_KEY,
+          'X-Parse-Revocable-Session': '1'
+        })
+      }).subscribe(data1 => {
+        console.log(data1)
+        this.docs2 = data1['results']
+        
+        
+      });
+
+      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + userId;
+
+      return this.http.get(this.SERVER_URL, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-Parse-Application-Id': this.APP_ID,
+          'X-Parse-REST-API-Key': this.MASTER_KEY,
+        })
+      }).subscribe(data => {
+       
+        console.log(data)
+        this.source = data
+        this.docs1 = data
+
+       
+        
+        this.sav="Update"
+        this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
+        data['meetingDate'] = this.dataformat(data['meetingDate']['iso'])
+
+        this.nm = data['name']
+        this.nm1=data['name']
+        this.desc = data['description']
+        this.desc1=data['description']
+        this.remk = data['remark']
+        this.remk1=data['remark']
+        //this.createby=data['createdBy']['objectId']
+        this.objID = data['objectId']
+        this.ven = data['venue']
+        this.ven1 = data['venue']
+        this.stTime = data['startTime']
+        this.time1=this.convertTime12to24(data['startTime'])
+        this.stDate = data['startDate']
+        this.mtDate = data['meetingDate']
+        
+      // this.dt = new Date("'"+this.mtDate+"'");
+        this.dt = new Date(this.mtDate1.toString());
+        console.log(this.dt)
+    
+        this.tag = data['tags']
+        if(data['isPublished']==false){
+          this.published=false;
+          
+          this.pub="UnPublish"
+        }
+        else{
+          this.published=true;
+         
+          this.pub="Published"
+        }
+        
+       
+      })
+    }
+  });
+}
 
 
 convertTime12to24(time12h) {
@@ -594,8 +598,9 @@ convertTime12to24(time12h) {
         },
         () => {
           console.log("record saved")
-         
+          
           this.toastr.success('New Record Added Successfully');
+          
         })
     } else {
       console.log(frm.objectId);
@@ -608,9 +613,9 @@ convertTime12to24(time12h) {
         () => {
           console.log("record updated")
           //this.meeting.showMeeting();
-         
+          this.ngOnChanges();
           this.toastr.success('Record Updated Successfully');
-
+          this.modalReference.close();
         }
       )
     }
@@ -727,10 +732,44 @@ convertTime12to24(time12h) {
    return year+'-' + month + '-'+dt;
   }
 
-  Onedit(_id: string) {
+  Onedit(_id: string,content) {
     console.log(_id)
     //this.meeting.objectId=Object.assign({},_id);
-    this.router.navigate(['/meeting', { 'objectId': _id }]);
+    //this.router.navigate(['/viewMeeting', { 'objectId': _id }]);
+    this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    //   this.ord=null;
+    // this.sec="";
+    //  this.objID2="";
+    //  this.pplace="";
+    //  this.staffname="";
+    //  this.sttTime="";
+    //  this.edTime="";
+    //  this.time1="";
+    //  this.time2="";
+    // this.dur=""
+    // this.msg=""
+    // this.typ=""
+    // this.subtyp="" 
+      
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+      // this.ord=null;
+      // this.sec="";
+      //  this.objID2="";
+      //  this.pplace="";
+      //  this.staffname="";
+      //  this.sttTime="";
+      //  this.edTime="";
+      //  this.time1="";
+      //  this.time2="";
+      // this.dur=""
+      // this.msg=""
+      // this.typ=""
+      // this.subtyp="" 
+      
+    })
   }
 
   open(content) {
@@ -751,283 +790,283 @@ convertTime12to24(time12h) {
     }
   }
 
-  addRecord(event) {
+  // addRecord(event) {
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
-    this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + this.meetingID + '"}}'
-        this.http.get(this.SERVER_URL, {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'X-Parse-Application-Id': this.APP_ID,
-            'X-Parse-REST-API-Key': this.MASTER_KEY,
-            'X-Parse-Revocable-Session': '1'
-          })
-        }).subscribe(data1 => {
-          console.log(data1)
-          this.docs2 = data1['results']
-          //this.order=data1['results']['order'];
+  //   this.activatedRoute.params.subscribe((params: Params) => {
+  //     this.meetingID = params['objectId'];
+  //   });
+  //   this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + this.meetingID + '"}}'
+  //       this.http.get(this.SERVER_URL, {
+  //         headers: new HttpHeaders({
+  //           'Content-Type': 'application/json',
+  //           'X-Parse-Application-Id': this.APP_ID,
+  //           'X-Parse-REST-API-Key': this.MASTER_KEY,
+  //           'X-Parse-Revocable-Session': '1'
+  //         })
+  //       }).subscribe(data1 => {
+  //         console.log(data1)
+  //         this.docs2 = data1['results']
+  //         //this.order=data1['results']['order'];
           
-          //console.log(this.order)
-        });
+  //         //console.log(this.order)
+  //       });
 
 
-    console.log(event)
-    //this.currentRow = event.data;
-    if(event.newData.seqNumbner==""){
-      this.toastr.error('Sequence Number is required');
-      return false;
-    }
-    if(event.newData.section==""){
-      this.toastr.error('Activity Section is required');
-      return false;
-    }
-    if(event.newData.presentationPlace==""){
-       this.toastr.error('Activity preesentation is required');
-       return false;
-    }
-     if( event.newData.indianStaff==""){
-      this.toastr.error('Activity Indian Staff is required');
-      return false;
-    }
-    if(event.newData.startTime==""){
-      this.toastr.error('Activity Start Time is required');
-      return false;
-    }
-    if(event.newData.endTime==""){
-      this.toastr.error('Activity End Time is required');
-      return false;
-    }
-    if(event.newData.type==""){
-      this.toastr.error('Activity Type is required');
-      return false;
-    }
+  //   console.log(event)
+  //   //this.currentRow = event.data;
+  //   if(event.newData.seqNumbner==""){
+  //     this.toastr.error('Sequence Number is required');
+  //     return false;
+  //   }
+  //   if(event.newData.section==""){
+  //     this.toastr.error('Activity Section is required');
+  //     return false;
+  //   }
+  //   if(event.newData.presentationPlace==""){
+  //      this.toastr.error('Activity preesentation is required');
+  //      return false;
+  //   }
+  //    if( event.newData.indianStaff==""){
+  //     this.toastr.error('Activity Indian Staff is required');
+  //     return false;
+  //   }
+  //   if(event.newData.startTime==""){
+  //     this.toastr.error('Activity Start Time is required');
+  //     return false;
+  //   }
+  //   if(event.newData.endTime==""){
+  //     this.toastr.error('Activity End Time is required');
+  //     return false;
+  //   }
+  //   if(event.newData.type==""){
+  //     this.toastr.error('Activity Type is required');
+  //     return false;
+  //   }
 
-    const [time, modifier] = event.newData.startTime.split(' ');
-  let [hours, minute] = time.split(':');
-  if (modifier === 'pm') {
-    if(hours==="12"){
-      hours="12"
-      hours=parseInt(hours)
-    }
-    else{
-      hours = parseInt(hours, 10) + 12;
-    }
-  }
-  //return { "hour":hours,"minute":minutes}
-    let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
+  //   const [time, modifier] = event.newData.startTime.split(' ');
+  // let [hours, minute] = time.split(':');
+  // if (modifier === 'pm') {
+  //   if(hours==="12"){
+  //     hours="12"
+  //     hours=parseInt(hours)
+  //   }
+  //   else{
+  //     hours = parseInt(hours, 10) + 12;
+  //   }
+  // }
+  // //return { "hour":hours,"minute":minutes}
+  //   let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
    
-    console.log("startMinutes-->"+startMinutes);
-    const [endtime, endmodifier] = event.newData.endTime.split(' ');
-    let [endhours, endminute] = endtime.split(':');
-    if (endmodifier === 'pm') {
-      if(endhours==="12"){
-        endhours="12"
-        endhours=parseInt(hours)
-      }
-      else{
-      endhours = parseInt(endhours, 10) + 12;
-      }
-    }
+  //   console.log("startMinutes-->"+startMinutes);
+  //   const [endtime, endmodifier] = event.newData.endTime.split(' ');
+  //   let [endhours, endminute] = endtime.split(':');
+  //   if (endmodifier === 'pm') {
+  //     if(endhours==="12"){
+  //       endhours="12"
+  //       endhours=parseInt(hours)
+  //     }
+  //     else{
+  //     endhours = parseInt(endhours, 10) + 12;
+  //     }
+  //   }
    
-    let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
+  //   let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
 
-    console.log("endMinutes-->"+endMinutes);
-    console.log("Duration-->"+(endMinutes-startMinutes))
-    let duration=endMinutes-startMinutes;
+  //   console.log("endMinutes-->"+endMinutes);
+  //   console.log("Duration-->"+(endMinutes-startMinutes))
+  //   let duration=endMinutes-startMinutes;
 
 
 
-  //   var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
-  //   var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
-   var abc=event.newData.type.split('-');
-   console.log(abc[0]);
-   console.log(abc[1]);
+  // //   var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
+  // //   var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
+  //  var abc=event.newData.type.split('-');
+  //  console.log(abc[0]);
+  //  console.log(abc[1]);
   
-    if (window.confirm('Are you sure want to save?')) {
-      console.log(event.newData)
-      event.confirm.resolve(event.newData);
-      this.activatedRoute.params.subscribe((params: Params) => {
-        this.meetingID = params['objectId'];
-      });
+  //   if (window.confirm('Are you sure want to save?')) {
+  //     console.log(event.newData)
+  //     event.confirm.resolve(event.newData);
+  //     this.activatedRoute.params.subscribe((params: Params) => {
+  //       this.meetingID = params['objectId'];
+  //     });
     
-      var data = {
-        "sequenceNumber":event.newData.sequenceNumber,
-        "section": event.newData.section,
-        "presentationPlace": event.newData.presentationPlace,
-        "indianStaff": event.newData.indianStaff,
-        "startTime": event.newData.startTime,
-        "endTime": event.newData.endTime,
-        "order":this.docs2.length+1,
-        "type": abc[0],
-        "duration":duration,
-        "subType":abc[1],
-        "meetingId": {
-          "__type": "Pointer",
-          "className": "meeting",
-          "objectId": this.meetingID
-        }
-      };
+  //     var data = {
+  //       "sequenceNumber":event.newData.sequenceNumber,
+  //       "section": event.newData.section,
+  //       "presentationPlace": event.newData.presentationPlace,
+  //       "indianStaff": event.newData.indianStaff,
+  //       "startTime": event.newData.startTime,
+  //       "endTime": event.newData.endTime,
+  //       "order":this.docs2.length+1,
+  //       "type": abc[0],
+  //       "duration":duration,
+  //       "subType":abc[1],
+  //       "meetingId": {
+  //         "__type": "Pointer",
+  //         "className": "meeting",
+  //         "objectId": this.meetingID
+  //       }
+  //     };
    
-      this.activity.saveData(data).subscribe(
-        res => {
-          console.log(res)
-        },
-        err => console.log(err),
-        () => {
+  //     this.activity.saveData(data).subscribe(
+  //       res => {
+  //         console.log(res)
+  //       },
+  //       err => console.log(err),
+  //       () => {
          
-          console.log("record saved")
-          //this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
-          this.toastr.success('New Record Added Successfully', 'Activity Register');
-        })
-        console.log(this.docs2)
+  //         console.log("record saved")
+  //         //this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+  //         this.toastr.success('New Record Added Successfully', 'Activity Register');
+  //       })
+  //       console.log(this.docs2)
         
-   } 
-   this.source = event.newData;
-  // event.confirmCreate(event.newData)
+  //  } 
+  //  this.source = event.newData;
+  // // event.confirmCreate(event.newData)
    
 
-  }
+  // }
 
-  updateRecord(event) {
-    if(event.newData.section==""){
-      this.toastr.error('Activity Section is required');
-      return false;
-    }
-    if(event.newData.presentationPlace==""){
-       this.toastr.error('Activity preesentation is required');
-       return false;
-    }
-     if( event.newData.indianStaff==""){
-      this.toastr.error('Activity Indian Staff is required');
-      return false;
-    }
-    if(event.newData.startTime==""){
-      this.toastr.error('Activity Start Time is required');
-      return false;
-    }
-    if(event.newData.endTime==""){
-      this.toastr.error('Activity End Time is required');
-      return false;
-    }
-    if(event.newData.type==""){
-      this.toastr.error('Activity Type is required');
-      return false;
-    }
+  // updateRecord(event) {
+  //   if(event.newData.section==""){
+  //     this.toastr.error('Activity Section is required');
+  //     return false;
+  //   }
+  //   if(event.newData.presentationPlace==""){
+  //      this.toastr.error('Activity preesentation is required');
+  //      return false;
+  //   }
+  //    if( event.newData.indianStaff==""){
+  //     this.toastr.error('Activity Indian Staff is required');
+  //     return false;
+  //   }
+  //   if(event.newData.startTime==""){
+  //     this.toastr.error('Activity Start Time is required');
+  //     return false;
+  //   }
+  //   if(event.newData.endTime==""){
+  //     this.toastr.error('Activity End Time is required');
+  //     return false;
+  //   }
+  //   if(event.newData.type==""){
+  //     this.toastr.error('Activity Type is required');
+  //     return false;
+  //   }
 
-    if (window.confirm('Are you sure want to Update?')) {
-      console.log(event.newData)
-      event.confirm.resolve(event.newData);
+  //   if (window.confirm('Are you sure want to Update?')) {
+  //     console.log(event.newData)
+  //     event.confirm.resolve(event.newData);
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
+  //   this.activatedRoute.params.subscribe((params: Params) => {
+  //     this.meetingID = params['objectId'];
+  //   });
 
-    const [time, modifier] = event.newData.startTime.split(' ');
-    let [hours, minute] = time.split(':');
-    if (modifier === 'pm') {
-      if(hours==="12"){
-        hours="12"
-        hours=parseInt(hours)
-      }
-      else{
-        hours = parseInt(hours, 10) + 12;
-      }
-    }
-    //return { "hour":hours,"minute":minutes}
-      let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
+  //   const [time, modifier] = event.newData.startTime.split(' ');
+  //   let [hours, minute] = time.split(':');
+  //   if (modifier === 'pm') {
+  //     if(hours==="12"){
+  //       hours="12"
+  //       hours=parseInt(hours)
+  //     }
+  //     else{
+  //       hours = parseInt(hours, 10) + 12;
+  //     }
+  //   }
+  //   //return { "hour":hours,"minute":minutes}
+  //     let startMinutes = ((parseInt(hours) * 60) + parseInt(minute));
      
-      console.log("startMinutes-->"+startMinutes);
-      const [endtime, endmodifier] = event.newData.endTime.split(' ');
-      let [endhours, endminute] = endtime.split(':');
-      if (endmodifier === 'pm') {
-        if(endhours==="12"){
-          endhours="12"
-          endhours=parseInt(hours)
-        }
-        else{
-        endhours = parseInt(endhours, 10) + 12;
-        }
-      }
+  //     console.log("startMinutes-->"+startMinutes);
+  //     const [endtime, endmodifier] = event.newData.endTime.split(' ');
+  //     let [endhours, endminute] = endtime.split(':');
+  //     if (endmodifier === 'pm') {
+  //       if(endhours==="12"){
+  //         endhours="12"
+  //         endhours=parseInt(hours)
+  //       }
+  //       else{
+  //       endhours = parseInt(endhours, 10) + 12;
+  //       }
+  //     }
      
-      let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
+  //     let endMinutes = ((parseInt(endhours) * 60) + parseInt(endminute));
   
-      console.log("endMinutes-->"+endMinutes);
-      console.log("Duration-->"+(endMinutes-startMinutes))
-      let duration=endMinutes-startMinutes;
+  //     console.log("endMinutes-->"+endMinutes);
+  //     console.log("Duration-->"+(endMinutes-startMinutes))
+  //     let duration=endMinutes-startMinutes;
 
 
 
-    // var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
-    // var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
-    var data = {
-      "sequenceNumber":event.newData.seqNumbner,
-      "section": event.newData.section,
-      "presentationPlace": event.newData.presentationPlace,
-      "indianStaff": event.newData.indianStaff,
-      "startTime": event.newData.startTime,
-      "endTime": event.newData.endTime,
-      "duration":duration,
-      "type": event.newData.type,
-      "meetingId": {
-        "__type": "Pointer",
-        "className": "meeting",
-        "objectId": this.meetingID
-      },
-      objectId: event.newData.objectId,
+  //   // var a=this.formatAMPM(event.newData.startTime.hour,event.newData.startTime.minute);
+  //   // var b=this.formatAMPM(event.newData.endTime.hour,event.newData.endTime.minute);
+  //   var data = {
+  //     "sequenceNumber":event.newData.seqNumbner,
+  //     "section": event.newData.section,
+  //     "presentationPlace": event.newData.presentationPlace,
+  //     "indianStaff": event.newData.indianStaff,
+  //     "startTime": event.newData.startTime,
+  //     "endTime": event.newData.endTime,
+  //     "duration":duration,
+  //     "type": event.newData.type,
+  //     "meetingId": {
+  //       "__type": "Pointer",
+  //       "className": "meeting",
+  //       "objectId": this.meetingID
+  //     },
+  //     objectId: event.newData.objectId,
 
-    };
-    console.log(data)
-    this.source = data
-    this.activity.saveData(data).subscribe(
-      res => {
-        console.log(res)
-        this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
-      },
-      err => console.log(err),
-      () => {
-        console.log("record updated")
-        //this.meeting.showMeeting();
-        // this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
-        this.toastr.success('New Record Updated Successfully', 'Activity Register');
-
-
-      }
-    )
-
-  }
-  this.source = event.newData;
-  }
+  //   };
+  //   console.log(data)
+  //   this.source = data
+  //   this.activity.saveData(data).subscribe(
+  //     res => {
+  //       console.log(res)
+  //       this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+  //     },
+  //     err => console.log(err),
+  //     () => {
+  //       console.log("record updated")
+  //       //this.meeting.showMeeting();
+  //       // this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
+  //       this.toastr.success('New Record Updated Successfully', 'Activity Register');
 
 
+  //     }
+  //   )
 
-  deleteRecord(event) {
-    if (window.confirm('Are you sure want to Delete?')) {
-      console.log(event.newData)
-      event.confirm.resolve(event.newData);
+  // }
+  // this.source = event.newData;
+  // }
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
-    console.log(event)
-    var data = {
-      objectId: event.data.objectId,
 
-    };
-    console.log(data)
-    this.activity.deleteData(data).subscribe(
-      res => {
-        console.log(res)
-        this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
-      },
-      err => console.log(err),
-      () => {
-        console.log("record deleted")
-        this.toastr.success('Record deleted Successfully', 'Activity Register');
-      })
-    }
-  }
+
+  // deleteRecord(event) {
+  //   if (window.confirm('Are you sure want to Delete?')) {
+  //     console.log(event.newData)
+  //     event.confirm.resolve(event.newData);
+
+  //   this.activatedRoute.params.subscribe((params: Params) => {
+  //     this.meetingID = params['objectId'];
+  //   });
+  //   console.log(event)
+  //   var data = {
+  //     objectId: event.data.objectId,
+
+  //   };
+  //   console.log(data)
+  //   this.activity.deleteData(data).subscribe(
+  //     res => {
+  //       console.log(res)
+  //       this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+  //     },
+  //     err => console.log(err),
+  //     () => {
+  //       console.log("record deleted")
+  //       this.toastr.success('Record deleted Successfully', 'Activity Register');
+  //     })
+  //   }
+  // }
 
 
 
@@ -1170,12 +1209,11 @@ convertTime12to24(time12h) {
     onChange1(event){
       if(event==true){
         this.pub="Published"
-     
+        this.published=true;
       }
       else{
         this.pub="UnPublished"
-       
-        
+        this.published=false;
       }
     }
 

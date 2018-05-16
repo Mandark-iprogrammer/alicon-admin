@@ -1,162 +1,168 @@
 
         
-<form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)" *ngIf="show2" style="height:800px;" autocomplete="off">
-        
-             <div class="row " >
-                    <!-- <div class="col-md-1">
-                            <input type="button" class="btn btn rounded-btn btn-block" Value="Back" (click)=cancel();>
-                    </div>     -->
-                    <div class="col-md-10">
-                            <h2>Add New Meeting</h2>  
-                           
+<ng-template #content let-c="close" let-d="dismiss">
+        <form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)"  autocomplete="off">
+        <div class="modal-header">
+            <h4 class="modal-title">Add New Meeting</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+           
+            
+               
+           <div class="row">
+               <div class="col-md-6">
+                   <div class="form-group">
+                       <label for="name">Meeting Name<font color="red">*</font> </label>
+                       <input required type="text" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel"
+                           ngModel class="form-control input-underline input-lg"  />
                    
-                    </div>
-            </div>
-        <div class="col-md-10 " >    
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="name">Meeting Name<font color="red">*</font> </label>
-                    <input required type="text" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel"
-                        ngModel class="form-control input-underline input-lg"  />
-                
-                <small  class="text-danger" *ngIf="name.errors?.pattern">
-                    Enter the valid meeting name
-                </small>
-                <small class="text-danger" *ngIf="name.errors?.required">
-                        Meeting Name is required
-                 </small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="saddress"> Meeting Remark<font color="red">*</font> </label>
-                    <!-- <textarea class="form-control input-underline input-lg"  rows="2" maxlength="160" [(ngModel)]="desc" placeholder="Enter a meeting description"
-                        name="description" #description="ngModel" ngModel required></textarea>
-                        <small class="text-danger" [hidden]="description.valid || (description.pristine && !frm.submitted)">
-                            Meeting Description is required
-                         </small> -->
-                         
-                         <input class="form-control input-underline input-lg"  [(ngModel)]="remk" type="text"  placeholder="Enter a meeting remark"
-                             name="remark" #remark="ngModel" ngModel required />
-                             <small class="text-danger" *ngIf="remark.errors?.required">
-                                    Remark is required
-                             </small>   
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="aemail"> Meeting Date<font color="red">*</font> </label>
-                    <!--<div class="input-group datepicker-input">
-                        <input class="form-control input-underline input-lg" placeholder="dd/mm/yyyy"
-                        name="meetingDate" [minDate]="" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[012])\/[0-9]{4}" #meetingDate="ngModel" [(ngModel)]="dt" ngModel (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" >
-                        
-                    </div>-->
-                    <div class="input-group datepicker-input">
-                        <input class="form-control input-underline input-lg" (click)="d.toggle()"[minDate]="minDate" required placeholder="DD/MM/YYYY" name="meetingDate"
-                        #meetingDate="ngModel" [(ngModel)]="dt" ngModel ngbDatepicker #d="ngbDatepicker" readonly>
-                        <button class="input-group-addon" (click)="d.toggle()" type="button">
-                            <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
-                            <span class="fa fa-calendar"></span>
-                        </button>
-                    </div>
-                    <small class="text-danger" *ngIf="meetingDate.errors?.required">
-                            Meeting Date is required
-                     </small> 
-                    <br/>
-                    
-                </div>
-            </div>
-           
-            <!-- <div class="col-md-6">
-                <div class="form-group">
-                    <label for="aemail"> Meeting Date: </label>
-                    <input class="form-control input-underline input-lg" [(ngModel)]="mtDate" required type="date" name="meetingDate" #meetingDate="ngModel"
-                        ngModel required/>
-                    <div class="status" id="status"></div>
-                </div>
-            </div> -->
-            <div class="col-md-4">
-                <div class="form-group" style="padding-left:150px ;">
-                    <!-- <label for="mnumber">Meeting Time: </label>
-                    <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="startTime" [(ngModel)]="stTime"
-                        #startTime="ngModel" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time"
-                    />
-                    <div *ngIf="startTime.errors?.pattern">
-                        Meeting Start Time not valid.
-                    </div> -->
-                    <label for="mnumber">Meeting Time<font color="red">*</font> </label>
-                    <ngb-timepicker  [size]="small" [(ngModel)]="time1" name="startTime" [spinners]="true" #startTime="ngModel" ngModel [meridian]="true" required [ngModelOptions]="{standalone: false}" ></ngb-timepicker>
-                    <!-- <small class="text-danger" [hidden]="startTime.valid || (startTime.pristine && !frm.submitted)">
-                        Meeting Time is required
-                     </small> -->
-                     <small class="text-danger" *ngIf="startTime.errors?.required">
-                            Start Time is required
-                     </small> 
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                    <div class="form-group" style="padding-left:100px ;">
-                        <label for="phonenumber">Venue<font color="red">*</font> </label>
-    
-                        <!-- <input auto-complete required type="text" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg"
-                            maxlength="28" placeholder="Enter Meeting Venue" [source]="venues" loading-text [tab-to-select]="false"/>
-                            <small  class="text-danger" *ngIf="venue.errors?.pattern">
-                            Meeting venue name not valid.
+                   <small  class="text-danger" *ngIf="name.errors?.pattern">
+                       Enter the valid meeting name
+                   </small>
+                   <small class="text-danger" *ngIf="name.errors?.required">
+                           Meeting Name is required
+                    </small>
+                   </div>
+               </div>
+               <div class="col-md-6">
+                   <div class="form-group">
+                       <label for="saddress"> Meeting Remark<font color="red">*</font> </label>
+                       <!-- <textarea class="form-control input-underline input-lg"  rows="2" maxlength="160" [(ngModel)]="desc" placeholder="Enter a meeting description"
+                           name="description" #description="ngModel" ngModel required></textarea>
+                           <small class="text-danger" [hidden]="description.valid || (description.pristine && !frm.submitted)">
+                               Meeting Description is required
                             </small> -->
-                            <ng2-completer  type="text" [(ngModel)]="ven" name="venue" required #venue="ngModel" ngModel placeholder="Enter Meeting Venue" [datasource]="venues"  [minSearchLength]="2"></ng2-completer>
-                                <!-- <small class="text-danger" [hidden]="venue.valid || (venue.pristine && !frm.submitted)">
-                                    Venue is required
-                                </small> -->
-                                <small class="text-danger" *ngIf="venue.errors?.required">
-                                        Venue is required
-                                 </small>
-                    </div>
-                    <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="objID" />
-                </div>
-        </div>
-        <div class="row">
-            <!-- <div class="col-md-6">
-                <div class="form-group">
-                    <label for="city"> Remark<font color="red">*</font>: </label>
-                    <input class="form-control input-underline input-lg"  [(ngModel)]="remk" type="text" maxlength="60" placeholder="Enter a meeting remark"
-                        name="remark" #remark="ngModel" ngModel required />
-                        <small class="text-danger" [hidden]="remark.valid || (remark.pristine && !frm.submitted)">
-                            Remark is required
-                         </small>
-                </div>
-            </div> -->
-           
-            <div class="col-md-1">
-
-                <div class="form-group">
-                      <label class="control-label">{{pub}}</label> 
-                      
+                            
+                            <input class="form-control input-underline input-lg"  [(ngModel)]="remk" type="text"  placeholder="Enter a meeting remark"
+                                name="remark" #remark="ngModel" ngModel required />
+                                <small class="text-danger" *ngIf="remark.errors?.required">
+                                       Remark is required
+                                </small>   
+                   </div>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-md-6">
+                   <div class="form-group">
+                       <label for="aemail"> Meeting Date<font color="red">*</font> </label>
+                       <!--<div class="input-group datepicker-input">
+                           <input class="form-control input-underline input-lg" placeholder="dd/mm/yyyy"
+                           name="meetingDate" [minDate]="" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[012])\/[0-9]{4}" #meetingDate="ngModel" [(ngModel)]="dt" ngModel (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" >
+                           
+                       </div>-->
+                       <div class="input-group datepicker-input">
+                           <input class="form-control input-underline input-lg" (click)="d.toggle()"[minDate]="minDate" required placeholder="DD/MM/YYYY" name="meetingDate"
+                           #meetingDate="ngModel" [(ngModel)]="dt" ngModel ngbDatepicker #d="ngbDatepicker" readonly>
+                           <button class="input-group-addon" (click)="d.toggle()" type="button">
+                               <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                               <span class="fa fa-calendar"></span>
+                           </button>
+                       </div>
+                       <small class="text-danger" *ngIf="meetingDate.errors?.required">
+                               Meeting Date is required
+                        </small> 
+                       <br/>
+                       
+                   </div>
+               </div>
               
-          
-                    <ui-switch switchColor="#efefef" size="medium"  (change)="onChange1($event)"   name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
-                </div>
+               <!-- <div class="col-md-6">
+                   <div class="form-group">
+                       <label for="aemail"> Meeting Date: </label>
+                       <input class="form-control input-underline input-lg" [(ngModel)]="mtDate" required type="date" name="meetingDate" #meetingDate="ngModel"
+                           ngModel required/>
+                       <div class="status" id="status"></div>
+                   </div>
+               </div> -->
+               <div class="col-md-6">
+                   <div class="form-group" >
+                       <!-- <label for="mnumber">Meeting Time: </label>
+                       <input required type="text" pattern="^(([0]?[1-9])|([1][0-2])):(([0-5][0-9])|([1-9])) [AP][M]$" name="startTime" [(ngModel)]="stTime"
+                           #startTime="ngModel" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Enter a meeting start time"
+                       />
+                       <div *ngIf="startTime.errors?.pattern">
+                           Meeting Start Time not valid.
+                       </div> -->
+                       <label for="mnumber">Meeting Time<font color="red">*</font> </label>
+                       <ngb-timepicker  [size]="small" [(ngModel)]="time1" name="startTime" [spinners]="true" #startTime="ngModel" ngModel [meridian]="true" required [ngModelOptions]="{standalone: false}" ></ngb-timepicker>
+                       <!-- <small class="text-danger" [hidden]="startTime.valid || (startTime.pristine && !frm.submitted)">
+                           Meeting Time is required
+                        </small> -->
+                        <small class="text-danger" *ngIf="startTime.errors?.required">
+                               Start Time is required
+                        </small> 
+                   </div>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-md-6 ">
+                       <div class="form-group" >
+                           <label for="phonenumber">Venue<font color="red">*</font> </label>
+       
+                           <!-- <input auto-complete required type="text" pattern="[a-zA-Z ]*" name="venue" #venue="ngModel" [(ngModel)]="ven" ngModel class="form-control input-underline input-lg"
+                               maxlength="28" placeholder="Enter Meeting Venue" [source]="venues" loading-text [tab-to-select]="false"/>
+                               <small  class="text-danger" *ngIf="venue.errors?.pattern">
+                               Meeting venue name not valid.
+                               </small> -->
+                               <ng2-completer  type="text" [(ngModel)]="ven" name="venue" required #venue="ngModel" ngModel placeholder="Enter Meeting Venue" [datasource]="venues"  [minSearchLength]="2"></ng2-completer>
+                                   <!-- <small class="text-danger" [hidden]="venue.valid || (venue.pristine && !frm.submitted)">
+                                       Venue is required
+                                   </small> -->
+                                   <small class="text-danger" *ngIf="venue.errors?.required">
+                                           Venue is required
+                                    </small>
+                       </div>
+                       <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="objID" />
+                   </div>
+           
+               <!-- <div class="col-md-6">
+                   <div class="form-group">
+                       <label for="city"> Remark<font color="red">*</font>: </label>
+                       <input class="form-control input-underline input-lg"  [(ngModel)]="remk" type="text" maxlength="60" placeholder="Enter a meeting remark"
+                           name="remark" #remark="ngModel" ngModel required />
+                           <small class="text-danger" [hidden]="remark.valid || (remark.pristine && !frm.submitted)">
+                               Remark is required
+                            </small>
+                   </div>
+               </div> -->
+              
+               <div class="col-md-6">
+    
+                   <div class="form-group">
+                         <label class="control-label">{{pub}}</label> 
+                         <ui-switch switchColor="#efefef" size="medium"  (change)="onChange1($event)"   name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
+                   </div>
+               </div>
+           </div>
+            
+               <!-- <div class="form-group">
+                           
+                   <div class="row pull-right">
+                      
+                     
+                       <div class="col-md-6">
+                           <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
+                       </div>
+                   </div>
+    
+               </div>
+          -->
+        </div>     
+        
+        <div class="modal-footer">
+            <div class="col-md-2">
+                <button type="submit"  [disabled]="!frm.valid" class="btn btn rounded-btn btn-block">{{sav}}</button>
+    
+            </div>
+            <div class="col-md-2">
+            <button type="button" class="btn btn rounded-btn btn-block" (click)="c('Close click')">Close</button>
             </div>
         </div>
-         
-            <div class="form-group">
-                        
-                <div class="row pull-right">
-                    <div class="col-md-6">
-                        <button type="submit"  [disabled]="!frm.valid" class="btn btn rounded-btn btn-block">{{sav}}</button>
-
-                    </div>
-                  
-                    <div class="col-md-6">
-                        <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
-                    </div>
-                </div>
-
-            </div>
-    </div>    
-</form>
+      </form>
+    </ng-template>
 
 <!-- ends register form -->
 
@@ -180,12 +186,12 @@
         </tr>
         <tr>
 
-            <td style="text-align: center;">{{nm}}</td>
-            <td style="text-align: center;">{{remk}}</td>
-            <td style="text-align: center;">{{ven}}</td>
+            <td style="text-align: center;">{{nm1}}</td>
+            <td style="text-align: center;">{{remk1}}</td>
+            <td style="text-align: center;">{{ven1}}</td>
             <td style="text-align: center;">{{mtDate}}</td>
             <td style="text-align: center;">{{stTime}}</td>
-            <td style="text-align: center;"> <a class="btn" (click)="Onedit(objID)">
+            <td style="text-align: center;"> <a class="btn" (click)="Onedit(objID,content)">
                     <i class="fa fa-fw fa-lg fa-edit"></i>
                 </a></td>
             <td class="text-center" style="padding-top:19px "><ui-switch   size="small"  (change)="onChange($event)" [checked]="published"></ui-switch></td>
