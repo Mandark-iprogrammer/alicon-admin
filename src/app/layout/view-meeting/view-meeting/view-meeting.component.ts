@@ -14,7 +14,7 @@ import { NgbDateNativeAdapter } from '../../meeting/meeting/ngb-d-datepicker-dap
   templateUrl: './view-meeting.component.html',
   styleUrls: ['./view-meeting.component.scss'],
   providers:[MeetingService,NgbModal,NgbActiveModal,{provide: NgbDateParserFormatter, useClass: NgbDateFRParserFormatter},
-    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},NgbModal,NgbActiveModal]
 })
 export class ViewMeetingComponent implements OnInit {
   nm: any;
@@ -87,12 +87,12 @@ export class ViewMeetingComponent implements OnInit {
     },
     rowClassFunction: () => ""
   };
-  modalReference: NgbModalRef;
+  modalReference1: NgbModalRef;
   SERVER_URL1: any;
   venues: any;
   unique: any;
   minDate:any;
-  pub:string = "Publish"
+  pub:string = "UnPublished"
   defaultSettingsActivity:any
  //public mtDate1:Date
   sav:string = "Save"
@@ -279,27 +279,14 @@ export class ViewMeetingComponent implements OnInit {
   
   openLg(content) {
    // this.Msg="Save";
-    this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
-    this.modalReference.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    //   this.ord=null;
-    // this.sec="";
-    //  this.objID2="";
-    //  this.pplace="";
-    //  this.staffname="";
-    //  this.sttTime="";
-    //  this.edTime="";
-    //  this.time1="";
-    //  this.time2="";
-    // this.dur=""
-    // this.typ=""
-    // this.msg=""
-    // this.subtyp="" 
-      console.log(this.closeResult)
-    }, (reason) => {
-      this.closeResult = `Dismissed`;
-      console.log(this.closeResult)
-    })
+    this.modalReference1 =this.modalService.open(content, { size: 'lg' ,centered: true});
+    // this.modalReference1.result.then((result) => {
+    //   this.closeResult = `Closed with: ${result}`;
+    //   console.log(this.closeResult)
+    // }, (reason) => {
+    //   this.closeResult = `Dismissed: ${reason}`;
+    //   console.log(this.closeResult)
+    // })
   }
 
   convertTime12to24(time12h) {
@@ -332,7 +319,7 @@ export class ViewMeetingComponent implements OnInit {
            console.log("record saved")
           
            this.toastr.success('New Record Added Successfully');
-           this.modalReference.close();
+           this.modalReference1.close();
          })
      } else {
        console.log(frm.objectId);
@@ -347,7 +334,7 @@ export class ViewMeetingComponent implements OnInit {
            //this.meeting.showMeeting();
           
            this.toastr.success('Record Updated Successfully');
-           this.modalReference.close();
+           this.modalReference1.close();
          }
        )
      }
@@ -359,16 +346,7 @@ export class ViewMeetingComponent implements OnInit {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let dt = date.getDate();
-    // // if (dt < 10) {
-    // //   dt = '0' + dt;
-    // // }
-    // // if (month < 10) {
-    // //   month = '0' + month;
-    // // }
-    // return {"day":28 ,"month":5 ,"year":2018};
-    //return new Date(dt + '/' + month + '/' + year);
-   // console.log(dt + '/' + month + '/' + year)
-    //return date;
+    
    return year+'-' + month + '-'+dt;
   }
   onChange1(event){
@@ -381,5 +359,14 @@ export class ViewMeetingComponent implements OnInit {
       this.published=false;
     }
   }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+}
 
 }

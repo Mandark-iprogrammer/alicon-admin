@@ -4,9 +4,9 @@
         <form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)"  autocomplete="off">
         <div class="modal-header">
             <h4 class="modal-title">Add New Meeting</h4>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
-            </button>
+            </button> -->
         </div>
         <div class="modal-body">
            
@@ -133,7 +133,7 @@
     
                    <div class="form-group">
                          <label class="control-label">{{pub}}</label> 
-                         <ui-switch switchColor="#efefef" size="medium"  (change)="onChange1($event)"   name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
+                         <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)"   name="isPublished"  #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
                    </div>
                </div>
            </div>
@@ -247,16 +247,17 @@
                         <ng-template ngbTabTitle>Push Notifications</ng-template>
                         <ng-template ngbTabContent>
 
-                            <form class="" #frm1="ngForm">
+                            <form class="" #frm1="ngForm" (ngSubmit)="push_noti(frm1.value)" style="padding-top:30px; ">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="name">Notificaton Title<font color="red">*</font></label>
-                                            <input required type="text" pattern="[a-zA-Z0-9 -]*" placeholder="Enter a notification title" name="title" #title class="form-control input-underline input-lg"
+                                            <label for="name">Notification Title<font color="red">*</font></label>
+                                            <input required type="text"  placeholder="Enter a notification title" name="title" #title="ngModel" ngModel class="form-control input-underline input-lg"
                                                 maxlength="60" />
-                                                <small  class="text-danger" *ngIf="title.errors?.pattern">
-                                                        Enter the valid meeting name
-                                                    </small>
+                                               
+                                                    <small  class="text-danger" *ngIf="title.errors?.required">
+                                                       Notification Title is Required
+                                                    </small>    
                                         </div>
 
                                     </div>
@@ -266,10 +267,10 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="saddress"> Notification Body<font color="red">*</font> </label>
-                                            <textarea class="form-control input-underline input-lg" rows="3" placeholder="Enter a notification body" name="body" #body
+                                            <textarea class="form-control input-underline input-lg" rows="3" placeholder="Enter a notification body" name="body" #body="ngModel" ngModel
                                                 required></textarea>
-                                                <small class="text-danger" [hidden]="!body.valid">
-                                                    Message Description is required
+                                                <small  class="text-danger" *ngIf="body.errors?.required">
+                                                    Notification Body is Required
                                                  </small>   
                                         </div>
                                     </div>
@@ -277,7 +278,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <button type="button" class="btn btn rounded-btn btn-block" (click)="push_noti(title.value,body.value)">Send to all users</button>
+                                        <button  type="submit" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block" >Send to all users</button>
                                     </div>
                                 </div>
 
@@ -285,7 +286,7 @@
                         </ng-template>
                     </ngb-tab>
                     <ngb-tab>
-                        <ng-template ngbTabTitle>Upload Media</ng-template>
+                        <ng-template ngbTabTitle>Upload Files</ng-template>
                         <ng-template ngbTabContent>
                             <app-file-upload></app-file-upload>
                         </ng-template>

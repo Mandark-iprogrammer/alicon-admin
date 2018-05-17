@@ -20,6 +20,7 @@ export class InvitationsComponent implements OnInit {
   docs: any
   meetingID: string
   users1=[]
+  gridSelected: any;
   unique1 = []
   send =[]
   username=[]
@@ -104,9 +105,7 @@ export class InvitationsComponent implements OnInit {
   ) {
    
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
+   
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
@@ -123,7 +122,9 @@ export class InvitationsComponent implements OnInit {
       
     })
 
-
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.meetingID = params['objectId'];
+    });
 
     this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
     this.http.get(this.SERVER_URL, {
@@ -222,7 +223,7 @@ export class InvitationsComponent implements OnInit {
     //this.send.push(event.data)
     if(event.isSelected===null){
       this.username.length=0;
-
+      this.gridSelected = event.selected;
       if(event.selected.length==0){
       
         this.username.length=0;
@@ -233,7 +234,8 @@ export class InvitationsComponent implements OnInit {
       }
   
     }
-    else if(event.isSelected===true){       
+    else if(event.isSelected===true){ 
+      this.gridSelected = event.selected;      
        this.send.push(event.data.objectId)
        this.username.push(event.data.username)
     }
@@ -284,7 +286,10 @@ export class InvitationsComponent implements OnInit {
           //this.meeting.showMeeting();
           this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
           this.toastr.success('Invivation Send Successsfully');
-  
+          this.send.length==0;
+          this.username.length=0;
+          //event.isSelected=false;
+          //window.location.reload();
         }
       )
     }

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef,NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityService } from '../../activity/activity.service';
 import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent } from "ng-auto-complete";
 import { environment } from '../../../../environments/environment';
@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { CustomEditorComponent } from './custom-editor/custom-editor.component';
 import { Timepicker1Component } from './timepicker1/timepicker1.component';
+
 var FCM = require('fcm-push');
 
 @Component({
@@ -26,7 +27,7 @@ var FCM = require('fcm-push');
   templateUrl: './meeting.component.html',
   styleUrls: ['./meeting.component.scss'],
   providers: [MeetingService, ActivityService,{provide: NgbDateParserFormatter, useClass: NgbDateFRParserFormatter},
-    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},NgbModal,NgbActiveModal],
   
 })
 
@@ -550,6 +551,7 @@ ngOnChanges(){
         console.log(this.dt)
     
         this.tag = data['tags']
+        console.log(data['isPublished'])
         if(data['isPublished']==false){
           this.published=false;
           
@@ -598,10 +600,8 @@ convertTime12to24(time12h) {
         },
         () => {
           console.log("record saved")
-          
           this.toastr.success('New Record Added Successfully');
-          
-        })
+      })
     } else {
       console.log(frm.objectId);
       this.meeting.saveData(frm).subscribe(
@@ -734,6 +734,14 @@ convertTime12to24(time12h) {
 
   Onedit(_id: string,content) {
     console.log(_id)
+    if( this.published==true){
+      this.pub="Published"
+      this.published=true;
+    }
+    else{
+      this.pub="UnPublished"
+      this.published=false;
+    }
     //this.meeting.objectId=Object.assign({},_id);
     //this.router.navigate(['/viewMeeting', { 'objectId': _id }]);
     this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
@@ -1070,20 +1078,12 @@ convertTime12to24(time12h) {
 
 
 
-  push_noti(ti:string,bod:string ){
+  push_noti(frm1:any ){
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
-    console.log(ti)
-     console.log(bod)
-    if(ti==""){
-      this.toastr.error("Messege Body Title Required");
-      return false;
-    }
-    if(bod==""){
-      this.toastr.error("Messege Body Required");
-      return false;
-    }
+   
+   
 
      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
      this.http.get(this.SERVER_URL, {
@@ -1121,8 +1121,8 @@ convertTime12to24(time12h) {
                     your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
                 },
                 notification: {
-                    title: ti,
-                    body: bod
+                    title: frm1.title,
+                    body: frm1.body
                 }
               };
 
@@ -1206,16 +1206,16 @@ convertTime12to24(time12h) {
 
     }
 
-    onChange1(event){
-      if(event==true){
-        this.pub="Published"
-        this.published=true;
-      }
-      else{
-        this.pub="UnPublished"
-        this.published=false;
-      }
-    }
+    // onChange1(event){
+    //   if(event==true){
+    //     this.pub="Published"
+    //     this.published=true;
+    //   }
+    //   else{
+    //     this.pub="UnPublished"
+    //     this.published=false;
+    //   }
+    // }
 
 
     formatAMPM(hour,minute) {

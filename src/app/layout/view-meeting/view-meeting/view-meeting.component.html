@@ -9,12 +9,12 @@
 </div>
 <ng-template #content let-c="close" let-d="dismiss">
     <form class="" #frm="ngForm" (ngSubmit)="registerMeeting(frm.value)"  autocomplete="off">
-    <div class="modal-header">
-        <h4 class="modal-title">Add New Meeting</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+        <div class="modal-header">
+            <h4 class="modal-title">Add Activity</h4>
+            <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
+        </div>
     <div class="modal-body">
        
         
@@ -139,8 +139,8 @@
            <div class="col-md-6">
 
                <div class="form-group">
-                     <label class="control-label">{{pub}}</label> 
-                     <ui-switch switchColor="#efefef" size="medium"  (change)="onChange1($event)"   name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
+                     <label style="padding:10px; " class="control-label">{{pub}}</label> 
+                     <ui-switch switchColor="#efefef" style="padding:10px; " size="small"  (change)="onChange1($event)"   name="isPublished" #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
                </div>
            </div>
        </div>

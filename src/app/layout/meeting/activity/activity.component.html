@@ -7,9 +7,9 @@
         <form class="" #frm="ngForm" (ngSubmit)="registerActivity(frm.value)" autocomplete="off">
     <div class="modal-header">
         <h4 class="modal-title">Add Activity</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
     </div>
     <div class="modal-body">
         
@@ -20,7 +20,7 @@
              <div class="col-md-6" >
                  <div class="form-group"> 	 
                      <label for="saddress">Serial Number </label>
-                         <input pattern="[0-9]*" class="form-control input-underline input-lg" [(ngModel)]="ord" placeholder="order" type="text" name="order" #order="ngModel" ngModel /> 
+                         <input pattern="[0-9]*" class="form-control input-underline input-lg" [(ngModel)]="ord" placeholder="Serial Number" type="text" name="order" #order="ngModel" ngModel /> 
                          <small  class="text-danger" *ngIf="order.errors?.pattern">
                             Required Numbers only
                         </small>  
@@ -87,15 +87,32 @@
              </div>
             </div>    
             <div class="row">
+                    <!-- <label>Country:</label> 
+                    <select 
+                          (change)="onSelect($event.target.value)">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="#type of types"
+                            value= {{type.type}}>{{type.type}}
+                    </option>
+                    </select>
+                    <label>State:</label> -->
+                    <!-- <select>
+                    <option value="0">--Select--</option>
+                    <option *ngFor="#state of states "
+                          value= {{state.id}}>{{state.name}}
+                    </option>
+                    </select> -->
              <div class="col-md-6">
                      <div class="form-group">
                              <label for="zipcode">Type <font color="red">*</font> </label>
-                             <select name="type" [(ngModel)]="typ" #type="ngModel" (change)="subtype($event)"  ngModel class="form-control input-underline input-lg" placeholder="Type" required>
+                        <!-- {{type|json}} -->
+                             <select name="type" [(ngModel)]="typ" #type="ngModel"  (change)="onSelect($event.target.value)" (ngModelchange)="doSomething(old, value)" ngModel class="form-control input-underline input-lg" placeholder="Type" required>
                                      <option  value="" disabled >-----Select-----</option>
-                                     <option  value="Presentation">Presentation</option>
-                                     <option  value="q&a">Q&A</option>
+                                     <option *ngFor="let obj of countries">{{obj.name}}</option>
+                                     <!-- <option  value="Presentation">Presentation</option>
+                                     <option  value="Q&A">Q&A</option>
                                      <option  value="Travel">Travel</option>
-                                     <option  value="Break">Break</option>
+                                     <option  value="Break">Break</option> -->
                                                                
                                  </select>
                                  <small class="text-danger" *ngIf="type.errors?.required"> 
@@ -106,9 +123,9 @@
                      <div class="col-md-6">
                             <div class="form-group">     
                      <label for="zipcode">Sub Type <font color="red">*</font></label>
-                            <select name="subType" [(ngModel)]="subtyp" #subType="ngModel"  ngModel class="form-control input-underline input-lg" placeholder="Sub Type" required >
-                                    <option  value="" disabled >-----Select-----</option>
-                                    <option *ngFor="let sutype of sutype" value="{{sutype.value}}">{{sutype.value}}</option>
+                            <select name="subType" [(ngModel)]="subtyp" #subType="ngModel"   ngModel class="form-control input-underline input-lg" placeholder="Sub Type" required >
+                                    <option  value="" disabled="disabled" >-----Select-----</option>
+                                    <option *ngFor="let suype of suype" value="{{suype.subtype}}">{{suype.subtype}}</option>
                                     <small class="text-danger" *ngIf="subType.errors?.required"> 
                                             SubType is required.
                                         </small>                               

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router,Params,ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import {NgbModal, ModalDismissReasons,NgbModalRef, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Sub } from './subtype';
+import { Type } from './type';
 
 @Component({
   selector: 'app-activity',
@@ -31,6 +33,8 @@ export class ActivityComponent implements OnInit {
   nm:string;sttTime:string;
   time1:any;time2:any;
   msg:string;
+  countries:any;
+  suype: any;
   modalReference: NgbModalRef;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
   ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;subtyp:string
@@ -49,15 +53,37 @@ export class ActivityComponent implements OnInit {
     this.SERVER_URL =  environment.apiUrl+'/classes/activity'
    
    // this.ngOnInit();
-
+   this.countries = this.activity.getCountries();
+    console.log(this.countries)
    this.ngOnChanges();
-
+    
    }
+   onSelect(countryid) {
+    //this.subtyp="";
+    
+    this.suype = this.activity.getStates()
+                 .filter((item)=> item.type == countryid);
+                 console.log(this.suype)  
+                // this.subtyp=this.suype
+                // if(this.subtyp!=this.suype){
+                //   this.subtyp=this.suype
+                // }
+  }
+  doSomething(oldVal, newVal) {
+    // some code
+    //console.log(oldVal)
+    this.subtyp=newVal;
+    //console.log(newVal=)
+  }
 
   ngOnInit() {
-    
+    //this.sutype.length=0;
   }
   ngOnChanges(){
+    
+    
+
+
 
     this.activatedRoute.params.subscribe((params: Params) => {
       // console.log(params)
@@ -90,7 +116,7 @@ export class ActivityComponent implements OnInit {
           
            this.docs2.forEach(element => {
                if(element['startTime1']){
-                 console.log(element['startTime1']['iso'])
+              //   console.log(element['startTime1']['iso'])
                  element['startTime1']=this.formatAMPM(element['startTime1']['iso'])
                   element['endTime1']=this.formatAMPM(element['endTime1']['iso'])
                }
@@ -123,6 +149,8 @@ export class ActivityComponent implements OnInit {
 
   Onedit(_id:string,content)
   {
+    
+    
     this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -161,7 +189,8 @@ export class ActivityComponent implements OnInit {
     this.add_edit=true; 
     this.Msg="Update"; 
     console.log(_id)
-       this.SERVER_URL =  environment.apiUrl+'/classes/activity/'+_id
+   
+    this.SERVER_URL =  environment.apiUrl+'/classes/activity/'+_id
     this.http.get(this.SERVER_URL,{
          headers:new HttpHeaders({
           'Content-Type':'application/json',
@@ -189,9 +218,11 @@ export class ActivityComponent implements OnInit {
            this.dur=data['duration']
            this.typ=data['type']
            this.subtyp=data['subType']
-           this.subtype1(this.typ) 
+            this.onSelect(this.typ)
+          // this.subtyp="";
+          // this.subtype1(this.typ)
+           
      })
-   
     //this.meeting.objectId=Object.assign({},_id);
    // this.router.navigate(['/activity',{'objectId': _id}]);
   }
@@ -202,8 +233,8 @@ export class ActivityComponent implements OnInit {
     this.Msg="Save";
     this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
     this.modalReference.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-      this.ord=null;
+    this.closeResult = `Closed with: ${result}`;
+    this.ord=null;
     this.sec="";
      this.objID2="";
      this.pplace="";
@@ -225,9 +256,16 @@ export class ActivityComponent implements OnInit {
 
   registerActivity(frm:any){
     console.log(frm)
+    var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
+    var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
+    if(a>b){
+      
+        this.toastr.error('Please Enter end time is greater than start time');
+        return false;
+      
+    }
 
-
-    if(frm.objectId=="null" || frm.objectId==""){
+    if(frm.objectId=="null" || frm.objectId=="" || frm.objectId===undefined){
      
       console.log(frm)
       this.activity.saveData(frm).subscribe(
@@ -250,8 +288,10 @@ export class ActivityComponent implements OnInit {
       )
   
     }else{
+    
       console.log(frm.objectId);
       console.log(frm);
+    
       this.activity.saveData(frm).subscribe(
         res=>console.log(res),
         err=>console.log(err),
@@ -267,7 +307,14 @@ export class ActivityComponent implements OnInit {
       )
     }
   }
-
+  formatISO(hour,minute) {
+    var hours = hour;
+    var minutes = minute;
+     
+    var dateiso=new Date('2018-05-01'+' '+hours+':'+minutes+':'+'00').toISOString();
+    return dateiso;
+    
+    }
   formatAMPM(dateiso){
     
     
@@ -275,7 +322,7 @@ export class ActivityComponent implements OnInit {
     var ampm = (d.getHours() >= 12) ? "pm":"am";
     var hours = d.getHours();
     var minutes =d.getMinutes();
-    console.log(minutes)
+    //console.log(minutes)
 
     hours = hours % 12;
     hours = hours ? hours : 12;
@@ -305,41 +352,44 @@ export class ActivityComponent implements OnInit {
       //return hours + ':' + minutes;
     }
 
-    subtype(event){
-      console.log(event.target.value)
-      this.sutype.length=0;
-      if(event.target.value==="Presentation"){
-        this.sutype.push({"value":"Presentation"})
-      }
-      else if(event.target.value==="Travel"){
-        this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Rickshaw"})
-      }
-      else if(event.target.value==="q&a"){
-        this.sutype.push({"value":"Q&A"})
-      }
-      else if(event.target.value==="Break"){
-        this.sutype.push({"value":"Tea"},{"value":"Lunch"})
-      }
-     // console.log(this.sutype)
-    }
+    // subtype(event){
+     
+    //   console.log(event.target.value)
+    //  // this.subtype1(event.target.value); 
+    //   this.sutype=[];
+    //   if(event.target.value==="Presentation"){
+    //     this.sutype.push({"value":"Presentation"})
+    //   }
+    //   else if(event.target.value==="Travel"){
+    //     this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Rickshaw"})
+    //   }
+    //   else if(event.target.value==="Q&A"){
+    //     this.sutype.push({"value":"Q&A"})
+    //   }
+    //   else if(event.target.value==="Break"){
+    //     this.sutype.push({"value":"Tea"},{"value":"Lunch"})
+    //   }
+    //  // console.log(this.sutype)
+    // }
 
-    subtype1(value){
-      console.log(value)
-      this.sutype.length=0;
-      if(value==="Presentation"){
-        this.sutype.push({"value":"Presentation"})
-      }
-      else if(value==="Travel"){
-        this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Auto"})
-      }
-      else if(value==="q&a"){
-        this.sutype.push({"value":"Q&A"})
-      }
-      else if(value==="Break"){
-        this.sutype.push({"value":"Tea"},{"value":"Lunch"})
-      }
-     // console.log(this.sutype)
-    }
+    // subtype1(value){
+      
+    //   console.log(value)
+    //   this.sutype.length=0;
+    //   if(value==="Presentation"){
+    //      this.sutype.push({"value":"Presentation"})
+    //   }
+    //   else if(value==="Travel"){
+    //     this.sutype.push({"value":"Car"},{"value":"Walk"},{"value":"Auto"})
+    //   }
+    //   else if(value==="Q&A"){
+    //     this.sutype.push({"value":"Q&A"})
+    //   }
+    //   else if(value==="Break"){
+    //     this.sutype.push({"value":"Tea"},{"value":"Lunch"})
+    //   }
+    //  console.log(this.sutype)
+    // }
 
     Ondelete(id:string){
       if (window.confirm('Are you sure want to Delete?')) {
@@ -349,15 +399,17 @@ export class ActivityComponent implements OnInit {
       };
       console.log(data)
       this.activity.deleteData(data).subscribe(
-        res => {
-          console.log(res)
-          //this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
-        },
+        res => console.log(res),       
         err => console.log(err),
         () => {
           console.log("record deleted")
-          this.ngOnChanges();
+          this.ngOnChanges(); 
           this.toastr.success('Record deleted Successfully');
+          console.log(this.docs2.length);
+          if(this.docs2.length==1){
+            location.reload();
+          }
+         
         })
        }
     }

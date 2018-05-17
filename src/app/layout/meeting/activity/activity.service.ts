@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { Type } from './type';
+import { Sub } from './subtype';
 @Injectable()
 export class ActivityService {
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
+  SERVER_URL1 : string
   SERVER_URL3 : string
   objectId:any
   d1:any
+  msg:string
   d2:any
   constructor(
     private http:HttpClient
@@ -23,7 +27,7 @@ export class ActivityService {
 
 
   saveData(frm : any){
-    if(frm.objectId==null  || frm.objectId==""){
+    if(frm.objectId=="null" || frm.objectId=="" || frm.objectId===undefined){
       var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
       var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
       var stttTime=this.formatAMPM(frm.startTime.hour,frm.startTime.minute)
@@ -85,6 +89,10 @@ export class ActivityService {
       if (diff > 60e3) {
         var c=Math.floor(diff / 60e3)
       }
+      // if(b<a){
+      //   this.msg ='Please Enter end time is greater than start time';
+      //   return this.msg; 
+      // }
         console.log(c)
     let arr={
       "meetingId":{
@@ -111,8 +119,8 @@ export class ActivityService {
       "subType":frm.subType
     
    } 
-   this.SERVER_URL = environment.apiUrl+'/classes/activity/'+frm.objectId
-   return this.http.put(this.SERVER_URL,arr,{
+   this.SERVER_URL1 = environment.apiUrl+'/classes/activity/'+frm.objectId
+   return this.http.put(this.SERVER_URL1,arr,{
     headers:new HttpHeaders({
     'Content-Type':'application/json',
     'X-Parse-Application-Id':this.APP_ID,
@@ -176,5 +184,29 @@ export class ActivityService {
       var strTime = hours + ':' + minutes + ' ' + ampm;
       return strTime;
     }
+
+
+
+    getCountries() {
+      return [
+        new Type('Presentation'),
+        new Type('Travel'),
+        new Type('Q&A'),
+        new Type('Break')
+      ];
+    }
+
+    getStates() {
+      return [
+        new Sub('Presentation','Presentation' ),
+        new Sub('Travel', 'Car' ),
+        new Sub('Travel', 'Walk' ),
+        new Sub('Travel', 'Auto' ),
+        new Sub('Q&A', 'Q&A'),
+        new Sub('Break', 'Lunch'),
+        new Sub('Break', 'Tea'),
+       
+       ];
+     }
    
 }

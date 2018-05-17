@@ -1,10 +1,13 @@
-<form class="" #frm="ngForm" (ngSubmit)="onSubmit(frm.value)">
+<form class="" #frm1="ngForm" (ngSubmit)="onSubmit(frm.value)">
   <div class="row">
     <div class="col-md-6">
 
       <div class="form-group">
         <label for="name">Title<font color="red">*</font></label>
         <input type="text" class="form-control input-underline input-lg" name="fileTitle" #fileTitle="ngModel" ngModel placeholder="Enter File Title">
+        <small class="text-danger" *ngIf="fileTitle.errors?.required"> 
+          File Title is required
+      </small>
       </div>
     </div>
     
@@ -16,6 +19,9 @@
         <label for="name">File Description<font color="red">*</font></label>
         <input type="text" class="form-control input-underline input-lg" #fileDescription="ngModel" ngModel name="fileDescription"
           placeholder="Enter File Description">
+          <small class="text-danger" *ngIf="fileDescription.errors?.required"> 
+            File Description is required
+        </small>
       </div>
     </div>
   </div>
@@ -24,8 +30,12 @@
     <div class="col-md-6">
       <div class="form-group">
         <!-- ng2FileSelect [uploader]="uploader"  -->
+        <label for="name">File<font color="red">*</font></label>
         <input type="file" ng2FileSelect [uploader]="uploader" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
           accept="image/jpg,image/jpeg,application/pdf" />
+          <small class="text-danger" [hidden]="!fileSelected"> 
+            File is Required 
+        </small>
         <!-- <input type="file" id="photo" name="photo" ng2FileSelect [uploader]="uploader" /> -->
       </div>
     </div>
@@ -44,13 +54,17 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
-      <button type="submit" [disabled]="!frm.valid" class="btn btn rounded-btn btn-block">Upload</button>
+    <div class="col-md-3">
+      <button type="submit" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block">Upload</button>
+    </div>
+      <div class="col-md-3">
+        <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
+    </div>
       <!-- <button type="button" class="btn btn-success btn-xs"
       (click)="upload(fileTitle.value,fileDescription.value,uploader.value)" >
   <span class="glyphicon glyphicon-upload"></span> Upload
 </button> -->
-    </div>
+    
   </div>
  
 </form>
@@ -63,8 +77,9 @@
       <th style="text-align: center;">Name</th>
       <th style="text-align: center;">File Title</th>
       <th style="text-align: center;">Download </th>
+      <th style="text-align: center;">Publish/UnPublished </th>
+      <th style="text-align: center;">Delete</th>
      
-    
     </tr>
     {{notFound}}
     <tr *ngFor="let docs of docs ;let i=index">
@@ -73,7 +88,8 @@
       <td style="text-align: center;">{{docs.name}}</td>
       <td style="text-align: center;">{{docs.title}}</td>
       <td style="text-align: center;"><a href="{{docs.url}}">Download</a></td>
-     
+      <td class="text-center" style="padding-top:19px "><ui-switch   size="small"  (change)="onChange($event,docs.objectId)" [checked]="docs.isPublished"></ui-switch></td>
+      <td class="text-center"><a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a></td>
     </tr>
   </table>
 

@@ -106,33 +106,38 @@
          <div class="col-md-4">
                 <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                         <label for="username">Email Address <font color="red">*</font></label>
-                        <input type="email" class="form-control input-underline input-lg"  [(ngModel)]="uname"  name="username" #username="ngModel" ngModel required placeholder="Enter the email address"/>
+                        <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control input-underline input-lg"  [(ngModel)]="uname"  name="username" #username="ngModel" ngModel required placeholder="Enter the email address"/>
                           <small class="text-danger" *ngIf="username.errors?.required">
                                 Email is Required
                           </small>
+                          <small  class="text-danger" *ngIf="username.errors?.pattern">
+                                Enter a Valid Email address
+                        </small>
                     </div>
          </div>
          <div class="col-md-4" *ngIf="show">
                 <div class="form-group" >
                         <label for="password">Password<font color="red">*</font></label>
-                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=.{6,})(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" maxlength="6" />
+                        <input type="password"  class="form-control input-underline input-lg" pattern="^(?=)(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" minlength="6" />
                         <small  class="text-danger" *ngIf="password.errors?.pattern">
-                                Need atleast one special charachter
+                                Need atleast one special character 
                         </small>
                         <small class="text-danger" *ngIf="password.errors?.required">
                                 Password is Required
                           </small>
-                         
+                          <small  class="text-danger" *ngIf="password.errors?.minlength">
+                                        At least 6 character 
+                                </small>
                     </div>
          </div>
          <div class="col-md-4" *ngIf="show">
-                <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !confirmPassword.valid }">
+                <div class="form-group" >
                         <label for="password">Retype Password<font color="red">*</font></label>
                         <input type="password" class="form-control input-underline input-lg" validateEqual="password"  name="confirmPassword" #confirmPassword="ngModel" ngModel  required placeholder="Retype password"/>
-                        <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !frm.submitted)">
+                        <small class="text-danger" [hidden]="confirmPassword.pristine && !frm.submitted">
                             Password mismatch
                         </small>
-                        <small class="text-danger" *ngIf="confirmPassword.errors?.required">
+                         <small class="text-danger" *ngIf="confirmPassword.errors?.required">
                                 Password is Required
                           </small>
                    </div>
