@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
 import {NgbModal, ModalDismissReasons,NgbModalRef, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { Sub } from './subtype';
 import { Type } from './type';
+import { isNgTemplate } from '@angular/compiler';
 
 @Component({
   selector: 'app-activity',
@@ -30,11 +31,13 @@ export class ActivityComponent implements OnInit {
   closeResult:any;
   docs3:any;
   sutype=[];
+  subtyp_old:string;
   nm:string;sttTime:string;
   time1:any;time2:any;
   msg:string;
   countries:any;
   suype: any;
+  err:any;
   modalReference: NgbModalRef;
   desc:string;remk:string;createby:string;objID1:string;ven:string;stTime:string;stDate:string;mtDate:string;isPublish:boolean
   ord:number;sec:string;objID2:string;pplace:string;staffname:string;edTime:string;dur:string;typ:string;subtyp:string
@@ -58,17 +61,7 @@ export class ActivityComponent implements OnInit {
    this.ngOnChanges();
     
    }
-   onSelect(countryid) {
-    //this.subtyp="";
-    
-    this.suype = this.activity.getStates()
-                 .filter((item)=> item.type == countryid);
-                 console.log(this.suype)  
-                // this.subtyp=this.suype
-                // if(this.subtyp!=this.suype){
-                //   this.subtyp=this.suype
-                // }
-  }
+  
   doSomething(oldVal, newVal) {
     // some code
     //console.log(oldVal)
@@ -149,8 +142,6 @@ export class ActivityComponent implements OnInit {
 
   Onedit(_id:string,content)
   {
-    
-    
     this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -218,7 +209,10 @@ export class ActivityComponent implements OnInit {
            this.dur=data['duration']
            this.typ=data['type']
            this.subtyp=data['subType']
-            this.onSelect(this.typ)
+           this.subtyp_old=data['subType']
+           this.suype = this.activity.getStates().filter((item)=> item.type == this.typ);
+           console.log(this.suype) ;
+           //this.onSelect(this.typ)
           // this.subtyp="";
           // this.subtype1(this.typ)
            
@@ -227,7 +221,14 @@ export class ActivityComponent implements OnInit {
    // this.router.navigate(['/activity',{'objectId': _id}]);
   }
 
-  
+  onSelect(countryid) {
+    
+    this.subtyp=null;
+    this.suype = this.activity.getStates()
+                 .filter((item)=> item.type == countryid);
+                 console.log(this.suype) ;
+                
+  }
   
   openLg(content) {
     this.Msg="Save";

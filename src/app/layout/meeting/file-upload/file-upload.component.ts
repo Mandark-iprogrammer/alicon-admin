@@ -1,9 +1,10 @@
-import { Component, OnInit, ElementRef,OnChanges } from '@angular/core';
+import { Component, OnInit, ElementRef,OnChanges, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../../environments/environment';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/do";
 //import the map function to be used with the http library
 import "rxjs/add/operator/map";
@@ -15,8 +16,12 @@ import "rxjs/add/operator/map";
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
+  htmlToAdd: string;
   SERVER_URL3:string
   fileSelected: boolean;
+  public link:boolean=false
+  abc:any
+  public download1 : boolean=true
   uploader: FileUploader = new FileUploader({
     allowedMimeType: ['image/png','image/jpg','application/pdf'], //will be loaded only PNG files
     maxFileSize: 3*1024*1024 // 5 MB
@@ -24,28 +29,42 @@ export class FileUploadComponent implements OnInit {
   // public uploader:FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
-
+  isLoading: boolean = false;
+    
+  toggleLoading() {
+      this.isLoading = !this.isLoading;
+  }
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }
   APP_ID: string
+  Link:string
   MASTER_KEY: string
   SERVER_URL: string
   SERVER_URL1: string
+  SERVER_URL2: string
+  url_image:string;
   sToken: string
   docs:any
   published:boolean = false
   meetingID: string
   meetingFile: File;
-  
+  @ViewChild('frm1') mytemplateForm : NgForm;
   public fileOverAnother(e: any): void {
     console.log(e)
     this.hasAnotherDropZoneOver = e;
   }
 
   public fileChange(e) {
+
     this.meetingFile = e.target.files[0];
-    this.fileSelected = e.target.files[0].length>0;
+    if(this.meetingFile.type == "image/jpg" ||  this.meetingFile.type == "image/jpeg" ||  this.meetingFile.type == "application/pdf") {
+          this.meetingFile = e.target.files[0];
+        }
+        else {
+          this.toastr.error("Upload Image and PDF Files Only...!")
+          this.mytemplateForm.reset();
+        }
   }
 
   constructor(
@@ -63,11 +82,15 @@ export class FileUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-
+   
 
   }
   ngOnChanges(){
-    this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"1AqzhGMYOg"}'
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.meetingID = params['objectId'];
+    });
+    //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"'+this.meetingID+'"}'
+    this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"}}'
     // this.SERVER_URL1 = environment.apiUrl+'/users?where={"isAdmin":false}'
      this.http.get(this.SERVER_URL1, {
        headers: new HttpHeaders({
@@ -97,30 +120,32 @@ export class FileUploadComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
-
+  
     var formData = new FormData();
     // const files: File = inputEl.files[0];
     formData.append('meetingFile', this.meetingFile);
+
     formData.append('meetingId', this.meetingID);//1AqzhGMYOg
     formData.append('fileDescription', frm.fileDescription);
     formData.append('fileTitle', frm.fileTitle);
 
     console.log('form data variable :   ' + formData);
 
-    // var headers = new HttpHeaders({
-    //   'X-Parse-Application-Id': this.APP_ID,
-    //   'X-Parse-Master-Key': this.MASTER_KEY,
-    // });
-    // this.http.post(this.SERVER_URL, formData, { headers: headers }).subscribe(success => {
-    //   console.log(success);
-    //   if(success['status']=="success"){
-    //     this.toastr.success("File Upload Successfully")
-            //this.ngOnChanges();
-    //   }
-    //   else{
-    //     this.toastr.error("File Not Upload")
-    //   }
-    // })
+    var headers = new HttpHeaders({
+      'X-Parse-Application-Id': this.APP_ID,
+      'X-Parse-Master-Key': this.MASTER_KEY,
+    });
+    this.http.post(this.SERVER_URL, formData, { headers: headers }).subscribe(success => {
+      console.log(success);
+      if(success['status']=="success"){
+        this.toastr.success("File Upload Successfully")
+        this.mytemplateForm.reset();
+            this.ngOnChanges();
+      }
+      else{
+        this.toastr.error("File Not Upload")
+      }
+    })
 
     
 
@@ -180,6 +205,52 @@ export class FileUploadComponent implements OnInit {
       )
 
 
+    }
+
+    download(url:string,type:string,fileName:string){
+      this.url_image=null;
+      if(type=="media")
+      {
+        this.link=true;
+        this.download1=false;
+        this.url_image=url;
+        this.htmlToAdd = '<a href="'+this.url_image+'">Link</a>';
+      }
+      if(type=="pdf"){
+        let arr={
+            "fileName":fileName,
+            "meetingId":"1AqzhGMYOg",
+        }
+        var headers = new HttpHeaders({
+          'X-Parse-Application-Id': this.APP_ID,
+          'X-Parse-Master-Key': this.MASTER_KEY,
+          'Content-Type': 'application/json',
+        });
+        this.SERVER_URL2 = 'http://13.126.191.252:1337/parse/functions/generate_download_link'
+        this.http.post(this.SERVER_URL2, arr, { headers: headers }).subscribe(success => {
+       //   this.docs=success['result'];
+          this.abc=JSON.parse(success['result'])
+          this.url_image=this.abc['data']
+          console.log(this.url_image)
+          this.link=true;
+          this.htmlToAdd = '<a href="'+this.url_image+'">Link</a>';
+          // var div = document.getElementById('foo');
+          // var newlink = document.createElement('a');
+          // newlink.setAttribute('href', this.url_image);
+          // div.appendChild(newlink);
+          
+         // this  .docs=JSON.stringify(success['result'])
+       //   console.log(this.docs)
+        })
+      }
+      
+    }
+    cancel(){
+      //this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+    }
+
+    link1(){
+      this.link=false;
     }
   
 

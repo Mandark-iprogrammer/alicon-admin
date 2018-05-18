@@ -201,6 +201,7 @@ export class MeetingComponent implements OnInit {
  //public mtDate1:Date
   sav:string = "Save"
   published:boolean = false
+  publish1 :boolean=false
   tag: any;
   mtDate1:any;
   order:number;
@@ -554,12 +555,13 @@ ngOnChanges(){
         console.log(data['isPublished'])
         if(data['isPublished']==false){
           this.published=false;
-          
+          // this.onChange1(this.published)
           this.pub="UnPublish"
         }
         else{
+
           this.published=true;
-         
+          // this.onChange1(this.published)
           this.pub="Published"
         }
         
@@ -734,14 +736,7 @@ convertTime12to24(time12h) {
 
   Onedit(_id: string,content) {
     console.log(_id)
-    if( this.published==true){
-      this.pub="Published"
-      this.published=true;
-    }
-    else{
-      this.pub="UnPublished"
-      this.published=false;
-    }
+   
     //this.meeting.objectId=Object.assign({},_id);
     //this.router.navigate(['/viewMeeting', { 'objectId': _id }]);
     this.modalReference =this.modalService.open(content, { size: 'lg' ,centered: true});
@@ -1129,7 +1124,7 @@ convertTime12to24(time12h) {
               fcm.send(message, function(err, response){
                 if (err) {
                     console.log("Something has gone wrong!");
-                    //this.toastr.success("Notification Not Send Successfully");
+                    this.toastr.success("Notification Not Send Successfully");
                 } else {
                     console.log("Successfully sent with response: ", response);
                     this.toastr.success("Notification Send Succssfully");
@@ -1206,16 +1201,17 @@ convertTime12to24(time12h) {
 
     }
 
-    // onChange1(event){
-    //   if(event==true){
-    //     this.pub="Published"
-    //     this.published=true;
-    //   }
-    //   else{
-    //     this.pub="UnPublished"
-    //     this.published=false;
-    //   }
-    // }
+    onChange1(event){
+      
+      if(event==true){
+        this.pub="Published"
+        this.publish1=true;
+      }
+      else{
+        this.pub="UnPublished"
+        this.publish1=false;
+      }
+    }
 
 
     formatAMPM(hour,minute) {

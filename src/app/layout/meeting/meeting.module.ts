@@ -17,6 +17,7 @@ import { TimepickerComponent } from './meeting/timepicker/timepicker.component';
 import { CustomEditorComponent } from './meeting/custom-editor/custom-editor.component';
 import { Timepicker1Component } from './meeting/timepicker1/timepicker1.component';
 import { ActivityComponent } from './activity/activity.component';
+import { LaddaModule } from 'angular2-ladda';
 
 @NgModule({
   imports: [
@@ -26,6 +27,12 @@ import { ActivityComponent } from './activity/activity.component';
     ReactiveFormsModule,
     Ng2SmartTableModule,
     Ng2AutoCompleteModule,
+    LaddaModule.forRoot({
+      style: "contract",
+      spinnerSize: 40,
+      spinnerColor: "red",
+      spinnerLines: 12
+  }),
     Ng2CompleterModule,
     TagInputModule,
     NgbModule.forRoot(),

@@ -65,7 +65,7 @@
                         (createConfirm)="addRecord($event)"
                         (editConfirm)="updateRecord($event)"
                         (create)="create.emit($event)"
-                        (edit)="edit.emit($event)"
+                        (edit)="edit($event,content)"
                         (delete)="delete.emit($event)"
                         (custom)="custom.emit($event)"
                         (userSelectRow)="onUserSelectRow($event)"
@@ -75,9 +75,67 @@
                         (sort)="sort($event)"
                         (filter)="filter($event)"
                         (custom)="onCustom($event)"
+                        
+                        (changePwd)="onCustom($event)"
                         ></ng2-smart-table>
 
+                        <ng-template #content let-c="close" let-d="dismiss">
+                            <form   (ngSubmit)="changePwd(frm.value)" #frm="ngForm" novalidate>
+                          <div class="modal-header">
+                              <h4 class="modal-title">Change Password</h4>
+                              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                            
+                             
+                                <div class="col-md-12" >
+                                    <div class="form-group" >
+                                            <label for="password">Password<font color="red">*</font></label>
+                                            <input type="password"  class="form-control input-underline input-lg" pattern="^(?=)(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"  ngModel required placeholder="Enter the password" minlength="6" />
+                                            <small  class="text-danger" *ngIf="password.errors?.pattern">
+                                                    Need atleast one special character 
+                                            </small>
+                                            <small class="text-danger" *ngIf="password.errors?.required">
+                                                    Password is Required
+                                              </small>
+                                              <small  class="text-danger" *ngIf="password.errors?.minlength">
+                                                            At least 6 character 
+                                                    </small>
+                                        </div>
+                             </div>
+                             <div class="col-md-12" >
+                                    <div class="form-group" >
+                                            <label for="password">Retype Password<font color="red">*</font></label>
+                                            <input type="password" class="form-control input-underline input-lg" validateEqual="password"  name="confirmPassword" #confirmPassword="ngModel" ngModel  required placeholder="Retype password"/>
+                                            <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)">
+                                                Password mismatch
+                                            </small>
+                                             <small class="text-danger" *ngIf="confirmPassword.errors?.required">
+                                                    Password is Required
+                                              </small>
+                                       </div>
+                             </div>
+                             <div class="form-group">
+                                <input type="hidden" name="objectId" #objectId="ngModel" ngModel [(ngModel)]="objID1" />
+                        
+                            </div>
+                            
 
+                          </div>
+                          <div class="modal-footer">
+                           
+                              <div class="col-md-6">
+                                  <button type="submit" [disabled]="!frm.valid"  class="btn btn rounded-btn btn-block" >Change</button>
+                              </div>
+                              <div class="col-md-6">
+                                  <button type="button" class="btn btn rounded-btn btn-block" (click)="c('Close click')">Close</button>
+                              </div>
+                           
+                          </div>
+                        </form>
+                      </ng-template>
 
 <!-- <table [id]="tableId" [ngClass]="tableClass">
 

@@ -133,7 +133,7 @@
     
                    <div class="form-group">
                          <label class="control-label">{{pub}}</label> 
-                         <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)"   name="isPublished"  #isPublished="ngModel" ngModel [checked]="published" ></ui-switch>
+                         <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)"   name="isPublished"  #isPublished="ngModel" ngModel [checked]="publish1" ></ui-switch>
                    </div>
                </div>
            </div>
@@ -278,7 +278,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <button  type="submit" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block" >Send to all users</button>
+                                        <button  type="submit" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block" >Send to all invited users</button>
                                     </div>
                                 </div>
 

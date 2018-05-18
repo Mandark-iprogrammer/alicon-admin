@@ -198,11 +198,16 @@ export class ActivityService {
 
     getStates() {
       return [
+     
         new Sub('Presentation','Presentation' ),
+       
+
         new Sub('Travel', 'Car' ),
         new Sub('Travel', 'Walk' ),
         new Sub('Travel', 'Auto' ),
+
         new Sub('Q&A', 'Q&A'),
+
         new Sub('Break', 'Lunch'),
         new Sub('Break', 'Tea'),
        

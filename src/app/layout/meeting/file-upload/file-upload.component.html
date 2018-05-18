@@ -1,23 +1,25 @@
-<form class="" #frm1="ngForm" (ngSubmit)="onSubmit(frm.value)">
+
+
+ <form class="" #frm1="ngForm" (ngSubmit)="onSubmit(frm1.value)">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 
       <div class="form-group">
         <label for="name">Title<font color="red">*</font></label>
-        <input type="text" class="form-control input-underline input-lg" name="fileTitle" #fileTitle="ngModel" ngModel placeholder="Enter File Title">
-        <small class="text-danger" *ngIf="fileTitle.errors?.required"> 
-          File Title is required
-      </small>
+        <input type="text" required class="form-control input-underline input-lg" name="fileTitle" #fileTitle="ngModel" ngModel placeholder="Enter File Title">
+        <small  class="text-danger" *ngIf="fileTitle.errors?.required">
+            File Title is required
+        </small> 
       </div>
     </div>
     
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 
       <div class="form-group">
         <label for="name">File Description<font color="red">*</font></label>
-        <input type="text" class="form-control input-underline input-lg" #fileDescription="ngModel" ngModel name="fileDescription"
+        <input type="text" required  class="form-control input-underline input-lg" #fileDescription="ngModel" ngModel name="fileDescription"
           placeholder="Enter File Description">
           <small class="text-danger" *ngIf="fileDescription.errors?.required"> 
             File Description is required
@@ -27,22 +29,23 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="form-group">
         <!-- ng2FileSelect [uploader]="uploader"  -->
         <label for="name">File<font color="red">*</font></label>
-        <input type="file" ng2FileSelect [uploader]="uploader" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
-          accept="image/jpg,image/jpeg,application/pdf" />
-          <small class="text-danger" [hidden]="!fileSelected"> 
+        <input type="file"  ng2FileSelect [uploader]="uploader" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
+          />
+          
+          <!-- <small class="text-danger" [hidden]="!fileSelected"> 
             File is Required 
-        </small>
+        </small> -->
         <!-- <input type="file" id="photo" name="photo" ng2FileSelect [uploader]="uploader" /> -->
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-6">
+  <!-- <div class="row">
+    <div class="col-md-4">
       <div class="form-group">
         <div ng2FileDrop style="height:70px" [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}" (fileOver)="fileOverAnother($event)"
           [uploader]="uploader" class="well my-drop-zone">
@@ -51,24 +54,22 @@
 
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="row">
-    <div class="col-md-3">
-      <button type="submit" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block">Upload</button>
+    <div class="col-md-2">
+      <button type="submit" [ladda]="progress" (click)="startLoading()" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block">Upload</button>
     </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
     </div>
-      <!-- <button type="button" class="btn btn-success btn-xs"
-      (click)="upload(fileTitle.value,fileDescription.value,uploader.value)" >
-  <span class="glyphicon glyphicon-upload"></span> Upload
-</button> -->
+   
     
   </div>
  
 </form>
 <br><br>
+
 <h4>List of Files</h4>
 <div class="table-responsive">
   <table class="table table-striped table-bordered">
@@ -78,7 +79,7 @@
       <th style="text-align: center;">File Title</th>
       <th style="text-align: center;">Download </th>
       <th style="text-align: center;">Publish/UnPublished </th>
-      <th style="text-align: center;">Delete</th>
+      <!-- <th style="text-align: center;">Delete</th> -->
      
     </tr>
     {{notFound}}
@@ -87,10 +88,11 @@
       <td style="text-align: center;">{{i+1}}</td>
       <td style="text-align: center;">{{docs.name}}</td>
       <td style="text-align: center;">{{docs.title}}</td>
-      <td style="text-align: center;"><a href="{{docs.url}}">Download</a></td>
+      <td style="text-align: center;"><a   (click)="download(docs.url,docs.type,docs.name)">Download</a> <div *ngIf="link" [innerHtml]="htmlToAdd" (click)="link1()"></div> </td>
       <td class="text-center" style="padding-top:19px "><ui-switch   size="small"  (change)="onChange($event,docs.objectId)" [checked]="docs.isPublished"></ui-switch></td>
-      <td class="text-center"><a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a></td>
+      <!-- <td class="text-center"><a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a></td> -->
     </tr>
   </table>
-
 </div>
+
+

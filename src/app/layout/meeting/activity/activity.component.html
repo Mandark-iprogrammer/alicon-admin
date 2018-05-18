@@ -108,11 +108,11 @@
                         <!-- {{type|json}} -->
                              <select name="type" [(ngModel)]="typ" #type="ngModel"  (change)="onSelect($event.target.value)" (ngModelchange)="doSomething(old, value)" ngModel class="form-control input-underline input-lg" placeholder="Type" required>
                                      <option  value="" disabled >-----Select-----</option>
-                                     <option *ngFor="let obj of countries">{{obj.name}}</option>
-                                     <!-- <option  value="Presentation">Presentation</option>
+                                     <!-- <option *ngFor="let obj of countries">{{obj.name}}</option> -->
+                                     <option  value="Presentation">Presentation</option>
                                      <option  value="Q&A">Q&A</option>
                                      <option  value="Travel">Travel</option>
-                                     <option  value="Break">Break</option> -->
+                                     <option  value="Break">Break</option>
                                                                
                                  </select>
                                  <small class="text-danger" *ngIf="type.errors?.required"> 
@@ -124,11 +124,12 @@
                             <div class="form-group">     
                      <label for="zipcode">Sub Type <font color="red">*</font></label>
                             <select name="subType" [(ngModel)]="subtyp" #subType="ngModel"   ngModel class="form-control input-underline input-lg" placeholder="Sub Type" required >
-                                    <option  value="" disabled="disabled" >-----Select-----</option>
-                                    <option *ngFor="let suype of suype" value="{{suype.subtype}}">{{suype.subtype}}</option>
+                                <option [ngValue]="null" selected>---Select---</option>
+                                    <option *ngFor="let suype of suype ;let i=index"  value="{{suype.subtype}}" selected>{{suype.subtype}}</option>
                                     <small class="text-danger" *ngIf="subType.errors?.required"> 
                                             SubType is required.
-                                        </small>                               
+                                    </small>
+                                                             
                             </select>
                             </div>   
                         </div>    

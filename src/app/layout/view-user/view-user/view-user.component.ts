@@ -9,21 +9,25 @@ import { Row } from '../lib/data-set/row';
 import { deepExtend } from '../lib/helpers';
 import { LocalDataSource } from '../lib/data-source/local/local.data-source';
 import { environment } from '../../../../environments/environment';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
+import {NgbModal, ModalDismissReasons,NgbModalRef, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-view-user',
   templateUrl: './view-user.component.html',
   styleUrls: ['./view-user.component.scss'],
-  providers:[UserService]
+  providers:[UserService,NgbModal,NgbActiveModal]
 })
 export class ViewUserComponent implements OnInit {
 
+  objID1: NgbModalRef;
+  closeResult: string;
   @Input() source: any;
   @Input() settings: Object = {};
 
   @Output() rowSelect = new EventEmitter<any>();
   @Output() userRowSelect = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
-  @Output() edit = new EventEmitter<any>();
+  
   @Output() create = new EventEmitter<any>();
   @Output() custom = new EventEmitter<any>();
   @Output() deleteConfirm = new EventEmitter<any>();
@@ -31,7 +35,9 @@ export class ViewUserComponent implements OnInit {
   @Output() createConfirm = new EventEmitter<any>();
   @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
 
-
+  APP_ID :string
+  MASTER_KEY :string
+  SERVER_URL : string
   tableClass: string;
   tableId: string;
   perPageSelect: any;
@@ -40,7 +46,7 @@ export class ViewUserComponent implements OnInit {
   isPagerDisplay: boolean;
   rowClassFunction: Function;
   grid: Grid;
-
+  modalReference: NgbModalRef;
   docs: any
  // tableParamsFolders = {};
   defaultSettings = {
@@ -68,18 +74,19 @@ export class ViewUserComponent implements OnInit {
         title:'Department'
       }
     },
-    mode: 'inline', // inline|external|click-to-edit
+    mode: 'external', // inline|external|click-to-edit
     selectMode: 'single', // single|multi
     hideHeader: false,
     hideSubHeader: false,
     actions: {
       columnTitle: 'Actions',
       add: false,
-      edit: false,
+      edit: true,
       delete: false,
       custom: [{
-        name: '',
-        title: 'edit ',
+      
+        name: 'Edit',
+        title: '<i class="fa fa-fw fa-edit">',
       }],
       position: 'right', // left|right
     },
@@ -88,7 +95,7 @@ export class ViewUserComponent implements OnInit {
     },
     edit: {
       inputClass: '',
-      editButtonContent: 'Edit',
+      editButtonContent: '<br>Change Password',
       saveButtonContent: 'Update',
       cancelButtonContent: 'Cancel',
       confirmSave: true,
@@ -120,8 +127,15 @@ export class ViewUserComponent implements OnInit {
   constructor(
     private user : UserService,
     private toastr: ToastrService,
-    public router: Router
-  ) { 
+    public router: Router,
+    private http: HttpClient,
+    private modalService: NgbModal,
+    private actModel: NgbActiveModal,
+  ) {
+    
+    this.APP_ID = environment.APP_ID;
+    this.MASTER_KEY =  environment.MASTER_KEY;
+    
     this.user.displayUser().subscribe(data => {
       
       this.source=data['results'];
@@ -182,6 +196,44 @@ export class ViewUserComponent implements OnInit {
   onCustom(event) {
     this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
   
+  }
+  edit(event,content){
+    console.log(event)
+    this.objID1=event.data.objectId
+    this.modalReference =this.modalService.open(content, {centered: true});
+    this.modalReference.result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+   
+      console.log(this.closeResult)
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+      console.log(this.closeResult)
+    })
+    console.log(event)
+  }
+
+  changePwd(frm){
+    console.log(frm)
+    var data = {"password" : frm.password };
+    this.SERVER_URL = environment.apiUrl+'/users/'+frm.objectId
+    return this.http.put(this.SERVER_URL,data,{
+     headers:new HttpHeaders({
+     'Content-Type':'application/json',
+     'X-Parse-Application-Id':this.APP_ID,
+     'X-Parse-Master-Key':this.MASTER_KEY
+    })
+  }).subscribe(
+    res=>console.log(res),
+    err=>console.log(err),
+    ()=>{
+      console.log("record updated")
+      //this.meeting.showMeeting();
+      this.router.navigate(['/viewUsers']);
+      this.toastr.success('Password Changed Successfully');
+      this.modalReference.close();
+    }
+  )
+
   }
 
 }

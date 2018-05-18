@@ -122,6 +122,8 @@ export class InvitationsComponent implements OnInit {
       
     })
 
+
+    
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
@@ -165,13 +167,15 @@ export class InvitationsComponent implements OnInit {
 
 
   ngOnInit() {
-    
-   
    
   }
   ngOnChanges(){
    
-    
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.meetingID = params['objectId'];
+    });
+   
+    this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
   }
 
   // invitations(frm: any) {
@@ -284,10 +288,18 @@ export class InvitationsComponent implements OnInit {
         () => {
           console.log("record updated")
           //this.meeting.showMeeting();
-          this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+        //  this.router.navigate(['/meeting', { 'objectId': this.meetingID}]);
           this.toastr.success('Invivation Send Successsfully');
+          this.ngOnChanges();
           this.send.length==0;
           this.username.length=0;
+          this.router.navigated = true; 
+          var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
+          
+            for(let i=0; i<checkedBoxes.length; i++) {
+              checkedBoxes[i].parentNode.removeChild(checkedBoxes[i]);
+            }
+            
           //event.isSelected=false;
           //window.location.reload();
         }
