@@ -85,7 +85,7 @@ export class UserComponent implements OnInit {
 
 
     this.activatedRoute.params.subscribe((params: Params) => {
-         
+         console.log(params)
          let objectId=params['objectId'];
          if(objectId!=null){
           this.show = !this.show;
@@ -110,7 +110,11 @@ export class UserComponent implements OnInit {
                  this.loc=data['location']
                  this.dept=data['tags']
                 
-           })
+           },err=>{
+            if(err.error.code==101){
+              this.router.navigate(['/viewUsers'])
+            } 
+            console.log(err)})
           }
 
     });

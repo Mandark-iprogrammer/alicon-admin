@@ -23,8 +23,15 @@ export class ActivityComponent implements OnInit {
   public showCancel:boolean=false;
   public Msg = "Save"
   APP_ID :string
+  activityStaff:any
+  place:any
+  source: any;
+  act=[];
+  pp=[];
   MASTER_KEY :string
   SERVER_URL : string
+  SERVER_URL1 : string
+  docs4:any
   docs:any
   docs1:any     
   docs2:any
@@ -59,6 +66,50 @@ export class ActivityComponent implements OnInit {
    this.countries = this.activity.getCountries();
     console.log(this.countries)
    this.ngOnChanges();
+
+
+  //     aunto complete activity staff
+
+  this.SERVER_URL1 = environment.apiUrl+'/functions/activity_staff'
+  this.http.post(this.SERVER_URL1, '', {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Parse-Application-Id': this.APP_ID,
+      'X-Parse-REST-API-Key': this.MASTER_KEY,
+    })
+  }).subscribe(data4 => {
+    this.docs4 = JSON.parse(data4['result'])
+  //  console.log(this.docs4)
+    this.activityStaff = this.docs4.data
+   // console.log(JSON.stringify(this.activityStaff))
+   // console.log(this.activityStaff)
+    this.activityStaff.forEach(element => {
+        this.act.push({"indianStaff":element})
+    });
+    
+    console.log(this.act)
+  })
+
+  // Presentation Place
+  this.SERVER_URL1 = environment.apiUrl+'/functions/activity_presentation_places'
+  this.http.post(this.SERVER_URL1, '', {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Parse-Application-Id': this.APP_ID,
+      'X-Parse-REST-API-Key': this.MASTER_KEY,
+    })
+  }).subscribe(data3 => {
+    this.docs3 =  JSON.parse(data3['result'])
+  //  console.log(this.docs3.data)
+   this.place=this.docs3.data
+   console.log(this.place)
+   this.place.forEach(element1 => {
+    this.pp.push({"presentationPlace":element1})
+      });
+      console.log(this.pp);
+  })
+
+
     
    }
   
@@ -261,7 +312,7 @@ export class ActivityComponent implements OnInit {
     var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
     if(a>b){
       
-        this.toastr.error('Please Enter end time is greater than start time');
+        this.toastr.error('End time should be greater than start time');
         return false;
       
     }
@@ -289,7 +340,14 @@ export class ActivityComponent implements OnInit {
       )
   
     }else{
-    
+      var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
+      var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
+      if(a>b){
+        
+          this.toastr.error('End time should be greater than start time');
+          return false;
+        
+      }
       console.log(frm.objectId);
       console.log(frm);
     

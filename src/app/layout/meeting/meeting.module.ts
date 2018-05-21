@@ -18,6 +18,7 @@ import { CustomEditorComponent } from './meeting/custom-editor/custom-editor.com
 import { Timepicker1Component } from './meeting/timepicker1/timepicker1.component';
 import { ActivityComponent } from './activity/activity.component';
 import { LaddaModule } from 'angular2-ladda';
+import { RsvpComponent } from './rsvp/rsvp.component';
 
 @NgModule({
   imports: [
@@ -28,8 +29,8 @@ import { LaddaModule } from 'angular2-ladda';
     Ng2SmartTableModule,
     Ng2AutoCompleteModule,
     LaddaModule.forRoot({
-      style: "contract",
-      spinnerSize: 40,
+      style: "expand-left",
+      spinnerSize: 20,
       spinnerColor: "red",
       spinnerLines: 12
   }),
@@ -39,7 +40,7 @@ import { LaddaModule } from 'angular2-ladda';
     UiSwitchModule
   ],
  
-  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component, ActivityComponent],
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component, ActivityComponent, RsvpComponent],
   entryComponents: [
     CustomEditorComponent,TimepickerComponent,Timepicker1Component
     ],

@@ -1,6 +1,6 @@
 
 
- <form class="" #frm1="ngForm" (ngSubmit)="onSubmit(frm1.value)">
+ <form class="" #frm1="ngForm" (ngSubmit)="onSubmit(frm1.value)" style="padding-top:30px; ">
   <div class="row">
     <div class="col-md-4">
 
@@ -34,7 +34,7 @@
         <!-- ng2FileSelect [uploader]="uploader"  -->
         <label for="name">File<font color="red">*</font></label>
         <input type="file"  ng2FileSelect [uploader]="uploader" #meetingFile="ngModel" ngModel name="myFile" (change)="fileChange($event)"
-          />
+        accept="image/jpg,image/jpeg,application/pdf"   />
           
           <!-- <small class="text-danger" [hidden]="!fileSelected"> 
             File is Required 
@@ -58,11 +58,11 @@
 
   <div class="row">
     <div class="col-md-2">
-      <button type="submit" [ladda]="progress" (click)="startLoading()" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block">Upload</button>
+      <button type="submit"  [ladda]="progress" [disabled]="!frm1.valid" class="btn btn rounded-btn btn-block">Upload</button>
     </div>
-      <div class="col-md-2">
+      <!-- <div class="col-md-2">
         <input type="button" class="btn btn rounded-btn btn-block" Value="Cancel" (click)=cancel();>
-    </div>
+    </div> -->
    
     
   </div>

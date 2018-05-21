@@ -108,7 +108,7 @@ export class ViewUserComponent implements OnInit {
       confirmCreate: true,
     },
     delete: {
-      deleteButtonContent: 'Delete',
+      deleteButtonContent: 'Send Mail',
       confirmDelete: false,
     },
     attr: {
@@ -194,7 +194,8 @@ export class ViewUserComponent implements OnInit {
 
   }
   onCustom(event) {
-    this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
+    this.router.navigate(['/User',event.data.objectId]); 
+    //this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
   
   }
   edit(event,content){

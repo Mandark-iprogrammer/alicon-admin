@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
+import * as Ladda from 'ladda';
 import "rxjs/add/operator/do";
 //import the map function to be used with the http library
 import "rxjs/add/operator/map";
@@ -30,13 +31,8 @@ export class FileUploadComponent implements OnInit {
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   isLoading: boolean = false;
-    
-  toggleLoading() {
-      this.isLoading = !this.isLoading;
-  }
-  public fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
-  }
+  progress: boolean | number = false; 
+ 
   APP_ID: string
   Link:string
   MASTER_KEY: string
@@ -47,6 +43,7 @@ export class FileUploadComponent implements OnInit {
   sToken: string
   docs:any
   published:boolean = false
+  publish:boolean=false
   meetingID: string
   meetingFile: File;
   @ViewChild('frm1') mytemplateForm : NgForm;
@@ -91,6 +88,7 @@ export class FileUploadComponent implements OnInit {
     });
     //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"'+this.meetingID+'"}'
     this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"}}'
+ //  this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"9pSCqviE6i"}}'
     // this.SERVER_URL1 = environment.apiUrl+'/users?where={"isAdmin":false}'
      this.http.get(this.SERVER_URL1, {
        headers: new HttpHeaders({
@@ -104,18 +102,30 @@ export class FileUploadComponent implements OnInit {
        this.docs = data['results']
        this.docs.forEach(element => {
          console.log(element)
-         if(element.isPublished==false){
-           this.published=false;
-         }
-         else{
-          this.published=true;
-         }
+         console.log(element.isPublished)
+         if(element.isPublished){
+          if(element.isPublished===true){
+            element.isPublished=true;
+          }
+          else {
+            element.isPublished=false;
+          }
+        }
+        else{
+          element.isPublished=false;
+        }
        });
        console.log(this.docs)
    })
   }
 
   onSubmit(frm: any) {
+    
+    this.progress = 0; // starts spinner
+ 
+        
+
+
     // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#fileUploadElem');
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
@@ -125,21 +135,37 @@ export class FileUploadComponent implements OnInit {
     // const files: File = inputEl.files[0];
     formData.append('meetingFile', this.meetingFile);
 
-    formData.append('meetingId', this.meetingID);//1AqzhGMYOg
+    formData.append('meetingId',this.meetingID);//1AqzhGMYOg
     formData.append('fileDescription', frm.fileDescription);
     formData.append('fileTitle', frm.fileTitle);
-
+    //formData.append("isPublished",);
     console.log('form data variable :   ' + formData);
 
     var headers = new HttpHeaders({
       'X-Parse-Application-Id': this.APP_ID,
       'X-Parse-Master-Key': this.MASTER_KEY,
     });
+
+    // Create a new instance of ladda for the specified button
+
+
+
     this.http.post(this.SERVER_URL, formData, { headers: headers }).subscribe(success => {
       console.log(success);
       if(success['status']=="success"){
         this.toastr.success("File Upload Successfully")
         this.mytemplateForm.reset();
+            setTimeout(() => {
+              this.progress = 0.5; // sets progress bar to 50%
+
+              setTimeout(() => {
+                  this.progress = 1; // sets progress bar to 100%
+
+                  setTimeout(() => {
+                      this.progress = false; // stops spinner
+                  }, 200);
+              }, 500);
+          }, 400);
             this.ngOnChanges();
       }
       else{

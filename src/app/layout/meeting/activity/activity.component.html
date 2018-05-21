@@ -48,20 +48,22 @@
             
                     <div class="form-group">
                              <label for="phonenumber">Presentation Place </label>
-                             <input  type="text" pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Presentation place"/> 
+                             <!-- <input  type="text" pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg"  placeholder="Presentation place"/>  -->
                              <small class="text-danger" *ngIf="presentationPlace.errors?.pattern"> 
                                  Presentation Place not valid.
                              </small>
+                             <ng2-completer  pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg"  placeholder="Presentation place" [datasource]="place"  [minSearchLength]="2"></ng2-completer>
                      </div>
              </div>
              <div class="col-md-6">
              
                      <div class="form-group">
                               <label for="phonenumber">Indian Staff </label>
-                               <input  type="text"  name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg" maxlength="28" placeholder="Staff name"/> 
+                               <!-- <input  type="text"  name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg"  placeholder="Staff name"/>  -->
                                <!-- <small class="text-danger" *ngIf="indianStaff.errors?.pattern"> 
                                  Indian Staff Place not valid.
                                </small> -->
+                               <ng2-completer  type="text"  name="indianStaff" #indianStaff="ngModel" [(ngModel)]="staffname" ngModel class="form-control input-underline input-lg"  placeholder="Staff name" [datasource]="activityStaff"  [minSearchLength]="2"></ng2-completer>
                      </div>
              </div>
              </div>

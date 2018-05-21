@@ -134,11 +134,11 @@
                 <div class="form-group" >
                         <label for="password">Retype Password<font color="red">*</font></label>
                         <input type="password" class="form-control input-underline input-lg" validateEqual="password"  name="confirmPassword" #confirmPassword="ngModel" ngModel  required placeholder="Retype password"/>
-                        <small class="text-danger" [hidden]="confirmPassword.pristine && !frm.submitted">
+                        <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !frm.submitted)">
                             Password mismatch
                         </small>
                          <small class="text-danger" *ngIf="confirmPassword.errors?.required">
-                                Password is Required
+                                Re-type password is required
                           </small>
                    </div>
          </div>

@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewUserRoutingModule } from './view-user-routing.module';
 import { ViewUserComponent } from './view-user/view-user.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-import { EqualValidator } from '../user/user/equal-validator.directive';
+
+import { EqualValidator } from './view-user/equal-validator.directive';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { EqualValidator } from '../user/user/equal-validator.directive';
     ReactiveFormsModule,
     NgbModule.forRoot(),
   ],
-  declarations: [ViewUserComponent,EqualValidator]
+  declarations: [ViewUserComponent,EqualValidator, EqualValidator]
 })
 export class ViewUserModule { }

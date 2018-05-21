@@ -11,7 +11,8 @@ export class SidebarComponent {
     isActive: boolean = false;
     showMenu: string = '';
     pushRightClass: string = 'push-right';
-
+    username:string
+    objectId:string
     constructor(private translate: TranslateService, public router: Router) {
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
@@ -27,6 +28,9 @@ export class SidebarComponent {
                 this.toggleSidebar();
             }
         });
+
+        this.username=localStorage.getItem('username');
+        this.objectId=localStorage.getItem('objectId');
     }
 
     eventCalled() {

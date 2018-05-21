@@ -239,7 +239,8 @@ export class ViewMeetingComponent implements OnInit {
 
   OnView(_id:string){
     this.view="view"
-    this.router.navigate(['/meeting',{ 'objectId': _id,'view':'view'}]);
+  //  this.router.navigate(['/meeting',{ 'objectId': _id,'view':'view'}]);
+  this.router.navigate(['/meeting',_id]);
   }
 
   Ondelete(id:string){
@@ -274,7 +275,8 @@ export class ViewMeetingComponent implements OnInit {
   }
 
   onCustom(event) {
-    this.router.navigate(['/meeting',{ 'objectId': event.data.objectId,'view':'view'}]);
+    this.router.navigate(['/meeting',event.data.objectId]);
+  //this.router.navigate(['/meeting/'+event.data.objectId]);
   }
   
   openLg(content) {

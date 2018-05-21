@@ -67,9 +67,15 @@
             {{ 'More Theme' | translate }}
         </a> -->
         <div class="header-fields">
-            <a (click)="rltAndLtr()" class="list-group-item">
+                <!-- <a routerLink="/viewMeeting" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                    <i class="fa fa-fw fa-list"></i>&nbsp;{{ 'Manage Meeting' | translate }}
+                </a>
+                <a routerLink="/viewUsers" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                    <i class="fa fa-fw fa-group"></i>&nbsp;{{ 'Manage Users' | translate }}
+                </a> -->
+            <!-- <a (click)="rltAndLtr()" class="list-group-item">
                 <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
-            </a>
+            </a> -->
             <!-- <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('languages')">
                     <span><i class="fa fa-language"></i>&nbsp; {{ 'Language' | translate }} <b class="caret"></b></span>
@@ -116,11 +122,11 @@
             </div> -->
             <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
-                    <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
+                    <span><i class="fa fa-user"></i>&nbsp; {{username}}</span>
                 </a>
                 <li class="nested" [class.expand]="showMenu === 'profile'">
                     <ul class="submenu">
-                        <li>
+                        <!-- <li>
                             <a href="javascript:void(0)">
                                 <span><i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}</span>
                             </a>
@@ -134,7 +140,7 @@
                             <a href="javascript:void(0)">
                                 <span><i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a [routerLink]="['/login']" (click)="onLoggedout()">
                                 <span><i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}</span>

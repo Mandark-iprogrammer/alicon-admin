@@ -259,46 +259,7 @@ export class MeetingComponent implements OnInit {
       this.venues = this.docs1.data
     })
 
-    //aunto complete activity staff
 
-  // this.SERVER_URL1 = environment.apiUrl+'/functions/activity_staff'
-  // this.http.post(this.SERVER_URL1, '', {
-  //   headers: new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'X-Parse-Application-Id': this.APP_ID,
-  //     'X-Parse-REST-API-Key': this.MASTER_KEY,
-  //   })
-  // }).subscribe(data4 => {
-  //   this.docs4 = JSON.parse(data4['result'])
-  // //  console.log(this.docs4)
-  //   this.activityStaff = this.docs4.data
-  //  // console.log(JSON.stringify(this.activityStaff))
-  //  // console.log(this.activityStaff)
-  //   this.activityStaff.forEach(element => {
-  //       this.act.push({"indianStaff":element})
-  //   });
-    
-  //   console.log(this.act)
-  // })
-
-  //Presentation Place
-  // this.SERVER_URL1 = environment.apiUrl+'/functions/activity_presentation_places'
-  // this.http.post(this.SERVER_URL1, '', {
-  //   headers: new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'X-Parse-Application-Id': this.APP_ID,
-  //     'X-Parse-REST-API-Key': this.MASTER_KEY,
-  //   })
-  // }).subscribe(data3 => {
-  //   this.docs3 =  JSON.parse(data3['result'])
-  // //  console.log(this.docs3.data)
-  //  this.pplace=this.docs3.data
-  // // console.log(this.pplace)
-  //  this.pplace.forEach(element1 => {
-  //   this.pp.push({"presentationPlace":element1})
-  //     });
-
-  // })
 
     
     this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
@@ -479,24 +440,26 @@ ngOnChanges(){
   this.activatedRoute.params.subscribe((params: Params) => {
     console.log(params)
     let userId = params['objectId'];
-    let view = params['view'];
+   
     console.log(userId);
-    console.log(view)
-    if (view === "view") {
-      console.log("in view")
-      this.show2 = this.show2
-      this.show1 = true;
-      this.show = true;
+    
+    // if (view === "view") {
+    //   console.log("in view")
+    //   this.show2 = this.show2
+    //   this.show1 = true;
+    //   this.show = true;
      
-    }
-    else {
+    // }
+    // else {
       
-      this.show2 = true;
-      this.show1 = this.show1;
-      this.show = this.show;
-    }
+    //   this.show2 = true;
+    //   this.show1 = this.show1;
+    //   this.show = this.show;
+    // }
 
     if (userId != null) {
+      this.show = true
+    this.show1 = true;
       this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"' + userId + '"}}'
       this.http.get(this.SERVER_URL, {
         headers: new HttpHeaders({
@@ -510,6 +473,8 @@ ngOnChanges(){
         this.docs2 = data1['results']
         
         
+      },err=>{
+        console.log(err)
       });
 
       this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + userId;
@@ -521,12 +486,13 @@ ngOnChanges(){
           'X-Parse-REST-API-Key': this.MASTER_KEY,
         })
       }).subscribe(data => {
-       
-        console.log(data)
+         console.log(data)
         this.source = data
         this.docs1 = data
-
-       
+        
+        if(data==null){
+          this.router.navigate(['/viewMeeting']);
+        }
         
         this.sav="Update"
         this.mtDate1 =this.dataformat1(data['meetingDate']['iso'])
@@ -566,6 +532,11 @@ ngOnChanges(){
         }
         
        
+      },err=>{
+        //console.log(err.error)
+        if(err.error.code==101){
+          this.router.navigate(['/viewMeeting'])
+        }
       })
     }
   });
@@ -594,7 +565,8 @@ convertTime12to24(time12h) {
       this.meeting.saveData(frm).subscribe(
         res => {
           console.log(res)
-          this.router.navigate(['/meeting', { 'objectId': res['objectId'], 'view': 'view' }]);
+          this.router.navigate(['/meeting',res['objectId']]);
+        //  this.router.navigate(['/meeting', { 'objectId': res['objectId'], 'view': 'view' }]);
         },
         err => {
           console.log(err)
@@ -609,7 +581,8 @@ convertTime12to24(time12h) {
       this.meeting.saveData(frm).subscribe(
         res => {
           console.log(res),
-          this.router.navigate(['/meeting', { 'objectId': frm.objectId, 'view': 'view' }]); 
+          this.router.navigate(['/meeting',frm.objectId]); 
+         // this.router.navigate(['/meeting', { 'objectId': frm.objectId, 'view': 'view' }]); 
         },
         err => console.log(err),
         () => {
@@ -1124,7 +1097,8 @@ convertTime12to24(time12h) {
               fcm.send(message, function(err, response){
                 if (err) {
                     console.log("Something has gone wrong!");
-                    this.toastr.success("Notification Not Send Successfully");
+                    console.log(err)
+                   // this.toastr.error("Notification Not Send Successfully");
                 } else {
                     console.log("Successfully sent with response: ", response);
                     this.toastr.success("Notification Send Succssfully");
@@ -1183,13 +1157,15 @@ convertTime12to24(time12h) {
         () => {
           console.log("record updated")
           //this.meeting.showMeeting();
-          
-          this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
+          this.router.navigate(['/meeting',this.meetingID]);
+        //  this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
           if(event==true){
+            this.published=true;
             this.pub="Published"
           this.toastr.success('Record Published Successfully');
           }
           else{
+            this.published=false;
             this.pub="UnPublished"
             this.toastr.success('Record UnPublished..! ');
             

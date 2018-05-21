@@ -92,7 +92,7 @@
                            Meeting Time is required
                         </small> -->
                         <small class="text-danger" *ngIf="startTime.errors?.required">
-                               Start Time is required
+                               Meeting Time is required
                         </small> 
                    </div>
                </div>
@@ -132,8 +132,9 @@
                <div class="col-md-6">
     
                    <div class="form-group">
-                         <label class="control-label">{{pub}}</label> 
-                         <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)"   name="isPublished"  #isPublished="ngModel" ngModel [checked]="publish1" ></ui-switch>
+                         <label class="control-label">{{pub}}</label>
+                         <ui-switch   size="small" name="isPublished" [(ngModel)]="published" #isPublished1="ngModel" ngModel [checked]="published"></ui-switch>
+                         <!-- <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)" [(ngModel)]="enable"  name="isPublished"  #isPublished="ngModel" ngModel [checked]="publish1" ></ui-switch> -->
                    </div>
                </div>
            </div>
@@ -291,6 +292,12 @@
                             <app-file-upload></app-file-upload>
                         </ng-template>
                     </ngb-tab>
+                    <ngb-tab>
+                            <ng-template ngbTabTitle>RSVP</ng-template>
+                            <ng-template ngbTabContent>
+                               <app-rsvp></app-rsvp>
+                            </ng-template>
+                        </ngb-tab>
                 </ngb-tabset>
                 </div>
             </div>
