@@ -180,7 +180,7 @@ export class MeetingComponent implements OnInit {
   public show: boolean = false;
   public show1: boolean = false;
   public show2: boolean = false;
-
+  public edit1: boolean =false;
   APP_ID: string
   MASTER_KEY: string
   SERVER_URL: string
@@ -521,12 +521,14 @@ ngOnChanges(){
         console.log(data['isPublished'])
         if(data['isPublished']==false){
           this.published=false;
+          this.edit1=true;
           // this.onChange1(this.published)
           this.pub="UnPublish"
         }
         else{
 
           this.published=true;
+          this.edit1=false;
           // this.onChange1(this.published)
           this.pub="Published"
         }
@@ -1098,10 +1100,11 @@ convertTime12to24(time12h) {
                 if (err) {
                     console.log("Something has gone wrong!");
                     console.log(err)
-                   // this.toastr.error("Notification Not Send Successfully");
+                    this.toastr.error("Notification Not Send Successfully");
                 } else {
                     console.log("Successfully sent with response: ", response);
-                    this.toastr.success("Notification Send Succssfully");
+                   
+                   
                 }
               });
 
@@ -1116,11 +1119,12 @@ convertTime12to24(time12h) {
 
              }
             // this.users1.push(data)
-             
-            //  console.log(this.users1)
+             //  console.log(this.users1)
            })
        });
+       this.toastr.success('Notification Send Succssfully');
      }
+     
     )
 
 
@@ -1161,11 +1165,13 @@ convertTime12to24(time12h) {
         //  this.router.navigate(['/meeting', { 'objectId': this.meetingID, 'view': 'view' }]);
           if(event==true){
             this.published=true;
+            this.ngOnChanges();
             this.pub="Published"
           this.toastr.success('Record Published Successfully');
           }
           else{
             this.published=false;
+            this.ngOnChanges();
             this.pub="UnPublished"
             this.toastr.success('Record UnPublished..! ');
             

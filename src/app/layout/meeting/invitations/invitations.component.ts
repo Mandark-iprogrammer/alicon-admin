@@ -123,7 +123,22 @@ export class InvitationsComponent implements OnInit {
     })
 
 
-    
+    this.ngOnChanges();
+   
+  }
+
+
+  ngOnInit() {
+   
+  }
+  ngOnChanges(){
+   
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.meetingID = params['objectId'];
+    });
+    this.router.navigate(['/meeting',this.meetingID]);
+
+
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
@@ -163,18 +178,9 @@ export class InvitationsComponent implements OnInit {
     }
     })
 
-  }
 
 
-  ngOnInit() {
-   
-  }
-  ngOnChanges(){
-   
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
-    this.router.navigate(['/meeting',this.meetingID]);
+
    // this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
   }
 

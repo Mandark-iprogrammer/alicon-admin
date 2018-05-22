@@ -18,6 +18,8 @@ import "rxjs/add/operator/map";
 })
 export class FileUploadComponent implements OnInit {
   htmlToAdd: string;
+  notFound:string
+  
   SERVER_URL3:string
   fileSelected: boolean;
   public link:boolean=false
@@ -88,7 +90,7 @@ export class FileUploadComponent implements OnInit {
     });
     //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"'+this.meetingID+'"}'
     this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"}}'
- //  this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"9pSCqviE6i"}}'
+   //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"9pSCqviE6i"}}'
     // this.SERVER_URL1 = environment.apiUrl+'/users?where={"isAdmin":false}'
      this.http.get(this.SERVER_URL1, {
        headers: new HttpHeaders({
@@ -100,6 +102,10 @@ export class FileUploadComponent implements OnInit {
      }).subscribe(data => {
        console.log(data)
        this.docs = data['results']
+       if(this.docs.length==0){
+          this.notFound="Not Files has been uploaded yet."
+       }
+       else{
        this.docs.forEach(element => {
          console.log(element)
          console.log(element.isPublished)
@@ -115,18 +121,14 @@ export class FileUploadComponent implements OnInit {
           element.isPublished=false;
         }
        });
+      }
        console.log(this.docs)
    })
   }
 
   onSubmit(frm: any) {
-    
     this.progress = 0; // starts spinner
- 
-        
-
-
-    // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#fileUploadElem');
+     // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#fileUploadElem');
     this.activatedRoute.params.subscribe((params: Params) => {
       this.meetingID = params['objectId'];
     });
@@ -147,8 +149,6 @@ export class FileUploadComponent implements OnInit {
     });
 
     // Create a new instance of ladda for the specified button
-
-
 
     this.http.post(this.SERVER_URL, formData, { headers: headers }).subscribe(success => {
       console.log(success);
@@ -178,23 +178,27 @@ export class FileUploadComponent implements OnInit {
   }
   Ondelete(id:string){
     if (window.confirm('Are you sure want to Delete?')) {
-    //  this.SERVER_URL3 = 'http://13.126.191.252:1337/parse/classes/meetingFiles/'+id
-    //     return this.http.delete(this.SERVER_URL3,{
-    //     headers:new HttpHeaders({
-    //     'Content-Type':'application/json',
-    //     'X-Parse-Application-Id':this.APP_ID,
-    //     'X-Parse-REST-API-Key':this.MASTER_KEY,
-    //     })
-    //     }).subscribe(
-    //     res => {
-    //       console.log(res)
-    //     },
-    //     err => console.log(err),
-    //     () => {
-    //       console.log("record deleted")
-    //       this.toastr.success('Record deleted Successfully');
-    //       this.ngOnChanges();
-    //     })
+      let arr={
+        "meetingFileId": id
+      }
+
+     this.SERVER_URL3 = 'http://13.126.191.252:1337/parse/functions/deleteImageByMeetingFileId'
+        return this.http.post(this.SERVER_URL3,arr,{
+        headers:new HttpHeaders({
+        'Content-Type':'application/json',
+        'X-Parse-Application-Id':this.APP_ID,
+        'X-Parse-REST-API-Key':this.MASTER_KEY,
+        })
+        }).subscribe(
+        res => {
+          console.log(res)
+        },
+        err => console.log(err),
+        () => {
+          console.log("record deleted")
+          this.toastr.success('Record deleted Successfully');
+          this.ngOnChanges();
+        })
     
      }
   }

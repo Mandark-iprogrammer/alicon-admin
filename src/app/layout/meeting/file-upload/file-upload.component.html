@@ -79,7 +79,7 @@
       <th style="text-align: center;">File Title</th>
       <th style="text-align: center;">Download </th>
       <th style="text-align: center;">Publish/UnPublished </th>
-      <!-- <th style="text-align: center;">Delete</th> -->
+      <th style="text-align: center;">Delete</th>
      
     </tr>
     {{notFound}}
@@ -90,7 +90,7 @@
       <td style="text-align: center;">{{docs.title}}</td>
       <td style="text-align: center;"><a   (click)="download(docs.url,docs.type,docs.name)">Download</a> <div *ngIf="link" [innerHtml]="htmlToAdd" (click)="link1()"></div> </td>
       <td class="text-center" style="padding-top:19px "><ui-switch   size="small"  (change)="onChange($event,docs.objectId)" [checked]="docs.isPublished"></ui-switch></td>
-      <!-- <td class="text-center"><a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a></td> -->
+      <td class="text-center"><a class="btn text-danger"(click)="Ondelete(docs.objectId)"> <i class="fa fa-fw fa-trash"></i></a></td>
     </tr>
   </table>
 </div>
