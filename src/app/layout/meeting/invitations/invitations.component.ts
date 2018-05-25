@@ -104,8 +104,6 @@ export class InvitationsComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
    
-
-   
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
@@ -132,16 +130,13 @@ export class InvitationsComponent implements OnInit {
    
   }
   ngOnChanges(){
-   
+    this.users1.length=0; 
     this.activatedRoute.params.subscribe((params: Params) => {
+      
       this.meetingID = params['objectId'];
     });
     this.router.navigate(['/meeting',this.meetingID]);
 
-
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.meetingID = params['objectId'];
-    });
 
     this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
     this.http.get(this.SERVER_URL, {
@@ -152,13 +147,13 @@ export class InvitationsComponent implements OnInit {
         'X-Parse-Revocable-Session': '1'
       })
     }).subscribe(data => {
-        console.log(data['meetingUsers']);
+        //console.log(data['meetingUsers']);
         if(data['meetingUsers']==null){
           this.notFound="No person has been invited yet."
         }
         else{ 
       data['meetingUsers'].forEach(element => {
-          console.log(element)
+          //console.log(element)
           this.SERVER_URL = environment.apiUrl+'/users/' + element;
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -168,11 +163,9 @@ export class InvitationsComponent implements OnInit {
               'X-Parse-Revocable-Session': '1'
             })
           }).subscribe(data => {
-            //console.log(data)
-            
+         
            this.users1.push(data)
            
-            console.log(this.users1)
           })
       });
     }
@@ -185,14 +178,14 @@ export class InvitationsComponent implements OnInit {
   }
 
   // invitations(frm: any) {
-  //   console.log(frm)
+  //   //console.log(frm)
 
   //   let arrr = [];
-  //   console.log(frm.users)
+  //   //console.log(frm.users)
   //   for (var i = 0; i < frm.users.length; i++) {
   //     arrr.push(frm.users[i].value);
   //   }
-  //   console.log(arrr);
+  //   //console.log(arrr);
   //   let arr = {
 
   //     "meetingUsers": arrr
@@ -206,10 +199,10 @@ export class InvitationsComponent implements OnInit {
   //       'X-Parse-REST-API-Key': this.MASTER_KEY,
   //     })
   //   }).subscribe(
-  //     res => console.log(res),
-  //     err => console.log(err),
+  //     res => //console.log(res),
+  //     err => //console.log(err),
   //     () => {
-  //       console.log("record updated")
+  //       //console.log("record updated")
   //       //this.meeting.showMeeting();
   //       this.router.navigate(['/viewMeeting']);
   //       this.toastr.success('New Record Updated Successfully', 'Meeting Register');
@@ -226,7 +219,7 @@ export class InvitationsComponent implements OnInit {
 
     onUserRowSelect(event){
      // this.send.length=0;
-    console.log(event)
+    //console.log(event)
     // if(this.username.length>0){
     //   this.username.length=0;
     // }
@@ -260,7 +253,7 @@ export class InvitationsComponent implements OnInit {
       }
 
 
-      console.log(this.username)
+      //console.log(this.username)
     }
            
     }
@@ -273,14 +266,14 @@ export class InvitationsComponent implements OnInit {
       this.activatedRoute.params.subscribe((params: Params) => {
         this.meetingID = params['objectId'];
       });
-      console.log(this.send)
+      //console.log(this.send)
      
       let arr = 
         {
           "meetingUsers": {"__op":"AddUnique", "objects": this.send
         }
       }
-      console.log(arr)
+      //console.log(arr)
       this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
       return this.http.put(this.SERVER_URL, arr, {
         headers: new HttpHeaders({
@@ -292,14 +285,14 @@ export class InvitationsComponent implements OnInit {
         res => console.log(res),
         err => console.log(err),
         () => {
-          console.log("record updated")
+          //console.log("record updated")
           //this.meeting.showMeeting();
         //  this.router.navigate(['/meeting', { 'objectId': this.meetingID}]);
           this.toastr.success('Invivation Send Successsfully');
           this.ngOnChanges();
           this.send.length==0;
           this.username.length=0;
-          this.router.navigated = true; 
+          
           var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
           
             for(let i=0; i<checkedBoxes.length; i++) {
@@ -314,9 +307,11 @@ export class InvitationsComponent implements OnInit {
 
     fetchNews(event)
     { 
-      console.log(event)
+      //this.ngOnChanges();
+      //console.log(event)
       if(event.activeId=="ngb-tab-4"){
         this.username.length=0;
+
       }
     
     }

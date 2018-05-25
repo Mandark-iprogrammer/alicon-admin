@@ -15,7 +15,7 @@ export class MeetingService {
     private http:HttpClient
   ) {
     this.objectID=localStorage.getItem('objectId');
-    console.log(this.objectID)
+    //console.log(this.objectID)
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     this.SERVER_URL = environment.apiUrl+'/classes/meeting'
@@ -26,10 +26,10 @@ export class MeetingService {
 
 
       var a=this.formatAMPM(frm.startTime.hour,frm.startTime.minute);
-    console.log(a)
+    //console.log(a)
 
       let arrr=[];
-      // console.log(frm.tags)
+      // //console.log(frm.tags)
       // for(var i=0;i<frm.tags.length;i++){
       //     arrr.push(frm.tags[i].value);
       // }
@@ -55,7 +55,7 @@ export class MeetingService {
     },
     //"tags":arrr
    }
-   console.log(arr)
+   //console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -65,10 +65,11 @@ export class MeetingService {
    })
   }
   else{
+   // console.log(frm)
     var a=this.formatAMPM(frm.startTime.hour,frm.startTime.minute);
-    console.log(a)
+  //  console.log(a)
     let arrr=[];
-    // console.log(frm.tags)
+    // //console.log(frm.tags)
     // for(var i=0;i<frm.tags.length;i++){
     //     arrr.push(frm.tags[i].value);
     // }
@@ -138,7 +139,7 @@ export class MeetingService {
         "iso":new Date(frm.meetingDate).toISOString()
     }
    }
-   //console.log(arr)
+   ////console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -211,12 +212,12 @@ export class MeetingService {
   formatAMPM(hour,minute) {
     var hours = hour;
     var minutes = minute;
-    console.log(minutes);
+    //console.log(minutes);
 
     var ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes=minutes%10;
+    //minutes=minutes%10;
    
     if(minutes=="00"){
       minutes="00"  

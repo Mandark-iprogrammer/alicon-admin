@@ -45,10 +45,10 @@ export class UserComponent implements OnInit {
         'X-Parse-REST-API-Key':this.MASTER_KEY,
       })
      }).subscribe(data => {
-      console.log(data)       
+      //console.log(data)       
        this.docs=JSON.parse(data['result'])
        this.unique=this.docs.data
-       console.log(this.unique)
+       //console.log(this.unique)
     })
 
 
@@ -60,11 +60,11 @@ export class UserComponent implements OnInit {
       'X-Parse-REST-API-Key':this.MASTER_KEY,
     })
    }).subscribe(data1 => {
-    console.log(data1)       
+    //console.log(data1)       
    this.docs1=JSON.parse(data1['result'])
    this.locations=this.docs1.data
   
-        console.log(this.locations)
+        //console.log(this.locations)
   })
 
   this.SERVER_URL2 = environment.apiUrl+'/functions/user_designations'
@@ -75,17 +75,17 @@ export class UserComponent implements OnInit {
         'X-Parse-REST-API-Key':this.MASTER_KEY,
       })
     }).subscribe(data2 => {
-      console.log(data2)       
+      //console.log(data2)       
     this.docs2=JSON.parse(data2['result'])
     this.designations=this.docs2.data
-          console.log(this.designations)
+          //console.log(this.designations)
     })
 
 
 
 
     this.activatedRoute.params.subscribe((params: Params) => {
-         console.log(params)
+         //console.log(params)
          let objectId=params['objectId'];
          if(objectId!=null){
           this.show = !this.show;
@@ -99,7 +99,7 @@ export class UserComponent implements OnInit {
                 'X-Parse-Revocable-Session':'1'
             })
             }).subscribe(data => {
-                console.log(data)       
+                //console.log(data)       
                   this.reg="Update"                      
                   this.fname=data['firstName']
                   this.lname=data['lastName']
@@ -114,7 +114,8 @@ export class UserComponent implements OnInit {
             if(err.error.code==101){
               this.router.navigate(['/viewUsers'])
             } 
-            console.log(err)})
+            console.log(err)
+          })
           }
 
     });
@@ -130,7 +131,7 @@ export class UserComponent implements OnInit {
 
   register(frm:any){
     let arrr=[];
-    console.log(frm.tags)
+    //console.log(frm.tags)
     for(var i=0;i<frm.tags.length;i++){
         if(frm.tags[i].value){
           arrr.push(frm.tags[i].value);
@@ -153,16 +154,16 @@ export class UserComponent implements OnInit {
       "isAdmin":false
       
    } 
-    console.log(arr);
+    //console.log(arr);
     if(frm.objectId==null || frm.objectId===undefined){
-      console.log(frm)
+      //console.log(frm)
       this.user.saveData(arr).subscribe(
         res=>{
           console.log(res)
                 },
         err=>console.log(err),
         ()=>{
-         console.log("record saved")
+         //console.log("record saved")
          this.router.navigate(['/viewUsers']);
          this.toastr.success('New Record Added Successfully');
          })
@@ -180,15 +181,15 @@ export class UserComponent implements OnInit {
         "tags":arrr,
        "isAdmin":false
       } 
-      console.log(arr);
+      //console.log(arr);
       this.user.saveData(arr).subscribe(
         res=>console.log(res),
         err=>console.log(err),
         ()=>{
-          console.log("record updated")
+          //console.log("record updated")
           //this.meeting.showMeeting();
           this.router.navigate(['/viewUsers']);
-          this.toastr.success('New Record Updated Successfully');
+          this.toastr.success('Record Updated Successfully');
         }
       )
     }

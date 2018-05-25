@@ -64,7 +64,7 @@ export class ActivityComponent implements OnInit {
    
    // this.ngOnInit();
    this.countries = this.activity.getCountries();
-    console.log(this.countries)
+    //console.log(this.countries)
    this.ngOnChanges();
 
 
@@ -79,15 +79,15 @@ export class ActivityComponent implements OnInit {
     })
   }).subscribe(data4 => {
     this.docs4 = JSON.parse(data4['result'])
-  //  console.log(this.docs4)
+  //  //console.log(this.docs4)
     this.activityStaff = this.docs4.data
-   // console.log(JSON.stringify(this.activityStaff))
-   // console.log(this.activityStaff)
+   // //console.log(JSON.stringify(this.activityStaff))
+   // //console.log(this.activityStaff)
     this.activityStaff.forEach(element => {
         this.act.push({"indianStaff":element})
     });
     
-    console.log(this.act)
+    //console.log(this.act)
   })
 
   // Presentation Place
@@ -100,13 +100,13 @@ export class ActivityComponent implements OnInit {
     })
   }).subscribe(data3 => {
     this.docs3 =  JSON.parse(data3['result'])
-  //  console.log(this.docs3.data)
+  //  //console.log(this.docs3.data)
    this.place=this.docs3.data
-   console.log(this.place)
+   //console.log(this.place)
    this.place.forEach(element1 => {
     this.pp.push({"presentationPlace":element1})
       });
-      console.log(this.pp);
+      //console.log(this.pp);
   })
 
 
@@ -115,9 +115,9 @@ export class ActivityComponent implements OnInit {
   
   doSomething(oldVal, newVal) {
     // some code
-    //console.log(oldVal)
+    ////console.log(oldVal)
     this.subtyp=newVal;
-    //console.log(newVal=)
+    ////console.log(newVal=)
   }
 
   ngOnInit() {
@@ -130,11 +130,11 @@ export class ActivityComponent implements OnInit {
 
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      // console.log(params)
+      // //console.log(params)
        let userId = params['meetingId'];
        let objectId=params['objectId'];
        this.objID1=params['objectId'];
-      // console.log(userId);
+      // //console.log(userId);
       
  
      if(objectId){
@@ -154,13 +154,13 @@ export class ActivityComponent implements OnInit {
          else{
            this.notFound="";
           // this.ngOnInit();
-           console.log(data1)       
+           //console.log(data1)       
            this.docs2=data1['results']
-           console.log(this.docs2)
+           //console.log(this.docs2)
           
            this.docs2.forEach(element => {
                if(element['startTime1']){
-              //   console.log(element['startTime1']['iso'])
+              //   //console.log(element['startTime1']['iso'])
                  element['startTime1']=this.formatAMPM(element['startTime1']['iso'])
                   element['endTime1']=this.formatAMPM(element['endTime1']['iso'])
                }
@@ -230,7 +230,7 @@ export class ActivityComponent implements OnInit {
     this.showCancel=true;
     this.add_edit=true; 
     this.Msg="Update"; 
-    console.log(_id)
+    //console.log(_id)
    
     this.SERVER_URL =  environment.apiUrl+'/classes/activity/'+_id
     this.http.get(this.SERVER_URL,{
@@ -241,9 +241,9 @@ export class ActivityComponent implements OnInit {
           'X-Parse-Revocable-Session':'1'
       })
       }).subscribe(data => {
-          console.log(data)       
+          //console.log(data)       
          // this.docs=data
-         // console.log(this.docs)
+         // //console.log(this.docs)
              //data['startDate']=this.dataformat(data['startDate']['iso'])
              //data['meetingDate']=this.dataformat(data['meetingDate']['iso'])
              this.show1 = !this.show1; 
@@ -262,7 +262,7 @@ export class ActivityComponent implements OnInit {
            this.subtyp=data['subType']
            this.subtyp_old=data['subType']
            this.suype = this.activity.getStates().filter((item)=> item.type == this.typ);
-           console.log(this.suype) ;
+           //console.log(this.suype) ;
            //this.onSelect(this.typ)
           // this.subtyp="";
           // this.subtype1(this.typ)
@@ -277,7 +277,7 @@ export class ActivityComponent implements OnInit {
     this.subtyp=null;
     this.suype = this.activity.getStates()
                  .filter((item)=> item.type == countryid);
-                 console.log(this.suype) ;
+                 //console.log(this.suype) ;
                 
   }
   
@@ -299,15 +299,15 @@ export class ActivityComponent implements OnInit {
     this.typ=""
     this.msg=""
     this.subtyp="" 
-      console.log(this.closeResult)
+      //console.log(this.closeResult)
     }, (reason) => {
       this.closeResult = `Dismissed`;
-      console.log(this.closeResult)
+      //console.log(this.closeResult)
     })
   }
 
   registerActivity(frm:any){
-    console.log(frm)
+    //console.log(frm)
     var a=this.formatISO(frm.startTime.hour,frm.startTime.minute);  
     var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
     if(a>b){
@@ -319,7 +319,7 @@ export class ActivityComponent implements OnInit {
 
     if(frm.objectId=="null" || frm.objectId=="" || frm.objectId===undefined){
      
-      console.log(frm)
+      //console.log(frm)
       this.activity.saveData(frm).subscribe(
         res=>{
           console.log(res);
@@ -328,7 +328,7 @@ export class ActivityComponent implements OnInit {
         err=>console.log(err),
         ()=>{
           
-         console.log("record saved")
+         //console.log("record saved")
           //this.meeting.showMeeting();
          // this.ngOnInit();
          this.ngOnChanges();
@@ -348,14 +348,14 @@ export class ActivityComponent implements OnInit {
           return false;
         
       }
-      console.log(frm.objectId);
-      console.log(frm);
+      //console.log(frm.objectId);
+      //console.log(frm);
     
       this.activity.saveData(frm).subscribe(
         res=>console.log(res),
         err=>console.log(err),
         ()=>{
-          console.log("record updated")
+          //console.log("record updated")
           //this.meeting.showMeeting();
           //this.router.navigate(['/viewActivity']);
           this.ngOnChanges();
@@ -381,7 +381,7 @@ export class ActivityComponent implements OnInit {
     var ampm = (d.getHours() >= 12) ? "pm":"am";
     var hours = d.getHours();
     var minutes =d.getMinutes();
-    //console.log(minutes)
+    ////console.log(minutes)
 
     hours = hours % 12;
     hours = hours ? hours : 12;
@@ -413,7 +413,7 @@ export class ActivityComponent implements OnInit {
 
     // subtype(event){
      
-    //   console.log(event.target.value)
+    //   //console.log(event.target.value)
     //  // this.subtype1(event.target.value); 
     //   this.sutype=[];
     //   if(event.target.value==="Presentation"){
@@ -428,12 +428,12 @@ export class ActivityComponent implements OnInit {
     //   else if(event.target.value==="Break"){
     //     this.sutype.push({"value":"Tea"},{"value":"Lunch"})
     //   }
-    //  // console.log(this.sutype)
+    //  // //console.log(this.sutype)
     // }
 
     // subtype1(value){
       
-    //   console.log(value)
+    //   //console.log(value)
     //   this.sutype.length=0;
     //   if(value==="Presentation"){
     //      this.sutype.push({"value":"Presentation"})
@@ -447,7 +447,7 @@ export class ActivityComponent implements OnInit {
     //   else if(value==="Break"){
     //     this.sutype.push({"value":"Tea"},{"value":"Lunch"})
     //   }
-    //  console.log(this.sutype)
+    //  //console.log(this.sutype)
     // }
 
     Ondelete(id:string){
@@ -456,15 +456,15 @@ export class ActivityComponent implements OnInit {
         objectId: id,
   
       };
-      console.log(data)
+      //console.log(data)
       this.activity.deleteData(data).subscribe(
         res => console.log(res),       
         err => console.log(err),
         () => {
-          console.log("record deleted")
+          //console.log("record deleted")
           this.ngOnChanges(); 
           this.toastr.success('Record deleted Successfully');
-          console.log(this.docs2.length);
+          //console.log(this.docs2.length);
           if(this.docs2.length==1){
             location.reload();
           }

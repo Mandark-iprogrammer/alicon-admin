@@ -50,7 +50,7 @@ export class FileUploadComponent implements OnInit {
   meetingFile: File;
   @ViewChild('frm1') mytemplateForm : NgForm;
   public fileOverAnother(e: any): void {
-    console.log(e)
+    //console.log(e)
     this.hasAnotherDropZoneOver = e;
   }
 
@@ -64,6 +64,25 @@ export class FileUploadComponent implements OnInit {
           this.toastr.error("Upload Image and PDF Files Only...!")
           this.mytemplateForm.reset();
         }
+
+        var FileSize = this.meetingFile.size / 1024 / 1024; // in MB
+        if(this.meetingFile.type == "image/jpg" ||  this.meetingFile.type == "image/jpeg"){
+          if (FileSize > 3) {
+            this.toastr.error("upload image file less than 3 MB")
+            this.mytemplateForm.reset();
+            // $(file).val(''); //for clearing with Jquery
+          } 
+        }
+
+        if(this.meetingFile.type == "application/pdf"){
+          if (FileSize > 10) {
+            this.toastr.error("upload pdf file less than 10 MB")
+            this.mytemplateForm.reset();
+            // $(file).val(''); //for clearing with Jquery
+          } 
+        }
+
+
   }
 
   constructor(
@@ -100,15 +119,15 @@ export class FileUploadComponent implements OnInit {
          'X-Parse-Revocable-Session': '1'
        })
      }).subscribe(data => {
-       console.log(data)
+       //console.log(data)
        this.docs = data['results']
        if(this.docs.length==0){
           this.notFound="Not Files has been uploaded yet."
        }
        else{
        this.docs.forEach(element => {
-         console.log(element)
-         console.log(element.isPublished)
+         //console.log(element)
+         //console.log(element.isPublished)
          if(element.isPublished){
           if(element.isPublished===true){
             element.isPublished=true;
@@ -122,7 +141,7 @@ export class FileUploadComponent implements OnInit {
         }
        });
       }
-       console.log(this.docs)
+       //console.log(this.docs)
    })
   }
 
@@ -141,7 +160,7 @@ export class FileUploadComponent implements OnInit {
     formData.append('fileDescription', frm.fileDescription);
     formData.append('fileTitle', frm.fileTitle);
     //formData.append("isPublished",);
-    console.log('form data variable :   ' + formData);
+    //console.log('form data variable :   ' + formData);
 
     var headers = new HttpHeaders({
       'X-Parse-Application-Id': this.APP_ID,
@@ -151,7 +170,7 @@ export class FileUploadComponent implements OnInit {
     // Create a new instance of ladda for the specified button
 
     this.http.post(this.SERVER_URL, formData, { headers: headers }).subscribe(success => {
-      console.log(success);
+      //console.log(success);
       if(success['status']=="success"){
         this.toastr.success("File Upload Successfully")
         this.mytemplateForm.reset();
@@ -181,7 +200,7 @@ export class FileUploadComponent implements OnInit {
       let arr={
         "meetingFileId": id
       }
-
+      console.log(arr)
      this.SERVER_URL3 = 'http://13.126.191.252:1337/parse/functions/deleteImageByMeetingFileId'
         return this.http.post(this.SERVER_URL3,arr,{
         headers:new HttpHeaders({
@@ -205,12 +224,12 @@ export class FileUploadComponent implements OnInit {
 
   onChange(event,id:string){
     
-      console.log(event)
-      console.log(id)
+      //console.log(event)
+      //console.log(id)
       let arr={
        "isPublished":event,
       }
-      console.log(arr)
+      //console.log(arr)
       this.SERVER_URL3 = 'http://13.126.191.252:1337/parse/classes/meetingFiles/'+id
       return this.http.put(this.SERVER_URL3, arr, {
         headers: new HttpHeaders({
@@ -222,7 +241,7 @@ export class FileUploadComponent implements OnInit {
         res => console.log(res),
         err => console.log(err),
         () => {
-          console.log("record updated")
+          //console.log("record updated")
           if(event==true){
            // this.pub="Published"
           this.toastr.success('Record Published Successfully');
@@ -261,7 +280,7 @@ export class FileUploadComponent implements OnInit {
        //   this.docs=success['result'];
           this.abc=JSON.parse(success['result'])
           this.url_image=this.abc['data']
-          console.log(this.url_image)
+          //console.log(this.url_image)
           this.link=true;
           this.htmlToAdd = '<a href="'+this.url_image+'">Link</a>';
           // var div = document.getElementById('foo');
@@ -270,7 +289,7 @@ export class FileUploadComponent implements OnInit {
           // div.appendChild(newlink);
           
          // this  .docs=JSON.stringify(success['result'])
-       //   console.log(this.docs)
+       //   //console.log(this.docs)
         })
       }
       

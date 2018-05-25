@@ -49,9 +49,9 @@ export class RsvpComponent implements OnInit {
         'X-Parse-Revocable-Session': '1'
       })
     }).subscribe(data => {
-        console.log(data);
+        //console.log(data);
         this.docs=data['results']
-        console.log(this.docs);
+        //console.log(this.docs);
 
         if(this.docs.length==0){
           this.notFound="No Users in Not Attend Users."
@@ -59,7 +59,7 @@ export class RsvpComponent implements OnInit {
         else{ 
       data['results'].forEach(element => {
           //this.users1['reason']=element.reason
-          console.log(element)
+          //console.log(element)
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -70,11 +70,11 @@ export class RsvpComponent implements OnInit {
             })
           }).subscribe(data => {
             data['reason']=element.reason
-            console.log(data)
+            //console.log(data)
             
            this.users1.push(data)
            
-            console.log(this.users1)
+            //console.log(this.users1)
           })
       });
     }
@@ -91,11 +91,11 @@ export class RsvpComponent implements OnInit {
         'X-Parse-Revocable-Session': '1'
       })
     }).subscribe(data1 => {
-        console.log(data1);
+        //console.log(data1);
        
 
         this.docs1=data1['results']
-        console.log(this.docs1);
+        //console.log(this.docs1);
 
         if(this.docs1.length==0){
           this.notFound1="No Users in Attend Users."
@@ -103,7 +103,7 @@ export class RsvpComponent implements OnInit {
         else{
       data1['results'].forEach(element => {
           
-          console.log(element)
+          //console.log(element)
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -113,11 +113,11 @@ export class RsvpComponent implements OnInit {
               'X-Parse-Revocable-Session': '1'
             })
           }).subscribe(data1 => {
-            console.log(data1)
+            //console.log(data1)
             
            this.users2.push(data1)
            
-            console.log(this.users2)
+            //console.log(this.users2)
           })
       });
     }

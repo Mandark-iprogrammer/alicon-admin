@@ -32,15 +32,15 @@ export class ActivityService {
       var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
       var stttTime=this.formatAMPM(frm.startTime.hour,frm.startTime.minute)
       var edddTime=this.formatAMPM(frm.endTime.hour,frm.endTime.minute)
-      console.log(a)
-      console.log(b)
+    //  console.log(a)
+    //  console.log(b)
       this.d1 = new Date(a); // 10:09 to
       this.d2 = new Date(b); // 10:20 is 11 mins
       var diff = this.d2 - this.d1;
       if (diff > 60e3) {
         var c=Math.floor(diff / 60e3)
       }
-        console.log(c)
+     //   console.log(c)
     
     
    let arr={
@@ -49,7 +49,7 @@ export class ActivityService {
         "className": "meeting",
         "objectId": frm.meetingId
       },
-      "sequenceNumber":parseInt(frm.order),
+      "sequenceNumber":frm.order,
       "type":frm.type,
       "section": frm.section,
       "presentationPlace":frm.presentationPlace,
@@ -67,7 +67,7 @@ export class ActivityService {
       "duration":c,
       "subType":frm.subType
    }
-   console.log(arr)
+  // console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -81,8 +81,8 @@ export class ActivityService {
     var b=this.formatISO(frm.endTime.hour,frm.endTime.minute)
     var stttTime=this.formatAMPM(frm.startTime.hour,frm.startTime.minute)
     var edddTime=this.formatAMPM(frm.endTime.hour,frm.endTime.minute)
-    console.log(a)
-      console.log(b)
+   // console.log(a)
+  //    console.log(b)
       this.d1 = new Date(a); // 10:09 to
       this.d2 = new Date(b); // 10:20 is 11 mins
       diff = this.d2 - this.d1;
@@ -93,14 +93,14 @@ export class ActivityService {
       //   this.msg ='Please Enter end time is greater than start time';
       //   return this.msg; 
       // }
-        console.log(c)
+   //     console.log(c)
     let arr={
       "meetingId":{
         "__type": "Pointer",
         "className": "meeting",
         "objectId": frm.meetingId
       },
-      "sequenceNumber":parseInt(frm.order),
+      "sequenceNumber":frm.order,
       "section": frm.section,
       "type":frm.type,
       "startTime":stttTime,
@@ -166,7 +166,7 @@ export class ActivityService {
     formatAMPM(hour,minute) {
       var hours = hour;
       var minutes = minute;
-      console.log(minutes);
+     // console.log(minutes);
   
       var ampm = hours >= 12 ? 'pm' : 'am';
       hours = hours % 12;

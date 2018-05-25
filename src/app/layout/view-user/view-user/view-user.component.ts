@@ -40,6 +40,7 @@ export class ViewUserComponent implements OnInit {
   SERVER_URL : string
   tableClass: string;
   tableId: string;
+  token:string;
   perPageSelect: any;
   isHideHeader: boolean;
   isHideSubHeader: boolean;
@@ -132,14 +133,14 @@ export class ViewUserComponent implements OnInit {
     private modalService: NgbModal,
     private actModel: NgbActiveModal,
   ) {
-    
+    this.token=localStorage.getItem('sessionToken');
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
     
     this.user.displayUser().subscribe(data => {
       
       this.source=data['results'];
-      console.log(this.source)
+      //console.log(this.source)
     })
   }
 
@@ -159,11 +160,11 @@ export class ViewUserComponent implements OnInit {
                 };
                 this.user.saveData(data).subscribe(
                   res=>{
-                    console.log(res)
+                    //console.log(res)
                           },
-                  err=>console.log(err),
+                  err=>//console.log(err),
                   ()=>{
-                   console.log("record saved")
+                   //console.log("record saved")
                    this.router.navigate(['/viewUsers']);
                    this.toastr.success('New Record Added Successfully','User Register');
                    })
@@ -178,12 +179,12 @@ export class ViewUserComponent implements OnInit {
                 "username":event.newData.username
                 
           };
-          console.log(data)
+          //console.log(data)
           this.user.saveData(data).subscribe(
-            res=>console.log(res),
-            err=>console.log(err),
+            res=>//console.log(res),
+            err=>//console.log(err),
             ()=>{
-              console.log("record updated")
+              //console.log("record updated")
               //this.meeting.showMeeting();
               this.router.navigate(['/viewUsers']);
               this.toastr.success('New Record Updated Successfully','User Register');
@@ -199,35 +200,36 @@ export class ViewUserComponent implements OnInit {
   
   }
   edit(event,content){
-    console.log(event)
+    //console.log(event)
     this.objID1=event.data.objectId
     this.modalReference =this.modalService.open(content, {centered: true});
     this.modalReference.result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
    
-      console.log(this.closeResult)
+      //console.log(this.closeResult)
     }, (reason) => {
       this.closeResult = `Dismissed`;
-      console.log(this.closeResult)
+      //console.log(this.closeResult)
     })
-    console.log(event)
+    //console.log(event)
   }
 
   changePwd(frm){
-    console.log(frm)
+ //   console.log(frm)
     var data = {"password" : frm.password };
     this.SERVER_URL = environment.apiUrl+'/users/'+frm.objectId
     return this.http.put(this.SERVER_URL,data,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
      'X-Parse-Application-Id':this.APP_ID,
-     'X-Parse-Master-Key':this.MASTER_KEY
+     'X-Parse-Master-Key':this.MASTER_KEY,
+    
     })
   }).subscribe(
     res=>console.log(res),
     err=>console.log(err),
     ()=>{
-      console.log("record updated")
+     // console.log("record updated")
       //this.meeting.showMeeting();
       this.router.navigate(['/viewUsers']);
       this.toastr.success('Password Changed Successfully');

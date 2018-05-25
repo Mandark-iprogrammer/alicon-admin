@@ -18,7 +18,7 @@ export class UserService {
 
 
   displayUser(){
-
+    this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
     return this.http.get(this.SERVER_URL,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -42,7 +42,7 @@ export class UserService {
   }
 
   saveData(frm : any){
-    console.log(frm)
+  //  console.log(frm)
     if(frm.objectId==null || frm.objectId===undefined){
   //  let arr={
   //   "firstName":frm.firstName,
@@ -61,8 +61,8 @@ export class UserService {
   }
   else{
     this.sessionToken=localStorage.getItem('sessionToken')
-    console.log(this.sessionToken)
-    console.log(this.sessionToken)
+   // console.log(this.sessionToken)
+   
    this.SERVER_URL = environment.apiUrl+'/users/'+frm.objectId
    return this.http.put(this.SERVER_URL,frm,{
     headers:new HttpHeaders({
