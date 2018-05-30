@@ -107,10 +107,6 @@ export class MeetingComponent implements OnInit {
     rowClassFunction: () => ""
   };
 
-  
-
-
-
   defaultSettingsUsers = {
     columns: {
       firstName: {
@@ -229,9 +225,7 @@ export class MeetingComponent implements OnInit {
     let dt = date.getDate();
 
     this.minDate = {"year": year,"month": month,"day": dt};
-    this.router.routeReuseStrategy.shouldReuseRoute = function(){
-      return false;
-    } 
+    
    // console.log(date)
 
     this.APP_ID = environment.APP_ID;

@@ -274,9 +274,10 @@ export class ViewMeetingComponent implements OnInit {
   }
 
   onCustom(event) {
-    this.router.navigate(['/meeting' , event.data.objectId]);
+    //this.router.navigate(['/meeting' , event.data.objectId]);
     //this.activatedRoute.re
-    // this.router.navigate(['/meeting',{'objectId': event.data.objectId,'view':'view'}]);
+     this.router.navigate(['/meeting',{'objectId': event.data.objectId}]);
+    // this.router.navigate(['/meeting'], { queryParams:{'objectId': event.data.objectId} });
     //this.router.navigate(['/meeting/'+event.data.objectId]);
   }
 
