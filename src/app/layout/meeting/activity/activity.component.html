@@ -49,10 +49,10 @@
                     <div class="form-group">
                              <label for="phonenumber">Presentation Place </label>
                              <!-- <input  type="text" pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg"  placeholder="Presentation place"/>  -->
-                             <small class="text-danger" *ngIf="presentationPlace.errors?.pattern"> 
+                             <!-- <small class="text-danger" *ngIf="presentationPlace.errors?.pattern"> 
                                  Presentation Place not valid.
-                             </small>
-                             <ng2-completer  pattern="[a-zA-Z ]*" name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg"  placeholder="Presentation place" [datasource]="place"  [minSearchLength]="2"></ng2-completer>
+                             </small> -->
+                             <ng2-completer   name="presentationPlace" #presentationPlace="ngModel" [(ngModel)]="pplace" ngModel class="form-control input-underline input-lg"  placeholder="Presentation place" [datasource]="place"  [minSearchLength]="2"></ng2-completer>
                      </div>
              </div>
              <div class="col-md-6">
