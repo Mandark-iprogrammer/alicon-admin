@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
     ngOnInit() {}
 
     onLoggedin(frm:any) {
-        console.log(frm.username)
+        console.log(frm.username.toLowerCase())
         this.APP_ID = environment.APP_ID;
         this.MASTER_KEY =  environment.MASTER_KEY;
-        this.SERVER_URL = environment.apiUrl+"/login?username="+frm.username+"&password="+frm.password
+        this.SERVER_URL = environment.apiUrl+"/login?username="+frm.username.toLowerCase()+"&password="+frm.password
         // this.APP_ID = "129837njlasdjfpoia2p83u4jnlkj"
         // this.MASTER_KEY = "Elkl1j23l809uljn3lkj48unkjnkjh4234"
         // this.SERVER_URL = "http://13.126.191.252:1337/parse/login?username="+frm.username+"&password="+frm.password
@@ -47,9 +47,9 @@ export class LoginComponent implements OnInit {
         }).subscribe(
             res=>{
                 console.log(res)
-                if(res['username']==frm.username && res['isAdmin']==true){
+                if(res['username']==frm.username.toLowerCase() && res['isAdmin']==true){
                     localStorage.setItem('isLoggedin', 'true');
-                    localStorage.setItem('username',frm.username);
+                    localStorage.setItem('username',frm.username.toLowerCase());
                     localStorage.setItem('objectId',res['objectId']);
                     localStorage.setItem('sessionToken',res['sessionToken']);
                     this.username=frm.username;

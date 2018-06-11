@@ -202,6 +202,9 @@ export class MeetingComponent implements OnInit {
   tag: any;
   mtDate1:any;
   order:number;
+  userCount:number;
+  rsvpAttend:number;
+  rsvpNotAttend:number;
   notFound:string
   public dt:Date
   desc: string;desc1:string;ven1:string ;remk: string;remk1:string; time1:any;createby: string; objID: string; ven: string; stTime: string; stDate: Date; mtDate: Date
@@ -426,6 +429,62 @@ export class MeetingComponent implements OnInit {
     rowClassFunction: () => ""
   };
 
+  this.sub = this.activatedRoute.params.subscribe((params: Params) => {
+    
+    //let userId = params['objectId'];
+   let userId = this.activatedRoute.snapshot.params['objectId'];
+   if (userId != null) {
+
+       //RSVP Attend Users Count
+       this.SERVER_URL = environment.apiUrl+'/classes/rsvp?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+userId+'"},"status":2}';
+       this.http.get(this.SERVER_URL, {
+         headers: new HttpHeaders({
+           'Content-Type': 'application/json',
+           'X-Parse-Application-Id': this.APP_ID,
+           'X-Parse-REST-API-Key': this.MASTER_KEY,
+           'X-Parse-Revocable-Session': '1'
+         })
+       }).subscribe(data => {
+           console.log(data);
+           this.docs4=data['results']
+           console.log(this.docs4);
+ 
+           if(this.docs4==null){
+             this.rsvpAttend=0;
+           }
+           else{ 
+             this.rsvpAttend=this.docs4.length;
+           }
+       })
+  
+  
+        //RSVP Will Not Attend Users Count
+             
+       this.SERVER_URL = environment.apiUrl+'/classes/rsvp?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+userId+'"},"status":2}';
+       this.http.get(this.SERVER_URL, {
+         headers: new HttpHeaders({
+           'Content-Type': 'application/json',
+           'X-Parse-Application-Id': this.APP_ID,
+           'X-Parse-REST-API-Key': this.MASTER_KEY,
+           'X-Parse-Revocable-Session': '1'
+         })
+       }).subscribe(data => {
+           //console.log(data);
+           this.docs=data['results']
+           //console.log(this.docs);
+ 
+           if(this.docs==null){
+             this.rsvpNotAttend=0;
+           }
+           else{ 
+             this.rsvpNotAttend=this.docs.length;
+           }
+       })
+            
+      
+  }
+  });
+
 
   this.ngOnChanges();
  
@@ -434,13 +493,12 @@ export class MeetingComponent implements OnInit {
 
 ngOnChanges(){
   this.sub = this.activatedRoute.params.subscribe((params: Params) => {
-    console.log(params)
+    
      //let userId = params['objectId'];
     let userId = this.activatedRoute.snapshot.params['objectId'];
     // let userId = '9pSCqviE6i';   
-    console.log(userId);
     
-   
+       
 
     if (userId != null) {
       this.show = true
@@ -472,7 +530,15 @@ ngOnChanges(){
          //console.log(data)
         this.source = data
         this.docs1 = data
-        
+        //Invited Users Count
+        if(data['meetingUsers']==null){
+          this.userCount=0;
+        }
+        else{ 
+          this.userCount=data['meetingUsers'].length;
+         }
+
+
         if(data==null){
           this.router.navigate(['/viewMeeting']);
         }
@@ -522,8 +588,14 @@ ngOnChanges(){
         if(err.error.code==101){
           this.router.navigate(['/viewMeeting'])
         }
-      })
+      });
+
+
+
+     
     }
+  
+
   });
 }
 
@@ -554,7 +626,8 @@ convertTime12to24(time12h) {
       this.meeting.saveData(frm).subscribe(
         res => {
           console.log(res)
-          this.router.navigate(['/meeting',res['objectId']]);
+          this.router.navigate(['/meeting',{'objectId': res['objectId']}]);
+         // this.router.navigate(['/meeting',res['objectId']]);
         //  this.router.navigate(['/meeting', { 'objectId': res['objectId'], 'view': 'view' }]);
         },
         err => {
@@ -563,14 +636,15 @@ convertTime12to24(time12h) {
         },
         () => {
           console.log("record saved")
-          this.toastr.success('New Record Added Successfully');
+          this.toastr.success('New Meeting Added Successfully');
       })
     } else {
      // console.log(frm.objectId);
       this.meeting.saveData(frm).subscribe(
         res => {
+          this.router.navigate(['/meeting',{'objectId': frm.objectId}]);
          // console.log(res),
-          this.router.navigate(['/meeting',frm.objectId]); 
+          //this.router.navigate(['/meeting',frm.objectId]); 
          // this.router.navigate(['/meeting', { 'objectId': frm.objectId, 'view': 'view' }]); 
         },
         err => console.log(err),
@@ -578,7 +652,7 @@ convertTime12to24(time12h) {
          // console.log("record updated")
           //this.meeting.showMeeting();
           this.ngOnChanges();
-          this.toastr.success('Record Updated Successfully');
+          this.toastr.success('Meeting Updated Successfully');
           this.modalReference.close();
         }
       )
@@ -596,7 +670,7 @@ convertTime12to24(time12h) {
           console.log("record saved")
           //this.meeting.showMeeting();
           this.router.navigate(['/viewMeeting']);
-          this.toastr.success('New Record Published Successfully', 'Meeting Register');
+          this.toastr.success('Meeting Published Successfully');
           var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
           var fcm = new FCM(serverKey);
           var message = {
@@ -632,7 +706,7 @@ convertTime12to24(time12h) {
           console.log("record updated")
           //this.meeting.showMeeting();
           this.router.navigate(['/viewMeeting']);
-          this.toastr.success('Record Publised Successfully', 'Meeting Register');
+          this.toastr.success('Meeting Publised Successfully', 'Meeting Register');
 
         })
       var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
@@ -837,7 +911,7 @@ convertTime12to24(time12h) {
              //  console.log(this.users1)
            })
        });
-       this.toastr.success('Notification Send Succssfully');
+       this.toastr.success('Notification Sent Succssfully');
      }
      
     )
@@ -882,13 +956,13 @@ convertTime12to24(time12h) {
             this.published=true;
             this.ngOnChanges();
             this.pub="Published"
-          this.toastr.success('Record Published Successfully');
+          this.toastr.success('Meeting Published Successfully');
           }
           else{
             this.published=false;
             this.ngOnChanges();
             this.pub="UnPublished"
-            this.toastr.success('Record UnPublished..! ');
+            this.toastr.success('Meeting UnPublished..! ');
             
           }
           //location.reload();

@@ -333,7 +333,7 @@ export class ActivityComponent implements OnInit {
          // this.ngOnInit();
          this.ngOnChanges();
        
-          this.toastr.success('New Record Added Successfully');
+          this.toastr.success('New Activity Added Successfully');
           this.modalReference.close();
          
         }
@@ -359,7 +359,7 @@ export class ActivityComponent implements OnInit {
           //this.meeting.showMeeting();
           //this.router.navigate(['/viewActivity']);
           this.ngOnChanges();
-          this.toastr.success('New Record Updated Successfully');
+          this.toastr.success('Activity Updated Successfully');
            this.add_edit=false;
            this.modalReference.close();
         }
@@ -367,16 +367,12 @@ export class ActivityComponent implements OnInit {
     }
   }
   formatISO(hour,minute) {
-    var hours = hour;
-    var minutes = minute;
-     
-    var dateiso=new Date('2018-05-01'+' '+hours+':'+minutes+':'+'00').toISOString();
-    return dateiso;
-    
-    }
+      var hours = hour;
+      var minutes = minute;
+      var dateiso=new Date('2018-05-01'+' '+hours+':'+minutes+':'+'00').toISOString();
+      return dateiso;
+  }
   formatAMPM(dateiso){
-    
-    
     var d = new Date(dateiso);
     var ampm = (d.getHours() >= 12) ? "pm":"am";
     var hours = d.getHours();

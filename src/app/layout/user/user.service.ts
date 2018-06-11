@@ -18,7 +18,7 @@ export class UserService {
 
 
   displayUser(){
-    this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false}'
+    this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":false,"userStatus":"Accepted"}'
     return this.http.get(this.SERVER_URL,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',

@@ -19,6 +19,7 @@ import { Timepicker1Component } from './meeting/timepicker1/timepicker1.componen
 import { ActivityComponent } from './activity/activity.component';
 import { LaddaModule } from 'angular2-ladda';
 import { RsvpComponent } from './rsvp/rsvp.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,7 @@ import { RsvpComponent } from './rsvp/rsvp.component';
     UiSwitchModule
   ],
  
-  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component, ActivityComponent, RsvpComponent],
+  declarations: [MeetingComponent, InvitationsComponent, FileUploadComponent,FileSelectDirective,FileDropDirective,TimepickerComponent, CustomEditorComponent, Timepicker1Component, ActivityComponent, RsvpComponent, FeedbackComponent],
   entryComponents: [
     CustomEditorComponent,TimepickerComponent,Timepicker1Component
     ],

@@ -313,7 +313,7 @@ export class ViewMeetingComponent implements OnInit {
       this.meeting.saveData(frm).subscribe(
         res => {
           //console.log(res)
-          this.router.navigate(['/meeting', { 'objectId': res['objectId'], 'view': 'view' }]);
+          this.router.navigate(['/meeting', { 'objectId': res['objectId']}]);
         },
         err => {
           //console.log(err)
@@ -330,7 +330,7 @@ export class ViewMeetingComponent implements OnInit {
       this.meeting.saveData(frm).subscribe(
         res => {
           //console.log(res),
-          this.router.navigate(['/meeting', { 'objectId': frm.objectId, 'view': 'view' }]);
+          this.router.navigate(['/meeting', { 'objectId': frm.objectId }]);
         },
         err => //console.log(err),
           () => {

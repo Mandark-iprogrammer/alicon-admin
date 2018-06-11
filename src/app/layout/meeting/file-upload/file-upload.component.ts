@@ -109,7 +109,7 @@ export class FileUploadComponent implements OnInit {
     });
     //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":"'+this.meetingID+'"}'
     this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"}}'
-   //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"9pSCqviE6i"}}'
+   //this.SERVER_URL1='http://13.126.191.252:1337/parse/classes/meetingFiles?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"a4GltNBlFB"}}'
     // this.SERVER_URL1 = environment.apiUrl+'/users?where={"isAdmin":false}'
      this.http.get(this.SERVER_URL1, {
        headers: new HttpHeaders({

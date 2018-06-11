@@ -8,6 +8,8 @@ import { ActivityService } from '../../activity/activity.service';
 import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent } from "ng-auto-complete";
 import { count } from 'rxjs/operator/count';
 import { environment } from '../../../../environments/environment';
+
+var FCM = require('fcm-push');
 @Component({
   selector: 'app-invitations',
   templateUrl: './invitations.component.html',
@@ -19,6 +21,8 @@ export class InvitationsComponent implements OnInit {
   SERVER_URL: string
   docs: any
   meetingID: string
+  meetingName:string
+  meetingDate:string
   users1=[]
   gridSelected: any;
   unique1 = []
@@ -135,7 +139,7 @@ export class InvitationsComponent implements OnInit {
       
       this.meetingID = params['objectId'];
     });
-    this.router.navigate(['/meeting',this.meetingID]);
+   // this.router.navigate(['/meeting',this.meetingID]);
 
 
     this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
@@ -168,7 +172,9 @@ export class InvitationsComponent implements OnInit {
            
           })
       });
-    }
+     }
+
+
     })
 
 
@@ -273,6 +279,83 @@ export class InvitationsComponent implements OnInit {
           "meetingUsers": {"__op":"AddUnique", "objects": this.send
         }
       }
+
+      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
+           this.http.get(this.SERVER_URL, {
+             headers: new HttpHeaders({
+               'Content-Type': 'application/json',
+               'X-Parse-Application-Id': this.APP_ID,
+               'X-Parse-REST-API-Key': this.MASTER_KEY,
+               'X-Parse-Revocable-Session': '1'
+             })
+           }).subscribe(data => {
+            this.meetingName=data['name'];
+            this.meetingDate=this.dataformat(data['meetingDate']['iso'])
+
+      this.send.forEach(element => {
+        console.log(element)
+        this.SERVER_URL = environment.apiUrl+'/users/' + element;
+        this.http.get(this.SERVER_URL, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-Parse-Application-Id': this.APP_ID,
+            'X-Parse-REST-API-Key': this.MASTER_KEY,
+            'X-Parse-Revocable-Session': '1'
+          })
+        }).subscribe(data => {
+           console.log(data)
+          if(data['deviceToken']){
+           console.log(data['deviceToken'])
+
+           var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
+           var fcm = new FCM(serverKey); 
+          var message = {
+            // registration_ids: ['emqR_8IaqyY:APA91bEOFP9T5pD2OPrVur4Fu7CSLM5Kbitek2IE8mFZ4o1AkJMuJ7Wl54OhvwbesnTpaXvH2R0_QaFds6s-yC1iAygBAuAGgJKYDRNJ4laONtDjyoqB29cJWWD6Q7Y3Qp6AK6eYvHVs','fDyP9x0uTBU:APA91bHxw7mBWf9uzEKIetyOhno6jcDBDTOmN8aLYfGibBSRUT7YIqCirKGLqXcnCXKSxYEIvEPvhn-9w4umaaiNnwzzcImOVa6RYy2U0Z9qmTWXnIKkwrleL-sL38FEd1R6AeQ6SPOA'], // required fill with device token or topics
+           // registration_ids: ['db48-2il2eU:APA91bE_fXzj3MbG4o7sfBOwEenYXjMWmOypCi9iuOroZFcXrhzURvgsmC9jrdJWafQ076cTkieLzOV8u2uCBy_iocsTDX9It0CZWOWC6dR5eMuwHxnf7BKfM3FKKuyPCOu67la7qbm3'], // required fill with device token or topics 
+            to:data['deviceToken'],
+            collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
+             data: {
+                 your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
+             },
+             notification: {
+                 title: this.meetingName,
+                 body:  this.meetingDate
+             }
+           };
+
+           fcm.send(message, function(err, response){
+             if (err) {
+                 console.log("Something has gone wrong!");
+                 console.log(err)
+                 this.toastr.error("Notification Not Send Successfully");
+                 this.mytemplateForm1.reset();
+                 this.ngOnChanges();
+             } else {
+                 console.log("Successfully sent with response: ", response);
+                
+                
+             }
+           });
+
+             //  fcm.send(message)
+             // .then(function(response){
+             //     console.log("Successfully sent with response: ", response);
+             // })
+             // .catch(function(err){
+             //     console.log("Something has gone wrong!");
+             //     console.error(err);
+             // })
+
+          }
+         // this.users1.push(data)
+          //  console.log(this.users1)
+        })
+    });
+
+  });
+
+
+
       //console.log(arr)
       this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
       return this.http.put(this.SERVER_URL, arr, {
@@ -285,10 +368,7 @@ export class InvitationsComponent implements OnInit {
         res => console.log(res),
         err => console.log(err),
         () => {
-          //console.log("record updated")
-          //this.meeting.showMeeting();
-        //  this.router.navigate(['/meeting', { 'objectId': this.meetingID}]);
-          this.toastr.success('Invivation Send Successsfully');
+          this.toastr.success('Invivation Sent Successsfully');
           this.ngOnChanges();
           this.send.length==0;
           this.username.length=0;
@@ -299,10 +379,7 @@ export class InvitationsComponent implements OnInit {
               checkedBoxes[i].parentNode.removeChild(checkedBoxes[i]);
             }
             
-          //event.isSelected=false;
-          //window.location.reload();
-        }
-      )
+        })
     }
 
     fetchNews(event)
@@ -315,5 +392,98 @@ export class InvitationsComponent implements OnInit {
       }
     
     }
+    dataformat(date1: string) {
+      let date = new Date(date1);
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let dt = date.getDate();
+      // if (dt < 10) {
+      //   dt = '0' + dt;
+      // }
+      // if (month < 10) {
+      //   month = '0' + month;
+      // }
+      return dt + '/' + month + '/' + year;
+    //  return new Date(dt month);
+   //   return year+'-' + month + '-'+dt;
+    }
 
 }
+
+
+
+// this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
+//      this.http.get(this.SERVER_URL, {
+//        headers: new HttpHeaders({
+//          'Content-Type': 'application/json',
+//          'X-Parse-Application-Id': this.APP_ID,
+//          'X-Parse-REST-API-Key': this.MASTER_KEY,
+//          'X-Parse-Revocable-Session': '1'
+//        })
+//      }).subscribe(data => {
+//          console.log(data['meetingUsers']);
+//           data['meetingUsers'].forEach(element => {
+//            console.log(element)
+//            this.SERVER_URL = environment.apiUrl+'/users/' + element;
+//            this.http.get(this.SERVER_URL, {
+//              headers: new HttpHeaders({
+//                'Content-Type': 'application/json',
+//                'X-Parse-Application-Id': this.APP_ID,
+//                'X-Parse-REST-API-Key': this.MASTER_KEY,
+//                'X-Parse-Revocable-Session': '1'
+//              })
+//            }).subscribe(data => {
+//               console.log(data)
+//              if(data['deviceToken']){
+//               console.log(data['deviceToken'])
+
+//               var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
+//               var fcm = new FCM(serverKey); 
+//              var message = {
+//                // registration_ids: ['emqR_8IaqyY:APA91bEOFP9T5pD2OPrVur4Fu7CSLM5Kbitek2IE8mFZ4o1AkJMuJ7Wl54OhvwbesnTpaXvH2R0_QaFds6s-yC1iAygBAuAGgJKYDRNJ4laONtDjyoqB29cJWWD6Q7Y3Qp6AK6eYvHVs','fDyP9x0uTBU:APA91bHxw7mBWf9uzEKIetyOhno6jcDBDTOmN8aLYfGibBSRUT7YIqCirKGLqXcnCXKSxYEIvEPvhn-9w4umaaiNnwzzcImOVa6RYy2U0Z9qmTWXnIKkwrleL-sL38FEd1R6AeQ6SPOA'], // required fill with device token or topics
+//               // registration_ids: ['db48-2il2eU:APA91bE_fXzj3MbG4o7sfBOwEenYXjMWmOypCi9iuOroZFcXrhzURvgsmC9jrdJWafQ076cTkieLzOV8u2uCBy_iocsTDX9It0CZWOWC6dR5eMuwHxnf7BKfM3FKKuyPCOu67la7qbm3'], // required fill with device token or topics 
+//                to:data['deviceToken'],
+//                collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
+//                 data: {
+//                     your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
+//                 },
+//                 notification: {
+//                     title: frm1.title,
+//                     body: frm1.body
+//                 }
+//               };
+
+//               fcm.send(message, function(err, response){
+//                 if (err) {
+//                     console.log("Something has gone wrong!");
+//                     console.log(err)
+//                     this.toastr.error("Notification Not Send Successfully");
+//                     this.mytemplateForm1.reset();
+//                     this.ngOnChanges();
+//                 } else {
+//                     console.log("Successfully sent with response: ", response);
+                   
+                   
+//                 }
+//               });
+
+//                 //  fcm.send(message)
+//                 // .then(function(response){
+//                 //     console.log("Successfully sent with response: ", response);
+//                 // })
+//                 // .catch(function(err){
+//                 //     console.log("Something has gone wrong!");
+//                 //     console.error(err);
+//                 // })
+
+//              }
+//             // this.users1.push(data)
+//              //  console.log(this.users1)
+//            })
+//        });
+//        this.toastr.success('Notification Sent Succssfully');
+//      }
+     
+//     )
+
+

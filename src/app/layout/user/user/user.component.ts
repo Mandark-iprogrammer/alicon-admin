@@ -105,7 +105,7 @@ export class UserComponent implements OnInit {
                   this.lname=data['lastName']
                   this.uname=data['username']
                   this.objID1=data['objectId']
-                  this.des=data['desigNation']
+                  this.des=data['designation']
                   this.pnumber=data['phoneNumber']
                  this.loc=data['location']
                  this.dept=data['tags']
@@ -147,7 +147,7 @@ export class UserComponent implements OnInit {
       "username":frm.username,
       "email":frm.username,
       "password":frm.password,
-      "desigNation":frm.designation,
+      "designation":frm.designation,
       "phoneNumber":parseInt(frm.phoneNumber),
       "location":frm.location,
       "tags":arrr,
@@ -175,7 +175,7 @@ export class UserComponent implements OnInit {
         "email":frm.username,
         "password":frm.password,
         "objectId":frm.objectId,
-        "desigNation":frm.designation,
+        "designation":frm.designation,
         "phoneNumber":parseInt(frm.phoneNumber),
         "location":frm.location,
         "tags":arrr,

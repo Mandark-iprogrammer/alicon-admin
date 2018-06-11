@@ -62,7 +62,7 @@ export class ViewUserComponent implements OnInit {
       username: {
         title: 'User Email'
       },
-      desigNation: {
+      designation: {
         title: 'Designation'
       },
       phoneNumber: {
@@ -153,7 +153,7 @@ export class ViewUserComponent implements OnInit {
     var data = {"firstName" : event.newData.firstName,
                 "lastName" : event.newData.lastName,
                 "location" : event.newData.location,
-                "desigNation":event.newData.desigNation,
+                "designation":event.newData.desigNation,
                 "phonenumber":event.newData.phonenumber,
                 "username":event.newData.username,
                 "password":"Admin@123"
@@ -174,7 +174,7 @@ export class ViewUserComponent implements OnInit {
           var data = {"firstName" : event.newData.firstName,
                 "lastName" : event.newData.lastName,
                 "location" : event.newData.location,
-                "desigNation":event.newData.desigNation,
+                "designation":event.newData.desigNation,
                 "phonenumber":event.newData.phonenumber,
                 "username":event.newData.username
                 
