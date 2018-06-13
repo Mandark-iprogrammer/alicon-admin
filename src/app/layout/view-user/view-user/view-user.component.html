@@ -1,15 +1,48 @@
-<h2>View Users</h2>
-<div class="pull-right" style="padding-bottom: 10px">
-  <a routerLink="/User">
-    <button class="btn rounded-btn pull-right"> Add User</button>
-  </a>
-</div>
 
 
-<ng2-smart-table class="table" [settings]="defaultSettings" [source]="source" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)"
-  (create)="create.emit($event)" (edit)="edit($event,content)" (delete)="delete($event)" (custom)="custom.emit($event)" (userSelectRow)="onUserSelectRow($event)"
-  (editRowSelect)="editRowSelect($event)" (multipleSelectRow)="multipleSelectRow($event)" (selectAllRows)="onSelectAllRows($event)"
-  (sort)="sort($event)" (filter)="filter($event)" (custom)="onCustom($event)" (changePwd)="onCustom($event)"></ng2-smart-table>
+<div class="row mt-3" >
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">Manage Users
+                <div class="pull-right" style="padding-bottom: 10px">
+                    <a routerLink="/User">
+                      <button class="btn rounded-btn pull-right"> Add User</button>
+                    </a>
+                  </div>
+            </div>
+            <div class="card-body">
+                <ngb-tabset>
+                    <ngb-tab title="Accepted Users">
+                        <ng-template ngbTabContent>
+                                
+                            <!-- <ng2-smart-table [settings]="defaultSettingsActivity" (edit)="onEdit($event)"  [source]="docs2" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)" (deleteConfirm)="deleteRecord($event)" ></ng2-smart-table> -->
+                            <ng2-smart-table class="table" [settings]="defaultSettings" [source]="source" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)"
+                            (create)="create.emit($event)" (edit)="edit($event,content)" (delete)="delete($event)" (custom)="custom.emit($event)" (userSelectRow)="onUserSelectRow($event)"
+                            (editRowSelect)="editRowSelect($event)" (multipleSelectRow)="multipleSelectRow($event)" (selectAllRows)="onSelectAllRows($event)"
+                            (sort)="sort($event)" (filter)="filter($event)" (custom)="onCustom($event)" (changePwd)="onCustom($event)"></ng2-smart-table>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>Pending Users</ng-template>
+                        <ng-template ngbTabContent>
+                           <app-accept-user></app-accept-user>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>Rejected Users</ng-template>
+                        <ng-template ngbTabContent>
+                           <app-reject-user></app-reject-user>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>    
+                
+            </div>
+
+        </div>
+    </div>
+</div>            
+
+
 
 <ng-template #content let-c="close" let-d="dismiss">
   <form (ngSubmit)="changePwd(frm.value)" #frm="ngForm" novalidate>
@@ -75,4 +108,7 @@
     </div>
   </form>
 </ng-template>
+
+
+
 

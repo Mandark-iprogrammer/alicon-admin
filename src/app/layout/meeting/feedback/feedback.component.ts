@@ -38,7 +38,7 @@ export class FeedbackComponent implements OnInit {
       });
 
           //Meeting Comments
-    this.SERVER_URL = environment.apiUrl+'/classes/comments?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"},"isActivityFeedback":"False"}';
+    this.SERVER_URL = environment.apiUrl+'/classes/comments?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"},"isActivityFeedback":false}';
     this.http.get(this.SERVER_URL, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -79,11 +79,8 @@ export class FeedbackComponent implements OnInit {
     }
     })
 
-
-
-
     //Comments for Activity
-    this.SERVER_URL = environment.apiUrl+'/classes/comments?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"},"isActivityFeedback":"True"}';
+    this.SERVER_URL = environment.apiUrl+'/classes/comments?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"},"isActivityFeedback":true}';
     this.http.get(this.SERVER_URL, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -97,16 +94,30 @@ export class FeedbackComponent implements OnInit {
         //console.log(this.docs);
 
         if(this.docs.length==0){
-          this.notFound="No Comments For User."
+          this.notFound1="No Comments For User."
         }
         else{ 
           this.docs.forEach(element => {
           //this.users1['reason']=element.reason
           //console.log(element)
-
-
-
           
+            
+          this.SERVER_URL = environment.apiUrl+'/classes/activity/' + element.activityId['objectId'];
+          this.http.get(this.SERVER_URL, {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-Parse-Application-Id': this.APP_ID,
+              'X-Parse-REST-API-Key': this.MASTER_KEY,
+              'X-Parse-Revocable-Session': '1'
+            })
+          }).subscribe(data1 => {
+            console.log(data1)
+            this.docs1=data1
+          })
+
+
+
+
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -118,9 +129,11 @@ export class FeedbackComponent implements OnInit {
           }).subscribe(data => {
             data['description']=element.description
             data['rating']=element.rating
+            data['sequenceNumber']= this.docs1['sequenceNumber']
+            data['section']= this.docs1['section']
             console.log(data)
-            
-           this.users2.push(data)
+            console.log(this.docs1)
+             this.users2.push(data)
            
             console.log(this.users2)
           })

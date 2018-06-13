@@ -1,0 +1,4 @@
+<ng2-smart-table class="table" [settings]="defaultSettings" [source]="source" (createConfirm)="addRecord($event)" (editConfirm)="updateRecord($event)"
+  (create)="create.emit($event)" (edit)="edit($event,content)" (delete)="delete($event)" (custom)="custom.emit($event)" (userSelectRow)="onUserSelectRow($event)"
+  (editRowSelect)="editRowSelect($event)" (multipleSelectRow)="multipleSelectRow($event)" (selectAllRows)="onSelectAllRows($event)"
+  (sort)="sort($event)" (filter)="filter($event)" (custom)="onCustom($event)" (changePwd)="onCustom($event)"></ng2-smart-table>
