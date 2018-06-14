@@ -26,7 +26,7 @@ export class ViewUserComponent implements OnInit {
 
   @Output() rowSelect = new EventEmitter<any>();
   @Output() userRowSelect = new EventEmitter<any>();
-  @Output() delete = new EventEmitter<any>();
+ 
   
   @Output() create = new EventEmitter<any>();
   @Output() custom = new EventEmitter<any>();
@@ -83,11 +83,15 @@ export class ViewUserComponent implements OnInit {
       columnTitle: 'Actions',
       add: false,
       edit: true,
-      delete: false,
+      delete: true,
       custom: [{
       
         name: 'Edit',
         title: '<i class="fa fa-fw fa-edit">',
+      },
+      {
+        name: 'Mail',
+        title: '<i class="fa fa-fw fa-envelope">',
       }],
       position: 'right', // left|right
     },
@@ -103,14 +107,14 @@ export class ViewUserComponent implements OnInit {
     },
     add: {
       inputClass: '',
-      addButtonContent: 'Add New',
+      addButtonContent: '<br>Forgot Password',
       createButtonContent: 'Create',
       cancelButtonContent: 'Cancel',
       confirmCreate: true,
     },
     delete: {
-      deleteButtonContent: 'Send Mail',
-      confirmDelete: false,
+      deleteButtonContent: '<br>Forgot Password',
+      confirmDelete: true,
     },
     attr: {
       id: '',
@@ -147,7 +151,7 @@ export class ViewUserComponent implements OnInit {
   ngOnInit() {
   }
   isAllSelected: boolean = true;
-
+  
   
   addRecord(event) {
     var data = {"firstName" : event.newData.firstName,
@@ -195,8 +199,15 @@ export class ViewUserComponent implements OnInit {
 
   }
   onCustom(event) {
+    console.log(event)
+    if(event.action=="Mail"){
+
+    }
+    else{
+      this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
+    }
     //this.router.navigate(['/User',event.data.objectId]); 
-    this.router.navigate(['/User',{ 'objectId': event.data.objectId}]);
+    
   
   }
   edit(event,content){
@@ -238,5 +249,27 @@ export class ViewUserComponent implements OnInit {
   )
 
   }
+  
+  delete(event){
+    var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+event.data.objectId+"/"+this.token+"'>Reset Password</a>";
+    console.log(body)
+    var data={
+        "SentTo":event.data.username,
+        "body":body
+    }
+    this.SERVER_URL = "http://localhost:3001/send"
+    return this.http.post(this.SERVER_URL,data,{
+     headers:new HttpHeaders({
+     'Content-Type':'application/json',
+   
+    })
+  }).subscribe(
+    res=>console.log(res),
+    err=>console.log(err),
+    ()=>{
+      this.toastr.success('Mail sent Successfully');
+    })
+  }
+
 
 }

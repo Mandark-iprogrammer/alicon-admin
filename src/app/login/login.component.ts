@@ -72,4 +72,29 @@ export class LoginComponent implements OnInit {
             })
               
     }
+
+
+    forgot(){
+    //     this.token=localStorage.getItem('sessionToken');
+    //     this.objId=localStorage.getItem('sessionToken');
+    //     this.username1=localStorage.getItem('username');    
+    //     var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+this.objectId+"/"+this.token+"'>Reset Password</a>";
+    //     console.log(body)
+    //     var data={
+    //         "SentTo":this.username1,
+    //         "body":body
+    //     }
+    //     this.SERVER_URL = "http://localhost:3001/send"
+    //     return this.http.post(this.SERVER_URL,data,{
+    //      headers:new HttpHeaders({
+    //      'Content-Type':'application/json',
+       
+    //     })
+    //   }).subscribe(
+    //     res=>console.log(res),
+    //     err=>console.log(err),
+    //     ()=>{
+    //       this.toastr.success('Mail sent Successfully');
+    //     })
+    }
 }

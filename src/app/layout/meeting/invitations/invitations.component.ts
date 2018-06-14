@@ -319,7 +319,11 @@ export class InvitationsComponent implements OnInit {
              },
              notification: {
                  title: this.meetingName,
-                 body:  this.meetingDate
+                 body: {
+                   "meetingDate":this.meetingDate,
+                   "ObjectId":this.meetingID,
+                   "meetingText":"This meeting is published"
+                 } 
              }
            };
 

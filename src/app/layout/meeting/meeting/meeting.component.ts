@@ -193,6 +193,7 @@ export class MeetingComponent implements OnInit {
   venues: any;
   unique: any;
   minDate:any;
+  meetingDate:string
   pub:string = "Publish"
   defaultSettingsActivity:any
  //public mtDate1:Date
@@ -851,6 +852,7 @@ convertTime12to24(time12h) {
          'X-Parse-Revocable-Session': '1'
        })
      }).subscribe(data => {
+        this.meetingDate=data['meetingDate']
          console.log(data['meetingUsers']);
           data['meetingUsers'].forEach(element => {
            console.log(element)
@@ -879,7 +881,12 @@ convertTime12to24(time12h) {
                 },
                 notification: {
                     title: frm1.title,
-                    body: frm1.body
+                    body: {
+                      "meetingDate":this.meetingDate,
+                      "ObjectId":this.meetingID,
+                      "meetingText":frm1.body
+                    } 
+                    
                 }
               };
 
