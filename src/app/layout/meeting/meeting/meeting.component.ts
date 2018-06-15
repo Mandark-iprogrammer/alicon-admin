@@ -969,7 +969,7 @@ convertTime12to24(time12h) {
             this.published=false;
             this.ngOnChanges();
             this.pub="UnPublished"
-            this.toastr.success('Meeting UnPublished..! ');
+            this.toastr.success('Meeting Unpublish! ');
             
           }
           //location.reload();

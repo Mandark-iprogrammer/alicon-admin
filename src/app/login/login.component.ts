@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     APP_ID : string
     MASTER_KEY:string
     SERVER_URL:string
+    token:string
     docs:any
     @Output() username:string;
     @Output() objectId:string;
@@ -75,26 +76,59 @@ export class LoginComponent implements OnInit {
 
 
     forgot(){
+        this.token=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        this.APP_ID = environment.APP_ID;
+        this.MASTER_KEY =  environment.MASTER_KEY;
+        this.SERVER_URL = environment.apiUrl+'/users?where={"isAdmin":true}'
+        this.http.get(this.SERVER_URL,{
+            headers:new HttpHeaders({
+             'Content-Type':'application/json',
+             'X-Parse-Application-Id':this.APP_ID,
+             'X-Parse-REST-API-Key':this.MASTER_KEY,
+             'X-Parse-Revocable-Session':'1'
+         })
+         }).subscribe(
+            res=>{
+                this.docs=res['results']
+
+                console.log(this.docs)
+                this.docs.forEach(element => {
+                    var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+element.objectId+"/"+this.token+"'>Reset Password</a>";
+                    console.log(body)
+                         var data={
+                        "SentTo":element.username,
+                        "body":body
+                    }
+                    this.SERVER_URL = "http://localhost:3001/send"
+                    return this.http.post(this.SERVER_URL,data,{
+                     headers:new HttpHeaders({
+                     'Content-Type':'application/json',
+                
+                    })
+                  }).subscribe(
+                    res=>console.log(res),
+                    err=>console.log(err),
+                    ()=>{
+                      this.toastr.success('Mail sent Successfully');
+                    })    
+                });
+                   // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+res['objectId']+"/"+this.token+"'>Reset Password</a>";
+                   // console.log(body)
+               
+            },
+            err=>{
+                console.log(err)
+                console.log(err.error['error'])
+                this.router.navigate(['/login']);
+                this.toastr.error(err.error['error']);
+            },
+            ()=>{
+                          
+            }
+         );
     //     this.token=localStorage.getItem('sessionToken');
     //     this.objId=localStorage.getItem('sessionToken');
     //     this.username1=localStorage.getItem('username');    
-    //     var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+this.objectId+"/"+this.token+"'>Reset Password</a>";
-    //     console.log(body)
-    //     var data={
-    //         "SentTo":this.username1,
-    //         "body":body
-    //     }
-    //     this.SERVER_URL = "http://localhost:3001/send"
-    //     return this.http.post(this.SERVER_URL,data,{
-    //      headers:new HttpHeaders({
-    //      'Content-Type':'application/json',
-       
-    //     })
-    //   }).subscribe(
-    //     res=>console.log(res),
-    //     err=>console.log(err),
-    //     ()=>{
-    //       this.toastr.success('Mail sent Successfully');
-    //     })
+    
     }
 }

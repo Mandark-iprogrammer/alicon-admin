@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
   unique:any
   locations:any
   designations:any;fname:string;
-  lname:string;uname:string;objID1:string;des:string;pnumber:number;loc:string;dept=[];
+  lname:string;uname:string;objID1:string;des:string;pnumber:string;loc:string;dept=[];
   constructor(
     private user: UserService,
     private http: HttpClient,
@@ -148,10 +148,11 @@ export class UserComponent implements OnInit {
       "email":frm.username,
       "password":frm.password,
       "designation":frm.designation,
-      "phoneNumber":parseInt(frm.phoneNumber),
+      "phoneNumber":frm.phoneNumber,
       "location":frm.location,
       "tags":arrr,
-      "isAdmin":false
+      "isAdmin":false,
+      "userStatus":"Accepted"
       
    } 
     //console.log(arr);
@@ -176,10 +177,11 @@ export class UserComponent implements OnInit {
         "password":frm.password,
         "objectId":frm.objectId,
         "designation":frm.designation,
-        "phoneNumber":parseInt(frm.phoneNumber),
+        "phoneNumber":frm.phoneNumber,
         "location":frm.location,
         "tags":arrr,
-       "isAdmin":false
+       "isAdmin":false,
+       "userStatus":"Accepted"
       } 
       //console.log(arr);
       this.user.saveData(arr).subscribe(

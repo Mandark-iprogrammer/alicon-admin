@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-thank-you',
   templateUrl: './thank-you.component.html',
@@ -13,7 +14,9 @@ export class ThankYouComponent implements OnInit {
   }
 
   close(){
+    window.open('', '_self', '');
+    window.close();
     
-   // window.close();
+      
   }
 }

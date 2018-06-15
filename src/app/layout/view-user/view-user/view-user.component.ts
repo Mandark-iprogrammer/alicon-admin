@@ -83,7 +83,7 @@ export class ViewUserComponent implements OnInit {
       columnTitle: 'Actions',
       add: false,
       edit: true,
-      delete: true,
+      delete: false,
       custom: [{
       
         name: 'Edit',

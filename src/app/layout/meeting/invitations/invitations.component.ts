@@ -258,8 +258,6 @@ export class InvitationsComponent implements OnInit {
         this.username.splice(k, 1);
       }
 
-
-      //console.log(this.username)
     }
            
     }
@@ -280,7 +278,7 @@ export class InvitationsComponent implements OnInit {
         }
       }
 
-      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
+           this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID;
            this.http.get(this.SERVER_URL, {
              headers: new HttpHeaders({
                'Content-Type': 'application/json',
@@ -303,9 +301,9 @@ export class InvitationsComponent implements OnInit {
             'X-Parse-Revocable-Session': '1'
           })
         }).subscribe(data => {
-           console.log(data)
+          // console.log(data)
           if(data['deviceToken']){
-           console.log(data['deviceToken'])
+         //  console.log(data['deviceToken'])
 
            var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
            var fcm = new FCM(serverKey); 
@@ -331,14 +329,13 @@ export class InvitationsComponent implements OnInit {
              if (err) {
                  console.log("Something has gone wrong!");
                  console.log(err)
-                 this.toastr.error("Notification Not Send Successfully");
-                 this.mytemplateForm1.reset();
-                 this.ngOnChanges();
+                 
+                 this.toastr.error("Notification Not Sent");
+              //   this.mytemplateForm1.reset();
+                // this.ngOnChanges();
              } else {
                  console.log("Successfully sent with response: ", response);
-                
-                
-             }
+              }
            });
 
              //  fcm.send(message)
@@ -377,11 +374,11 @@ export class InvitationsComponent implements OnInit {
           this.send.length==0;
           this.username.length=0;
           
-          var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
+          // var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
           
-            for(let i=0; i<checkedBoxes.length; i++) {
-              checkedBoxes[i].parentNode.removeChild(checkedBoxes[i]);
-            }
+          //   for(let i=0; i<checkedBoxes.length; i++) {
+          //     checkedBoxes[i].parentNode.removeChild(checkedBoxes[i]);
+          //   }
             
         })
     }
