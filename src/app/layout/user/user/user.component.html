@@ -83,8 +83,9 @@
         <div class="col-md-4">
                 <div class="form-group" >
                         <label for="lastName">Department <font color="red">*</font></label>
-                          <tag-input class="form-control input-underline input-lg" [placeholder]="'Add department'" [secondaryPlaceholder]="'Department'" name="tags"  [(ngModel)]="dept" #tags="ngModel" ngModel required placeholder="Enter the department">
+                          <tag-input class="form-control input-underline input-lg"  [placeholder]="'Add department'" [secondaryPlaceholder]="'Department'" name="tags"  [(ngModel)]="dept" #tags="ngModel" ngModel required placeholder="Enter the department">
                             <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                                        
                                                 [autocompleteItems]="unique">
                             </tag-input-dropdown>
                         </tag-input>

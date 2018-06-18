@@ -88,11 +88,8 @@ export class ViewUserComponent implements OnInit {
       
         name: 'Edit',
         title: '<i class="fa fa-fw fa-edit">',
-      },
-      {
-        name: 'Mail',
-        title: '<i class="fa fa-fw fa-envelope">',
-      }],
+      }
+      ],
       position: 'right', // left|right
     },
     filter: {

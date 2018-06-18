@@ -3,7 +3,7 @@
 <div class="row mt-3" >
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header">Manage Users
+            <div class="card-header"><h2>Manage Users</h2>
                 <div class="pull-right" style="padding-bottom: 10px">
                     <a routerLink="/User">
                       <button class="btn rounded-btn pull-right"> Add User</button>
@@ -81,6 +81,9 @@
           </label>
           <input type="password" class="form-control input-underline input-lg" validateEqual="password" name="confirmPassword" #confirmPassword="ngModel"
             ngModel required placeholder="Re-enter password" />
+            <small class="text-danger" *ngIf="confirmPassword.errors?.required">
+              Re-enter Password is Required
+            </small>
           <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !frm.submitted)">
             Password mismatch
           </small>

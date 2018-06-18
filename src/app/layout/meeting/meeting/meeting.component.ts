@@ -186,6 +186,7 @@ export class MeetingComponent implements OnInit {
   docs2: any
   docs3:any
   docs4:any
+  docs5:any
   nm: string
   nm1:string
   message;
@@ -218,6 +219,7 @@ export class MeetingComponent implements OnInit {
     private meeting: MeetingService,
     private toastr: ToastrService,
     public router: Router,
+    
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     private activity: ActivityService
@@ -437,7 +439,7 @@ export class MeetingComponent implements OnInit {
    if (userId != null) {
 
        //RSVP Attend Users Count
-       this.SERVER_URL = environment.apiUrl+'/classes/rsvp?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+userId+'"},"status":2}';
+       this.SERVER_URL = environment.apiUrl+'/classes/rsvp?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+userId+'"},"status":1}';
        this.http.get(this.SERVER_URL, {
          headers: new HttpHeaders({
            'Content-Type': 'application/json',
@@ -446,9 +448,8 @@ export class MeetingComponent implements OnInit {
            'X-Parse-Revocable-Session': '1'
          })
        }).subscribe(data => {
-           console.log(data);
            this.docs4=data['results']
-           console.log(this.docs4);
+         //  console.log(this.docs4);
  
            if(this.docs4==null){
              this.rsvpAttend=0;
@@ -471,14 +472,14 @@ export class MeetingComponent implements OnInit {
          })
        }).subscribe(data => {
            //console.log(data);
-           this.docs=data['results']
-           //console.log(this.docs);
+           this.docs5=data['results']
+           //console.log(this.docs5);
  
-           if(this.docs==null){
+           if(this.docs5==null){
              this.rsvpNotAttend=0;
            }
            else{ 
-             this.rsvpNotAttend=this.docs.length;
+             this.rsvpNotAttend=this.docs5.length;
            }
        })
             
