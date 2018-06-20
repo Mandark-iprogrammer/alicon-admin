@@ -83,7 +83,7 @@ export class ViewUserComponent implements OnInit {
       columnTitle: 'Actions',
       add: false,
       edit: true,
-      delete: false,
+      delete: true,
       custom: [{
       
         name: 'Edit',
@@ -248,13 +248,17 @@ export class ViewUserComponent implements OnInit {
   }
   
   delete(event){
-    var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+event.data.objectId+"/"+this.token+"'>Reset Password</a>";
+
+    var encodedString = btoa(event.data.objectId);
+console.log(encodedString); 
+   // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://192.168.151.216/dist/forgot/"+encodedString+"'>Reset Password</a>";
+    var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+encodedString+"'>Reset Password</a>";
     console.log(body)
     var data={
         "SentTo":event.data.username,
         "body":body
     }
-    this.SERVER_URL = "http://localhost:3001/send"
+    this.SERVER_URL = "http://localhost:3000/send"
     return this.http.post(this.SERVER_URL,data,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',

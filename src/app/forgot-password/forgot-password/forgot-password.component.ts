@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 })
 export class ForgotPasswordComponent implements OnInit {
   objID1:string
+  abc:string  
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
@@ -25,9 +26,9 @@ export class ForgotPasswordComponent implements OnInit {
       this.MASTER_KEY =  environment.MASTER_KEY;
       
       this.activatedRoute.params.subscribe((params: Params) => {
-        this.objID1=params['objectId'];
-        
-  });
+        this.abc=params['objectId'];
+        this.objID1 = atob(this.abc);
+    });
   }
 
   ngOnInit() {

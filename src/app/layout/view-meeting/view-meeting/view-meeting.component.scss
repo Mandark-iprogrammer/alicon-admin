@@ -16,7 +16,12 @@
     padding: 0 25px;
 }
 
-
+@media only screen and (max-width: 600px) {
+    h3{
+        font-size: 20px;
+    }
+        
+}
     
 
 :host /deep/ ng2-smart-table a { color: #455158; }

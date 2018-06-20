@@ -147,6 +147,7 @@ export class UserComponent implements OnInit {
       "username":frm.username,
       "email":frm.username,
       "password":frm.password,
+      "initialPassword":frm.password,
       "designation":frm.designation,
       "phoneNumber":frm.phoneNumber,
       "location":frm.location,
@@ -162,12 +163,43 @@ export class UserComponent implements OnInit {
         res=>{
           console.log(res)
                 },
-        err=>console.log(err),
+        err=>{
+          this.toastr.error(err.error['error']);     
+          console.log(err)},
         ()=>{
          //console.log("record saved")
+          //send mail functionality
+          
          this.router.navigate(['/viewUsers']);
          this.toastr.success('New Record Added Successfully');
          })
+         var body="<h1>Welcome to Alicon</h1><br><ul>";
+         body+="<li><b>Name:</b> "+frm.firstName+" "+frm.lastName+"</li>";
+         body+="<li><b>Email:</b>"+frm.username+"</li>";
+         body+="<li><b>Password</b>"+frm.password+"</li>";
+         body+="<li><b>Designation</b>"+frm.designation+"</li></ul><br/><br/><br/>";
+         body+="<p>Here Login with mobile app :-<a target='_blank' href='#'>Reset Password</a></p>"
+
+     console.log(body)
+     var data={
+         "SentTo":frm.username,
+         "body":body
+     }
+     this.SERVER_URL = "http://localhost:3000/send1"
+     return this.http.post(this.SERVER_URL,data,{
+     headers:new HttpHeaders({
+     'Content-Type':'application/json',
+       
+     })
+   }).subscribe(
+     res=>console.log(res),
+     err=>{
+       this.toastr.error(err.error['error']);     
+       console.log(err)},
+     ()=>{          // this.toastr.success('Mail sent Successfully');
+     }) 
+         
+
  
     }else{
       let arr={
@@ -175,6 +207,7 @@ export class UserComponent implements OnInit {
         "lastName": frm.lastName,
         "email":frm.username,
         "password":frm.password,
+        "initialPassword":frm.password,
         "objectId":frm.objectId,
         "designation":frm.designation,
         "phoneNumber":frm.phoneNumber,
@@ -203,7 +236,12 @@ export class UserComponent implements OnInit {
   }
  
 
-
+  
+  abc1(event){
+    console.log('mouse enter')
+    console.log(event.target.value)
+    this.dept=event.target.value
+  }
 
 
 }
