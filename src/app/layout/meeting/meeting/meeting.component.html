@@ -132,7 +132,7 @@
                <div class="col-md-6">
     
                    <div class="form-group">
-                         <label class="control-label">{{pub}}</label>
+                         <label class="control-label">Publish</label>
                          <ui-switch   size="small" name="isPublished" [(ngModel)]="published" (change)="onChange1($event)" #isPublished1="ngModel" ngModel [checked]="published"></ui-switch>
                          <!-- <ui-switch switchColor="#efefef" size="small"  (change)="onChange1($event)" [(ngModel)]="enable"  name="isPublished"  #isPublished="ngModel" ngModel [checked]="publish1" ></ui-switch> -->
                    </div>
@@ -183,7 +183,7 @@
             <th style="text-align: center;">Meeting Time</th>
 
             <th  style="text-align: center;">Edit</th>
-            <th style="text-align: center;">{{pub}}</th>
+            <th style="text-align: center;">Publish</th>
         </tr>
         <tr>
 
@@ -205,7 +205,7 @@
 </div>
 
 
-<div class="row">
+<div class="row" *ngIf="edit1">
     	<div class="col-lg-3 col-md-6 col-xs-12">
 		<div class="widget">
 			<div class="widget-body">
@@ -291,7 +291,7 @@
                         <ng-template ngbTabTitle>Push Notifications</ng-template>
                         <ng-template ngbTabContent>
 
-                            <form class="" #frm1="ngForm" (ngSubmit)="push_noti(frm1.value)" style="padding-top:30px; ">
+                            <form class="" #frm1="ngForm" (ngSubmit)="push_noti(frm1.value)" style="padding-top:30px; " autocomplete="off">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">

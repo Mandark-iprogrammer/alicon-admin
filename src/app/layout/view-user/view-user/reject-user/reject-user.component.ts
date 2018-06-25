@@ -68,9 +68,6 @@ export class RejectUserComponent implements OnInit {
       },
       tags:{
         title:'Department'
-      },
-      userStatus:{
-        title:'Status'
       }
 
     },
@@ -81,7 +78,7 @@ export class RejectUserComponent implements OnInit {
     actions: {
       columnTitle: 'Actions',
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [{
       
@@ -95,7 +92,7 @@ export class RejectUserComponent implements OnInit {
     },
     edit: {
       inputClass: '',
-      editButtonContent: '<br>Reject',
+      editButtonContent: 'Reject',
       saveButtonContent: 'Update',
       cancelButtonContent: 'Cancel',
       confirmSave: true,
@@ -194,7 +191,7 @@ export class RejectUserComponent implements OnInit {
       res => console.log(res),
       err => console.log(err),
       () => {
-        this.toastr.success('User Rejected.....!');
+        this.toastr.success('User Rejected!');
         this.OnChanges();
       })
 

@@ -3,7 +3,7 @@
         <div class="col-md-4">
             <img src="assets/images/alicon1.png"  class="img-fluid" />
             <!-- <h1>Admin Login</h1> -->
-            <form  #frm="ngForm" (ngSubmit)="onLoggedin(frm.value)">
+            <form  #frm="ngForm" (ngSubmit)="onLoggedin(frm.value)" autocomplete="off">
                 <div class="form-content">
                     <div class="form-group">
                         <input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" name="username" #username="ngModel" ngModel class="form-control input-underline input-lg"  placeholder="Email" required>
@@ -16,11 +16,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                 
                         <input type="submit" [disabled]="!frm.valid"  class="btn rounded-btn btn-block" value=" Log in">
                 </div>
             </form>
-            <a  class="pull-right" style="color: #dd4442" (click)="forgot()">Forgot Password</a>
+            <a  class="pull-right" style="color: #dd4442;cursor: pointer;" (click)="forgot()">Forgot Password?</a>
         </div>
     </div>
 </div>

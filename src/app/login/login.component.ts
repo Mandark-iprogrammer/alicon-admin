@@ -55,8 +55,8 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('sessionToken',res['sessionToken']);
                     this.username=frm.username;
                     this.objectId=res['objectId'];   
-                    this.router.navigate(['/viewUsers']);
-                    this.toastr.success('Logged in Successfully');
+                    this.router.navigate(['/viewMeeting']);
+                    this.toastr.success('Logged in successfully');
                 }
                 else{
                     this.toastr.error('This is not admin Login');

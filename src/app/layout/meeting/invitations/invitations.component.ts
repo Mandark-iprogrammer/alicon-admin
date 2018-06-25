@@ -173,63 +173,11 @@ export class InvitationsComponent implements OnInit {
           })
       });
      }
-
-
     })
-
-
-
-
-   // this.router.navigate(['/meeting',{ 'objectId': this.meetingID,'view':'view'}]);
   }
 
-  // invitations(frm: any) {
-  //   //console.log(frm)
+   onUserRowSelect(event){
 
-  //   let arrr = [];
-  //   //console.log(frm.users)
-  //   for (var i = 0; i < frm.users.length; i++) {
-  //     arrr.push(frm.users[i].value);
-  //   }
-  //   //console.log(arrr);
-  //   let arr = {
-
-  //     "meetingUsers": arrr
-
-  //   }
-  //   this.SERVER_URL = 'http://192.168.151.156:1337/alicon/parse/classes/meeting/' + frm.objectId
-  //   return this.http.put(this.SERVER_URL, arr, {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       'X-Parse-Application-Id': this.APP_ID,
-  //       'X-Parse-REST-API-Key': this.MASTER_KEY,
-  //     })
-  //   }).subscribe(
-  //     res => //console.log(res),
-  //     err => //console.log(err),
-  //     () => {
-  //       //console.log("record updated")
-  //       //this.meeting.showMeeting();
-  //       this.router.navigate(['/viewMeeting']);
-  //       this.toastr.success('New Record Updated Successfully', 'Meeting Register');
-
-  //     }
-  //   )
-
-
-
-
-
-  // }
-
-
-    onUserRowSelect(event){
-     // this.send.length=0;
-    //console.log(event)
-    // if(this.username.length>0){
-    //   this.username.length=0;
-    // }
-    //this.send.push(event.data)
     if(event.isSelected===null){
       this.username.length=0;
       this.gridSelected = event.selected;
@@ -337,28 +285,13 @@ export class InvitationsComponent implements OnInit {
                  console.log("Successfully sent with response: ", response);
               }
            });
-
-             //  fcm.send(message)
-             // .then(function(response){
-             //     console.log("Successfully sent with response: ", response);
-             // })
-             // .catch(function(err){
-             //     console.log("Something has gone wrong!");
-             //     console.error(err);
-             // })
-
-          }
-         // this.users1.push(data)
-          //  console.log(this.users1)
+        }
+      
         })
     });
-
   });
 
-
-
-      //console.log(arr)
-      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
       return this.http.put(this.SERVER_URL, arr, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -373,23 +306,13 @@ export class InvitationsComponent implements OnInit {
           this.ngOnChanges();
           this.send.length==0;
           this.username.length=0;
-          
-          // var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-          
-          //   for(let i=0; i<checkedBoxes.length; i++) {
-          //     checkedBoxes[i].parentNode.removeChild(checkedBoxes[i]);
-          //   }
-            
         })
     }
 
     fetchNews(event)
     { 
-      //this.ngOnChanges();
-      //console.log(event)
       if(event.activeId=="ngb-tab-4"){
         this.username.length=0;
-
       }
     
     }
@@ -398,16 +321,36 @@ export class InvitationsComponent implements OnInit {
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
       let dt = date.getDate();
-      // if (dt < 10) {
-      //   dt = '0' + dt;
-      // }
-      // if (month < 10) {
-      //   month = '0' + month;
-      // }
       return dt + '/' + month + '/' + year;
-    //  return new Date(dt month);
-   //   return year+'-' + month + '-'+dt;
     }
+
+    OnRemove(id:any){
+      console.log(id)
+      var abc=[];
+      abc.push(id)
+      this.activatedRoute.params.subscribe((params: Params) => {
+        this.meetingID = params['objectId'];
+      });
+      let arr = 
+      {
+        "meetingUsers": {"__op":"Remove", "objects": abc }
+      }
+
+      this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
+      return this.http.put(this.SERVER_URL, arr, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-Parse-Application-Id': this.APP_ID,
+          'X-Parse-REST-API-Key': this.MASTER_KEY,
+        })
+      }).subscribe(
+        res => console.log(res),
+        err => console.log(err),
+        () => {
+          this.toastr.success('Invivation Remove');
+          this.ngOnChanges();
+   })
+  }
 
 }
 

@@ -14,4 +14,10 @@ export const environment = {
   //  APP_ID:'129837njlasdjfpoia2p83u4jnlkj',
   //  MASTER_KEY:'lkl1j23l809uljn3lkj48unkjnkjh4234'
   
+  //nirmal local
+  // apiUrl: 'http://3a9719af.ngrok.io/parse',
+  // APP_ID:'myAppId',
+  // MASTER_KEY:'myMasterKey'
+
+
 };

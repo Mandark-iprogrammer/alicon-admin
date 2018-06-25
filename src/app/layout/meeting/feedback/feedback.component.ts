@@ -36,7 +36,8 @@ export class FeedbackComponent implements OnInit {
       this.activatedRoute.params.subscribe((params: Params) => {
         this.meetingID = params['objectId'];
       });
-
+      this.users2.length=0;
+      this.users1.length=0;
           //Meeting Comments
     this.SERVER_URL = environment.apiUrl+'/classes/comments?where={"meetingId":{"__type":"Pointer","className":"meeting","objectId":"'+this.meetingID+'"},"isActivityFeedback":false}';
     this.http.get(this.SERVER_URL, {
@@ -47,12 +48,12 @@ export class FeedbackComponent implements OnInit {
         'X-Parse-Revocable-Session': '1'
       })
     }).subscribe(data => {
-        console.log(data);
+     //   console.log(data);
         this.docs=data['results']
         //console.log(this.docs);
 
         if(this.docs.length==0){
-          this.notFound="No Comments For User."
+          this.notFound="No Comments For Meeting."
         }
         else{ 
           this.docs.forEach(element => {
@@ -69,11 +70,12 @@ export class FeedbackComponent implements OnInit {
           }).subscribe(data => {
             data['description']=element.description
             data['rating']=element.rating
-            console.log(data)
+            data['name']=element.username
+           // console.log(data)
             
            this.users1.push(data)
            
-            console.log(this.users1)
+           // console.log(this.users1)
           })
       });
     }
@@ -94,15 +96,19 @@ export class FeedbackComponent implements OnInit {
         //console.log(this.docs);
 
         if(this.docs.length==0){
-          this.notFound1="No Comments For User."
+          this.notFound1="No Comments For Activity."
         }
         else{ 
           this.docs.forEach(element => {
           //this.users1['reason']=element.reason
           //console.log(element)
           
-            
+          let orderby={
+            "order":"sequenceNumber"
+          } 
+          //?where={"objectbwId":"uExJvpoE"}&order=sequenceNumber
           this.SERVER_URL = environment.apiUrl+'/classes/activity/' + element.activityId['objectId'];
+       //  this.SERVER_URL = environment.apiUrl+'/classes/activity?where={"objectId":"'+element.activityId['objectId']+'"}';
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
@@ -113,11 +119,6 @@ export class FeedbackComponent implements OnInit {
           }).subscribe(data1 => {
             console.log(data1)
             this.docs1=data1
-          })
-
-
-
-
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -129,23 +130,17 @@ export class FeedbackComponent implements OnInit {
           }).subscribe(data => {
             data['description']=element.description
             data['rating']=element.rating
-            data['sequenceNumber']= this.docs1['sequenceNumber']
-            data['section']= this.docs1['section']
-            console.log(data)
-            console.log(this.docs1)
+            data['name']=element.username
+            data['sequenceNumber']= parseInt(data1['sequenceNumber'])
+            data['section']= data1['section']
              this.users2.push(data)
-           
-            console.log(this.users2)
+            console.log(this.users2.sort)
           })
+        })
       });
     }
     })
-
-
-
-    }
-
+ }
   ngOnInit() {
   }
-
 }

@@ -83,7 +83,7 @@ export class ViewUserComponent implements OnInit {
       columnTitle: 'Actions',
       add: false,
       edit: true,
-      delete: true,
+      delete: false,
       custom: [{
       
         name: 'Edit',
@@ -250,19 +250,21 @@ export class ViewUserComponent implements OnInit {
   delete(event){
 
     var encodedString = btoa(event.data.objectId);
-console.log(encodedString); 
-   // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://192.168.151.216/dist/forgot/"+encodedString+"'>Reset Password</a>";
-    var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+encodedString+"'>Reset Password</a>";
-    console.log(body)
+    console.log(encodedString); 
+    //var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://192.168.151.216/dist/forgot;objectId="+encodedString+"'>Reset Password</a>";
+   // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot;objectId="+encodedString+"'>Reset Password</a>";
+   // console.log(body)
     var data={
-        "SentTo":event.data.username,
-        "body":body
+        "email":event.data.username
+        
     }
-    this.SERVER_URL = "http://localhost:3000/send"
+   // this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
+    this.SERVER_URL = environment.apiUrl+'/functions/forgot'
     return this.http.post(this.SERVER_URL,data,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
-   
+     'X-Parse-Application-Id':this.APP_ID,
+     'X-Parse-Master-Key':this.MASTER_KEY,
     })
   }).subscribe(
     res=>console.log(res),
@@ -271,6 +273,5 @@ console.log(encodedString);
       this.toastr.success('Mail sent Successfully');
     })
   }
-
 
 }

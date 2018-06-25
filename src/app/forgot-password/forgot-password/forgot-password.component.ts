@@ -28,6 +28,29 @@ export class ForgotPasswordComponent implements OnInit {
       this.activatedRoute.params.subscribe((params: Params) => {
         this.abc=params['objectId'];
         this.objID1 = atob(this.abc);
+        console.log(this.objID1)
+
+        this.SERVER_URL = environment.apiUrl+'/users/'+this.objID1
+        return this.http.get(this.SERVER_URL,{
+         headers:new HttpHeaders({
+         'Content-Type':'application/json',
+         'X-Parse-Application-Id':this.APP_ID,
+         'X-Parse-Master-Key':this.MASTER_KEY,
+        })
+      }).subscribe(data => {
+        console.log(data)
+      },
+      err =>{
+        if(err.error.code==101){
+          this.router.navigate(['/not-found'])
+        } 
+        console.log(err)
+      });
+        
+        
+
+
+
     });
   }
 

@@ -13,7 +13,7 @@
                                 <th style="text-align: center;">Name</th>
                                 <th style="text-align: center;">Email </th>
                                 <th style="text-align: center;">Location</th>
-                              
+                                <th style="text-align: center;">Remove Invitation</th>
                               </tr>
                               {{notFound}}
                               <tr *ngFor="let users1 of users1 ;let i=index">
@@ -22,7 +22,9 @@
                                 <td style="text-align: center;">{{users1.firstName}} {{users1.lastName}}</td>
                                 <td style="text-align: center;">{{users1.username}}</td>
                                 <td style="text-align: center;">{{users1.location}}</td>
-                               
+                                <td class="text-center">
+                                <a class="btn text-danger"(click)="OnRemove(users1.objectId)"> <i class="fa fa-fw fa-trash"></i></a>
+                                </td>
                               </tr>
                             </table>
                           
@@ -88,8 +90,7 @@
 (selectAllRows)="onSelectAllRows($event)"
 (sort)="sort($event)"
 (filter)="filter($event)"
-(custom)="onCustom($event)"
->
+(custom)="onCustom($event)">
 
 </ng2-smart-table> 
 <div class="row">

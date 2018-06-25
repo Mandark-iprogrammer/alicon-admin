@@ -173,7 +173,9 @@ export class UserComponent implements OnInit {
          this.router.navigate(['/viewUsers']);
          this.toastr.success('New Record Added Successfully');
          })
-         var body="<h1>Welcome to Alicon</h1><br><ul>";
+         
+         var body="<h1>Welcome to Alicon</h1><br>";
+         body+="<div><img src='assets/images/alicon1.png'/> </div><ul>"
          body+="<li><b>Name:</b> "+frm.firstName+" "+frm.lastName+"</li>";
          body+="<li><b>Email:</b>"+frm.username+"</li>";
          body+="<li><b>Password</b>"+frm.password+"</li>";
@@ -185,11 +187,13 @@ export class UserComponent implements OnInit {
          "SentTo":frm.username,
          "body":body
      }
-     this.SERVER_URL = "http://localhost:3000/send1"
+   //  this.SERVER_URL = "http://localhost:3000/send1"
+     this.SERVER_URL = environment.apiUrl+'/functions/SendUserEmail'
      return this.http.post(this.SERVER_URL,data,{
      headers:new HttpHeaders({
      'Content-Type':'application/json',
-       
+     'X-Parse-Application-Id':this.APP_ID,
+     'X-Parse-Master-Key':this.MASTER_KEY, 
      })
    }).subscribe(
      res=>console.log(res),
