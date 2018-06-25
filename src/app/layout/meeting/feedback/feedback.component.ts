@@ -91,7 +91,7 @@ export class FeedbackComponent implements OnInit {
         'X-Parse-Revocable-Session': '1'
       })
     }).subscribe(data => {
-        console.log(data);
+        //console.log(data);
         this.docs=data['results']
         //console.log(this.docs);
 
@@ -117,7 +117,7 @@ export class FeedbackComponent implements OnInit {
               'X-Parse-Revocable-Session': '1'
             })
           }).subscribe(data1 => {
-            console.log(data1)
+            //console.log(data1)
             this.docs1=data1
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
@@ -134,7 +134,7 @@ export class FeedbackComponent implements OnInit {
             data['sequenceNumber']= parseInt(data1['sequenceNumber'])
             data['section']= data1['section']
              this.users2.push(data)
-            console.log(this.users2.sort)
+            //console.log(this.users2.sort)
           })
         })
       });

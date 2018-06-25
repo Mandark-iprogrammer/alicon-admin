@@ -167,25 +167,24 @@ export class AcceptUserComponent implements OnInit {
         })
       }).subscribe(
         res =>{
-                console.log(res)
-              var body="<h1>Welcome to Alicon</h1><br><ul>";
-              body+="<li><b>Name:</b> "+event.data.firstName+" "+event.data.lastName+"</li>";
-              body+="<li><b>Email:</b>"+event.data.username+"</li>";
-              body+="<li><b>Password</b>"+event.data.password+"</li>";
-              body+="<li><b>Designation</b>"+event.data.designation+"</li></ul><br/><br/><br/>";
-                      
+              console.log(res)
+              var body="<h4>Welcome to Alicon</h4>";
+              body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials:</p><br/>"
+              body+="<ul><li><b>Name:   </b> "+event.data.firstName+" "+event.data.lastName+"</li>";
+              body+="<li><b>Email:  </b>"+event.data.username+"</li>";
+              body+="</ul><br/>";
               var data={
                 "SentTo":event.data.username,
                 "body":body
-            }
+              }
            // this.SERVER_URL = "http://localhost:3000/send1"
             this.SERVER_URL = environment.apiUrl+'/functions/AcceptUserEmail'
             return this.http.post(this.SERVER_URL,data,{
-            headers:new HttpHeaders({
-            'Content-Type':'application/json',
-            'X-Parse-Application-Id':this.APP_ID,
-            'X-Parse-Master-Key':this.MASTER_KEY, 
-            })
+              headers:new HttpHeaders({
+              'Content-Type':'application/json',
+              'X-Parse-Application-Id':this.APP_ID,
+              'X-Parse-Master-Key':this.MASTER_KEY, 
+              })
             }).subscribe(
             res=>console.log(res),
             err=>{
@@ -197,7 +196,7 @@ export class AcceptUserComponent implements OnInit {
         err => console.log(err),
         () => {
           this.toastr.success('User Accepted Successfully');
-         // this.OnChanges();
+          this.OnChanges();
         })
   }
 

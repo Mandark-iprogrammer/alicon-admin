@@ -11,7 +11,7 @@
                   </div>
             </div>
             <div class="card-body">
-                <ngb-tabset>
+                <ngb-tabset (tabChange)="fetchNews($event)">
                     <ngb-tab title="Accepted Users">
                         <ng-template ngbTabContent>
                                 

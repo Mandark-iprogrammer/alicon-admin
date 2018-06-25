@@ -175,12 +175,12 @@ export class UserComponent implements OnInit {
          })
          
          var body="<h1>Welcome to Alicon</h1><br>";
-         body+="<div><img src='assets/images/alicon1.png'/> </div><ul>"
+         body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials:</p><ul>"
          body+="<li><b>Name:</b> "+frm.firstName+" "+frm.lastName+"</li>";
          body+="<li><b>Email:</b>"+frm.username+"</li>";
-         body+="<li><b>Password</b>"+frm.password+"</li>";
-         body+="<li><b>Designation</b>"+frm.designation+"</li></ul><br/><br/><br/>";
-         body+="<p>Here Login with mobile app :-<a target='_blank' href='#'>Reset Password</a></p>"
+         body+="<li><b>Password:</b>"+frm.password+"</li>";
+         body+="<li><b>Designation:</b>"+frm.designation+"</li></ul><br/><br/><br/>";
+        // body+="<p>Here Login with mobile app :-<a target='_blank' href='#'>Reset Password</a></p>"
 
      console.log(body)
      var data={
@@ -249,3 +249,6 @@ export class UserComponent implements OnInit {
 
 
 }
+
+
+

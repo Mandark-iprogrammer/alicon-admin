@@ -137,7 +137,11 @@ export class ViewUserComponent implements OnInit {
     this.token=localStorage.getItem('sessionToken');
     this.APP_ID = environment.APP_ID;
     this.MASTER_KEY =  environment.MASTER_KEY;
+    this.OnChanges();
     
+  }
+
+  OnChanges(){
     this.user.displayUser().subscribe(data => {
       
       this.source=data['results'];
@@ -146,55 +150,11 @@ export class ViewUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.OnChanges();
   }
   isAllSelected: boolean = true;
   
   
-  addRecord(event) {
-    var data = {"firstName" : event.newData.firstName,
-                "lastName" : event.newData.lastName,
-                "location" : event.newData.location,
-                "designation":event.newData.desigNation,
-                "phonenumber":event.newData.phonenumber,
-                "username":event.newData.username,
-                "password":"Admin@123"
-                };
-                this.user.saveData(data).subscribe(
-                  res=>{
-                    //console.log(res)
-                          },
-                  err=>//console.log(err),
-                  ()=>{
-                   //console.log("record saved")
-                   this.router.navigate(['/viewUsers']);
-                   this.toastr.success('New Record Added Successfully','User Register');
-                   })
-  
-  }
-  updateRecord(event){
-          var data = {"firstName" : event.newData.firstName,
-                "lastName" : event.newData.lastName,
-                "location" : event.newData.location,
-                "designation":event.newData.desigNation,
-                "phonenumber":event.newData.phonenumber,
-                "username":event.newData.username
-                
-          };
-          //console.log(data)
-          this.user.saveData(data).subscribe(
-            res=>//console.log(res),
-            err=>//console.log(err),
-            ()=>{
-              //console.log("record updated")
-              //this.meeting.showMeeting();
-              this.router.navigate(['/viewUsers']);
-              this.toastr.success('New Record Updated Successfully','User Register');
-              
-            }
-          )
-
-
-  }
   onCustom(event) {
     console.log(event)
     if(event.action=="Mail"){
@@ -250,10 +210,7 @@ export class ViewUserComponent implements OnInit {
   delete(event){
 
     var encodedString = btoa(event.data.objectId);
-    console.log(encodedString); 
-    //var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://192.168.151.216/dist/forgot;objectId="+encodedString+"'>Reset Password</a>";
-   // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot;objectId="+encodedString+"'>Reset Password</a>";
-   // console.log(body)
+ 
     var data={
         "email":event.data.username
         
@@ -272,6 +229,19 @@ export class ViewUserComponent implements OnInit {
     ()=>{
       this.toastr.success('Mail sent Successfully');
     })
+  }
+
+  fetchNews(event){
+    //console.log(event);
+    if(event.activeId==="ngb-tab-2"){
+      this.OnChanges();
+    }    
+    else if(event.activeId==="ngb-tab-1"){
+      this.OnChanges();
+    }
+    else if(event.activeId==="ngb-tab-0"){
+      this.OnChanges();
+    }
   }
 
 }

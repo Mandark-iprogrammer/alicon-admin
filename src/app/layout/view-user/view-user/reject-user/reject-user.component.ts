@@ -166,7 +166,33 @@ export class RejectUserComponent implements OnInit {
           'X-Parse-Master-Key':this.MASTER_KEY
         })
       }).subscribe(
-        res => console.log(res),
+        res =>{
+          console.log(res)
+          var body="<h4>Welcome to Alicon</h4>";
+          body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials:</p><br/>"
+          body+="<ul><li><b>Name:   </b> "+event.data.firstName+" "+event.data.lastName+"</li>";
+          body+="<li><b>Email:  </b>"+event.data.username+"</li>";
+          body+="</ul><br/>";
+          var data={
+            "SentTo":event.data.username,
+            "body":body
+        }
+       // this.SERVER_URL = "http://localhost:3000/send1"
+        this.SERVER_URL = environment.apiUrl+'/functions/AcceptUserEmail'
+        return this.http.post(this.SERVER_URL,data,{
+        headers:new HttpHeaders({
+        'Content-Type':'application/json',
+        'X-Parse-Application-Id':this.APP_ID,
+        'X-Parse-Master-Key':this.MASTER_KEY, 
+        })
+        }).subscribe(
+        res=>console.log(res),
+        err=>{
+          this.toastr.error(err.error['error']);     
+          console.log(err)},
+        ()=>{       // this.toastr.success('Mail sent Successfully');
+        })          
+        }, 
         err => console.log(err),
         () => {
           this.toastr.success('User Accepted Successfully');
