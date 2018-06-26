@@ -248,7 +248,7 @@ export class FileUploadComponent implements OnInit {
           }
           else{
            // this.pub="UnPublished"
-            this.toastr.success('Record UnPublished..! ');
+            this.toastr.success('Record Unpublished! ');
            }
          }
       )

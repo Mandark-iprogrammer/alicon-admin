@@ -378,6 +378,7 @@ export class MeetingComponent implements OnInit {
     },
     rowClassFunction: () => ""
   };
+ 
   this.ngOnChanges();
 }
 

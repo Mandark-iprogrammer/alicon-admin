@@ -223,7 +223,10 @@ export class UserComponent implements OnInit {
       //console.log(arr);
       this.user.saveData(arr).subscribe(
         res=>console.log(res),
-        err=>console.log(err),
+        err=>{
+          console.log(err)
+          this.toastr.error(err.error['error']);
+        },
         ()=>{
           //console.log("record updated")
           //this.meeting.showMeeting();

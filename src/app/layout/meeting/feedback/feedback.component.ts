@@ -18,7 +18,7 @@ export class FeedbackComponent implements OnInit {
   MASTER_KEY: string
   SERVER_URL: string
   docs: any
-  docs1:any
+  docs1:any;
   meetingID: string
   users1=[];
   users2=[];
@@ -119,6 +119,15 @@ export class FeedbackComponent implements OnInit {
           }).subscribe(data1 => {
             //console.log(data1)
             this.docs1=data1
+            var arr=[];
+            arr.push(this.docs1)
+          console.log(arr)
+          
+          arr.sort(function(a, b){
+            var a1= parseInt(a.sequenceNumber), b1=  parseInt(b.sequenceNumber);
+            if(a1== b1) return 0;
+            return a1> b1? 1: -1;
+        });
           this.SERVER_URL = environment.apiUrl+'/users/' + element.userId['objectId'];
           this.http.get(this.SERVER_URL, {
             headers: new HttpHeaders({
@@ -131,9 +140,19 @@ export class FeedbackComponent implements OnInit {
             data['description']=element.description
             data['rating']=element.rating
             data['name']=element.username
-            data['sequenceNumber']= parseInt(data1['sequenceNumber'])
+            data['sequenceNumber']= data1['sequenceNumber']
             data['section']= data1['section']
+              
              this.users2.push(data)
+             this.users2.sort(function(a, b){
+              var a1= parseInt(a.sequenceNumber), b1=  parseInt(b.sequenceNumber);
+              if(a1== b1) return 0;
+              return a1> b1? 1: -1;
+          });
+            //  this.users2.sort(function(a,b) {
+            //      return parseInt(a['sequenceNumber']) - parseInt(b['sequenceNumber']);
+            //  });
+            
             //console.log(this.users2.sort)
           })
         })

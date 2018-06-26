@@ -10,6 +10,7 @@ export class MeetingService {
   APP_ID :string
   MASTER_KEY :string
   SERVER_URL : string
+  invite_users:boolean = false
   objectId:any
   constructor(
     private http:HttpClient

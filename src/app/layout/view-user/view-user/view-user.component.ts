@@ -208,12 +208,9 @@ export class ViewUserComponent implements OnInit {
   }
   
   delete(event){
-
     var encodedString = btoa(event.data.objectId);
- 
     var data={
         "email":event.data.username
-        
     }
    // this.SERVER_URL1 = environment.apiUrl+'/functions/meeting_venues'
     this.SERVER_URL = environment.apiUrl+'/functions/forgot'
@@ -232,7 +229,7 @@ export class ViewUserComponent implements OnInit {
   }
 
   fetchNews(event){
-    //console.log(event);
+    console.log(event)
     if(event.activeId==="ngb-tab-2"){
       this.OnChanges();
     }    
@@ -243,5 +240,12 @@ export class ViewUserComponent implements OnInit {
       this.OnChanges();
     }
   }
-
+  checkPwd(pwd:string,cpwd:string){
+    
+    
+      if(pwd!=cpwd){
+        var p=true
+        var abc="Password and Re-Type Password Not Match"
+      }
+  }
 }

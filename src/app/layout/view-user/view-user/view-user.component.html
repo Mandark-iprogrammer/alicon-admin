@@ -60,8 +60,8 @@
           <label for="password">Password
             <font color="red">*</font>
           </label>
-          <input type="password" class="form-control input-underline input-lg" pattern="^(?=)(?=.*[@#$%^&+=]).*$" name="password" #password="ngModel"
-            ngModel required placeholder="Enter the password" minlength="6" />
+          <input type="password" class="form-control input-underline input-lg" pattern="^(?=)(?=.*[@#$%^&+=]).*$"   name="password" #password="ngModel"
+            ngModel required placeholder="Enter the password" minlength="6"  />
           <small class="text-danger" *ngIf="password.errors?.pattern">
             Need atleast one special character
           </small>
@@ -71,7 +71,7 @@
           <small class="text-danger" *ngIf="password.errors?.minlength">
             At least 6 character
           </small>
-
+         
         </div>
       </div>
       <div class="col-md-12">
@@ -79,7 +79,7 @@
           <label for="password">Re-enter Password
             <font color="red">*</font>
           </label>
-          <input type="password" class="form-control input-underline input-lg" validateEqual="password" name="confirmPassword" #confirmPassword="ngModel"
+          <input type="password" class="form-control input-underline input-lg"  validateEqual="password" name="confirmPassword" #confirmPassword="ngModel"
             ngModel required placeholder="Re-enter password" />
             <small class="text-danger" *ngIf="confirmPassword.errors?.required">
               Re-enter Password is Required
@@ -87,6 +87,7 @@
           <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !frm.submitted)">
             Password mismatch
           </small>
+         
           <!-- <small class="text-danger" *ngIf="confirmPassword.errors?.required">
                                                     Re-enter Password is Required
                                               </small> -->

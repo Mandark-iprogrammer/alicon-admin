@@ -1,4 +1,4 @@
-import { Component, OnInit, Input ,OnChanges} from '@angular/core';
+import { Component, OnInit, Input ,OnChanges, EventEmitter, Output} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MeetingService } from '../meeting.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,9 +13,18 @@ var FCM = require('fcm-push');
 @Component({
   selector: 'app-invitations',
   templateUrl: './invitations.component.html',
-  styleUrls: ['./invitations.component.scss']
+  styleUrls: ['./invitations.component.scss'],
+  providers:[MeetingService]
 })
 export class InvitationsComponent implements OnInit {
+  @Input() incomingData: boolean;
+  @Output() outgoingData = new EventEmitter<string>();
+
+  @Input()
+  invited_user: boolean = true;
+
+  @Output()
+  change: EventEmitter<boolean> = new EventEmitter<boolean>();
   APP_ID: string
   MASTER_KEY: string
   SERVER_URL: string
@@ -105,7 +114,8 @@ export class InvitationsComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     public router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private meeting : MeetingService
   ) {
    
     this.APP_ID = environment.APP_ID;
@@ -302,6 +312,7 @@ export class InvitationsComponent implements OnInit {
         res => console.log(res),
         err => console.log(err),
         () => {
+         // this.change.emit(this.invited_user);
           this.toastr.success('Invivation Sent Successsfully');
           this.ngOnChanges();
           this.send.length==0;
@@ -325,6 +336,7 @@ export class InvitationsComponent implements OnInit {
     }
 
     OnRemove(id:any){
+      if (window.confirm('Are you sure want to Remove?')) {
       console.log(id)
       var abc=[];
       abc.push(id)
@@ -347,9 +359,10 @@ export class InvitationsComponent implements OnInit {
         res => console.log(res),
         err => console.log(err),
         () => {
-          this.toastr.success('Invivation Remove');
+          this.toastr.success('Invitation Remove');
           this.ngOnChanges();
    })
+  }
   }
 
 }
