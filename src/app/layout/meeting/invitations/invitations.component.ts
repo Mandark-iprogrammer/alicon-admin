@@ -19,7 +19,7 @@ var FCM = require('fcm-push');
 export class InvitationsComponent implements OnInit {
   @Input() incomingData: boolean;
   @Output() outgoingData = new EventEmitter<string>();
-
+  hidden:boolean =true
   @Input()
   invited_user: boolean = true;
 
@@ -32,6 +32,7 @@ export class InvitationsComponent implements OnInit {
   meetingID: string
   meetingName:string
   meetingDate:string
+  nCnt: number = 0;
   users1=[]
   gridSelected: any;
   unique1 = []
@@ -187,7 +188,7 @@ export class InvitationsComponent implements OnInit {
   }
 
    onUserRowSelect(event){
-
+    this.hidden=false;
     if(event.isSelected===null){
       this.username.length=0;
       this.gridSelected = event.selected;
@@ -220,11 +221,12 @@ export class InvitationsComponent implements OnInit {
            
     }
     abc(){
-     
+      
       if( this.send.length==0){
         this.toastr.error('Select atleast one user');
         return false
       }
+     
       this.activatedRoute.params.subscribe((params: Params) => {
         this.meetingID = params['objectId'];
       });
@@ -249,7 +251,7 @@ export class InvitationsComponent implements OnInit {
             this.meetingDate=this.dataformat(data['meetingDate']['iso'])
 
       this.send.forEach(element => {
-        console.log(element)
+       // console.log(element)
         this.SERVER_URL = environment.apiUrl+'/users/' + element;
         this.http.get(this.SERVER_URL, {
           headers: new HttpHeaders({
@@ -271,15 +273,15 @@ export class InvitationsComponent implements OnInit {
             to:data['deviceToken'],
             collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
              data: {
-                 your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI'
+                 your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI',
+                 "meetingDate":this.meetingDate,
+                 "ObjectId":this.meetingID,
+                 "meetingText":"This meeting is published"
              },
              notification: {
                  title: this.meetingName,
-                 body: {
-                   "meetingDate":this.meetingDate,
-                   "ObjectId":this.meetingID,
-                   "meetingText":"This meeting is published"
-                 } 
+                 body:"This meeting is published"
+                                 
              }
            };
 
@@ -300,7 +302,7 @@ export class InvitationsComponent implements OnInit {
         })
     });
   });
-
+  this.hidden=true;
     this.SERVER_URL = environment.apiUrl+'/classes/meeting/' + this.meetingID
       return this.http.put(this.SERVER_URL, arr, {
         headers: new HttpHeaders({
@@ -316,8 +318,11 @@ export class InvitationsComponent implements OnInit {
           this.toastr.success('Invivation Sent Successsfully');
           this.ngOnChanges();
           this.send.length==0;
+          
           this.username.length=0;
         })
+        
+     //   evt.stopPropagation();
     }
 
     fetchNews(event)
@@ -327,6 +332,13 @@ export class InvitationsComponent implements OnInit {
       }
     
     }
+
+    doubleClick(event){
+      
+      console.log(event)
+    }
+
+
     dataformat(date1: string) {
       let date = new Date(date1);
       let year = date.getFullYear();

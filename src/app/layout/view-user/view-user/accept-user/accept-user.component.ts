@@ -168,11 +168,11 @@ export class AcceptUserComponent implements OnInit {
       }).subscribe(
         res =>{
               console.log(res)
-              var body="<h4>Welcome to Alicon</h4>";
-              body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials:</p><br/>"
-              body+="<ul><li><b>Name:   </b> "+event.data.firstName+" "+event.data.lastName+"</li>";
-              body+="<li><b>Email:  </b>"+event.data.username+"</li>";
-              body+="</ul><br/>";
+              var body="<h4>Hi "+event.data.firstName+",</h4>";
+             body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials.</p><br/>"
+          // body+="<br/<ul><li><b>Name:   </b> "+event.data.firstName+" "+event.data.lastName+"</li>";
+          // body+="<li><b>Email:  </b>"+event.data.username+"</li>";
+          // body+="</ul><br/>";
               var data={
                 "SentTo":event.data.username,
                 "body":body

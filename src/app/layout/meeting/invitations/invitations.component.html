@@ -98,7 +98,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-6">
-                    <input type="submit" (click)="abc()" class="btn rounded-btn btn-block" Value="Send">
+                    <input type="submit" (click)="abc($event)" [disabled]="hidden" (dblclick)="doubleClick( $event)" class="btn rounded-btn btn-block" Value="Send">
                 </div>
            </div>
         </div>

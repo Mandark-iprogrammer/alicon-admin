@@ -162,10 +162,40 @@ export class UserComponent implements OnInit {
       this.user.saveData(arr).subscribe(
         res=>{
           console.log(res)
+          var body="<h1>Welcome to Alicon</h1><br>";
+          body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login using below credentials:</p><ul>"
+        
+          body+="<li><b>Email:</b>"+frm.username+"</li>";
+          body+="<li><b>Password:</b>"+frm.password+"</li>";
+          body+="</ul><br/><br/><br/>";
+         // body+="<p>Here Login with mobile app :-<a target='_blank' href='#'>Reset Password</a></p>"
+ 
+      console.log(body)
+      var data={
+          "SentTo":frm.username,
+          "body":body
+      }
+    //  this.SERVER_URL = "http://localhost:3000/send1"
+      this.SERVER_URL = environment.apiUrl+'/functions/SendUserEmail'
+      return this.http.post(this.SERVER_URL,data,{
+      headers:new HttpHeaders({
+      'Content-Type':'application/json',
+      'X-Parse-Application-Id':this.APP_ID,
+      'X-Parse-Master-Key':this.MASTER_KEY, 
+      })
+    }).subscribe(
+      res=>console.log(res),
+      err=>{
+        this.toastr.error(err.error['error']);     
+        console.log(err)},
+      ()=>{          // this.toastr.success('Mail sent Successfully');
+      }) 
+
                 },
         err=>{
           this.toastr.error(err.error['error']);     
-          console.log(err)},
+          console.log(err)
+        },
         ()=>{
          //console.log("record saved")
           //send mail functionality
@@ -174,34 +204,7 @@ export class UserComponent implements OnInit {
          this.toastr.success('New Record Added Successfully');
          })
          
-         var body="<h1>Welcome to Alicon</h1><br>";
-         body+="<p>Your request for registration for Digital Alicon App has been approved. You can now login with your credentials:</p><ul>"
-         body+="<li><b>Name:</b> "+frm.firstName+" "+frm.lastName+"</li>";
-         body+="<li><b>Email:</b>"+frm.username+"</li>";
-         body+="<li><b>Password:</b>"+frm.password+"</li>";
-         body+="<li><b>Designation:</b>"+frm.designation+"</li></ul><br/><br/><br/>";
-        // body+="<p>Here Login with mobile app :-<a target='_blank' href='#'>Reset Password</a></p>"
-
-     console.log(body)
-     var data={
-         "SentTo":frm.username,
-         "body":body
-     }
-   //  this.SERVER_URL = "http://localhost:3000/send1"
-     this.SERVER_URL = environment.apiUrl+'/functions/SendUserEmail'
-     return this.http.post(this.SERVER_URL,data,{
-     headers:new HttpHeaders({
-     'Content-Type':'application/json',
-     'X-Parse-Application-Id':this.APP_ID,
-     'X-Parse-Master-Key':this.MASTER_KEY, 
-     })
-   }).subscribe(
-     res=>console.log(res),
-     err=>{
-       this.toastr.error(err.error['error']);     
-       console.log(err)},
-     ()=>{          // this.toastr.success('Mail sent Successfully');
-     }) 
+        
          
 
  
