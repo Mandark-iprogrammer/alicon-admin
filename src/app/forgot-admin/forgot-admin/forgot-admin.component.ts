@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./forgot-admin.component.scss']
 })
 export class ForgotAdminComponent implements OnInit {
-
+  email:string;
   APP_ID : string
     MASTER_KEY:string
     SERVER_URL:string
@@ -61,13 +61,16 @@ export class ForgotAdminComponent implements OnInit {
                     res=>console.log(res),
                     err=>console.log(err),
                     ()=>{
-                      this.router.navigate(['/forgotSuccess']);
-                      //this.toastr.success('Mail sent Successfully');
+                      //this.router.navigate(['/forgotSuccess']);
+                      this.toastr.success('We have sent a reset password link to your registered email address.');
+                      setTimeout(this.login.bind(this),4000);
+                      this.email="";
                     })    
                 });
                 }
                 else{
-                  this.toastr.error(frm.username+' is not administrator email');
+                  this.toastr.error('This email is not admin');
+                  this.email="";
                 }
                 
                    // var body="<h1>Alicon Forgot Password</h1><a target='_blank' href='http://localhost:4200/forgot/"+res['objectId']+"/"+this.token+"'>Reset Password</a>";

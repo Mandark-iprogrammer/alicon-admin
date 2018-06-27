@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router,Params,ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-forgot-success',
   templateUrl: './forgot-success.component.html',
@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotSuccessComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor( public router: Router) { 
+   
   }
+  
+  ngOnInit() {
+  
+  }
+
 
 }

@@ -2,19 +2,20 @@
   <div class="row justify-content-md-center">
       <div class="col-md-4">
           <img src="assets/images/alicon1.png"  class="img-fluid" />
-          <h1>Admin Reset Password</h1>
+          <br/><br/>
+          <h3>Admin Reset Password</h3>
           <form  #frm="ngForm" (ngSubmit)="onForgot(frm.value)" autocomplete="off">
               
               <div class="form-content">
               
                   <div class="form-group" [ngClass]="{ 'has-error': frm.submitted && !username.valid }">
                           <label for="username" class="pull-left">Email Address <font color="red">*</font></label>
-                          <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control input-underline input-lg"  [(ngModel)]="uname"  name="username" #username="ngModel" ngModel required placeholder="Enter the email address"/>
+                          <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control input-underline input-lg"  [(ngModel)]="email"  name="username" #username="ngModel" ngModel required placeholder="Enter the email address"/>
                             <small class="text-danger pull-left" *ngIf="username.errors?.required">
-                                  Email is Required
+                                  Email is required
                             </small>
                             <small  class="text-danger pull-left" *ngIf="username.errors?.pattern">
-                                  Enter a Valid Email address
+                                  Enter a valid email address
                           </small>
                       </div>
           
@@ -23,7 +24,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-6">
-                      <input type="submit" [disabled]="!frm.valid"  class="btn rounded-btn btn-block" value="Save">
+                      <input type="submit" [disabled]="!frm.valid"  class="btn rounded-btn btn-block" value="Send">
                   </div>
                   <div class="col-md-6">
                       <input type="button"   class="btn rounded-btn btn-block" value="Cancel" (click)="login()">
