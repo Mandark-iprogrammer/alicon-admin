@@ -57,13 +57,13 @@ export class FileUploadComponent implements OnInit {
   public fileChange(e) {
 
     this.meetingFile = e.target.files[0];
-    if(this.meetingFile.type == "image/jpg" ||  this.meetingFile.type == "image/jpeg" ||  this.meetingFile.type == "application/pdf") {
-          this.meetingFile = e.target.files[0];
-        }
-        else {
-          this.toastr.error("Upload Image and PDF Files Only...!")
-          this.mytemplateForm.reset();
-        }
+    // if(this.meetingFile.type == "image/jpg" ||  this.meetingFile.type == "image/jpeg" ||  this.meetingFile.type == "application/pdf") {
+    //       this.meetingFile = e.target.files[0];
+    //     }
+    //     else {
+    //       this.toastr.error("Upload Image and PDF Files Only...!")
+    //       this.mytemplateForm.reset();
+    //     }
 
         var FileSize = this.meetingFile.size / 1024 / 1024; // in MB
         if(this.meetingFile.type == "image/jpg" ||  this.meetingFile.type == "image/jpeg"){

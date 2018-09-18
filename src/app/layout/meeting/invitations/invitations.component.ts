@@ -315,7 +315,7 @@ export class InvitationsComponent implements OnInit {
         err => console.log(err),
         () => {
          // this.change.emit(this.invited_user);
-          this.toastr.success('Invivation Sent Successsfully');
+          this.toastr.success('Invitation Sent Successsfully');
           this.ngOnChanges();
           this.send.length==0;
           

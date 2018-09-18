@@ -24,19 +24,14 @@ export class MeetingService {
   saveData(frm : any){
 
     if(frm.objectId==null){
-
-
+    
       var a=this.formatAMPM(frm.startTime.hour,frm.startTime.minute);
     //console.log(a)
 
       let arrr=[];
-      // //console.log(frm.tags)
-      // for(var i=0;i<frm.tags.length;i++){
-      //     arrr.push(frm.tags[i].value);
-      // }
+    
     let arr={
       "name":frm.name,
-      "description": frm.description,
       "remark":frm.remark,
       "venue":frm.venue,
       "createdBy":{
@@ -46,23 +41,19 @@ export class MeetingService {
       },
       "isPublished":frm.isPublished,
       "startTime":a,
-      // "startDate":{
-      //     "__type":"Date",
-      //     "iso":new Date(frm.startDate).toISOString()
-      // },
-      "meetingDate":{
+       "meetingDate":{
         "__type":"Date",
         "iso":new Date(frm.meetingDate).toISOString()
-    },
-    //"tags":arrr
+      }
+    
    }
-   //console.log(arr)
+   console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
       'X-Parse-Application-Id':this.APP_ID,
       'X-Parse-REST-API-Key':this.MASTER_KEY,
-     })
+         })
    })
   }
   else{
@@ -77,7 +68,7 @@ export class MeetingService {
     let arr={
       
       "name":frm.name,
-      "description": frm.description,
+     // "description": frm.description,
       "remark":frm.remark,
       "venue":frm.venue,
       "createdBy":{
@@ -140,7 +131,7 @@ export class MeetingService {
         "iso":new Date(frm.meetingDate).toISOString()
     }
    }
-   ////console.log(arr)
+   console.log(arr)
     return this.http.post(this.SERVER_URL,arr,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',
@@ -188,7 +179,7 @@ export class MeetingService {
 }
 
   displayMeeting(){
-    this.SERVER_URL = environment.apiUrl+'/classes/meeting?order=-createdAt'
+    this.SERVER_URL = environment.apiUrl+'/classes/meeting'
     return this.http.get(this.SERVER_URL,{
       headers:new HttpHeaders({
       'Content-Type':'application/json',

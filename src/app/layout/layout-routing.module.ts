@@ -10,7 +10,7 @@ const routes: Routes = [
             { path: '', redirectTo: 'viewUsers' },
             // { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },    
           //  {path : 'group',loadChildren:'./group/group.module#GroupModule'},
-            {path:'meeting',loadChildren:'./meeting/meeting.module#MeetingModule'},
+           // {path:'meeting',loadChildren:'./meeting/meeting.module#MeetingModule'},
             {path:'meeting/:objectId',loadChildren:'./meeting/meeting.module#MeetingModule'},
             {path:'viewMeeting',loadChildren:'./view-meeting/view-meeting.module#ViewMeetingModule'},
             { path : 'activity',loadChildren : './activity/activity.module#ActivityModule'},

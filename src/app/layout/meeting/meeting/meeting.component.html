@@ -17,14 +17,18 @@
                    <div class="form-group">
                        <label for="name">Meeting Name<font color="red">*</font> </label>
                        <input required type="text" pattern="[a-zA-Z0-9 -]*" [(ngModel)]="nm" placeholder="Enter a meeting name" name="name" #name="ngModel"
-                           ngModel class="form-control input-underline input-lg"  />
-                   
-                   <small  class="text-danger" *ngIf="name.errors?.pattern">
-                       Enter the valid meeting name
-                   </small>
-                   <small class="text-danger" *ngIf="name.errors?.required">
-                           Meeting Name is required
-                    </small>
+                           ngModel class="form-control input-underline input-lg" required />
+                       
+                           <div *ngIf="name.touched && name.invalid">
+                            <small class="text-danger" *ngIf="name.errors.required">
+                               Meeting Name is required
+                            </small>
+                            <small class="text-danger" *ngIf="name.errors.pattern">
+                                Enter a Valid Meeting Name
+                            </small>
+                        </div>
+
+                          
                    </div>
                </div>
                <div class="col-md-6">

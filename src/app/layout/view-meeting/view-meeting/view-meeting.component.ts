@@ -276,7 +276,8 @@ export class ViewMeetingComponent implements OnInit {
   onCustom(event) {
     //this.router.navigate(['/meeting' , event.data.objectId]);
     //this.activatedRoute.re
-     this.router.navigate(['/meeting',{'objectId': event.data.objectId}]);
+    this.router.navigate(['/meeting', event.data.objectId]);
+     //this.router.navigate(['/meeting',{'objectId': event.data.objectId}]);
     // this.router.navigate(['/meeting'], { queryParams:{'objectId': event.data.objectId} });
     //this.router.navigate(['/meeting/'+event.data.objectId]);
   }
@@ -304,7 +305,7 @@ export class ViewMeetingComponent implements OnInit {
   }
 
   registerMeeting(frm: any) {
-    //console.log(frm)
+    console.log(frm)
     if (frm.isPublished == "") {
       frm.isPublished = false;
     }
@@ -316,8 +317,8 @@ export class ViewMeetingComponent implements OnInit {
           this.router.navigate(['/meeting', { 'objectId': res['objectId']}]);
         },
         err => {
-          //console.log(err)
-          this.toastr.success(err, 'Meeting Register');
+          console.log(err)
+          //this.toastr.error(err, 'Meeting Register');
         },
         () => {
           //console.log("record saved")

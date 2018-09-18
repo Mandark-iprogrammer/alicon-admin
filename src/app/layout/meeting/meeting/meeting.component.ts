@@ -386,7 +386,9 @@ ngOnChanges(){
   this.sub = this.activatedRoute.params.subscribe((params: Params) => {
     
      //let userId = params['objectId'];
-    let userId = this.activatedRoute.snapshot.params['objectId'];
+  // let userId = this.activatedRoute.snapshot.params['objectId'];
+  let userId = this.activatedRoute.snapshot.paramMap.get('objectId');
+  //console.log(userId);
     // let userId = '9pSCqviE6i';   
     if (userId != null) {
       //RSVP Attend Users Count
@@ -747,7 +749,25 @@ convertTime12to24(time12h) {
 
               var serverKey = 'AAAA-vhQn20:APA91bFRNikSzNXPGklpEB6SU12TWeihUrFFz60gBoGSQjnUHyncEjDHK07q1X_sJu3aLtsYfY4IQk52WwUMDLjVpp6lpoDXZfMJZW33dqaNkUkzXT_Yai26S-ktRHA9lhTpDn297Yi-';
               var fcm = new FCM(serverKey); 
-             var message = {
+              if(data['deviceType']==2){
+                this.message = {
+                  
+                  to:data['deviceToken'],
+                  collapse_key: 'AIzaSyB01w4EI-nHaTiY3r3bmpO7zz170RbfbBA', 
+                   data: {
+                       your_custom_data_key: 'AIzaSyDt24Juf1hToQ2ILBQxNQcglnPrI5VqIxI',
+                       "meetingDate":this.meetingDate,
+                        "ObjectId":this.meetingID,
+                        "meetingText":frm1.body
+                   },
+                   notification: {
+                       title: frm1.title,
+                       body:frm1.body
+                    }
+                 };   
+              }
+              else{
+                this.message = {
                // registration_ids: ['emqR_8IaqyY:APA91bEOFP9T5pD2OPrVur4Fu7CSLM5Kbitek2IE8mFZ4o1AkJMuJ7Wl54OhvwbesnTpaXvH2R0_QaFds6s-yC1iAygBAuAGgJKYDRNJ4laONtDjyoqB29cJWWD6Q7Y3Qp6AK6eYvHVs','fDyP9x0uTBU:APA91bHxw7mBWf9uzEKIetyOhno6jcDBDTOmN8aLYfGibBSRUT7YIqCirKGLqXcnCXKSxYEIvEPvhn-9w4umaaiNnwzzcImOVa6RYy2U0Z9qmTWXnIKkwrleL-sL38FEd1R6AeQ6SPOA'], // required fill with device token or topics
               // registration_ids: ['db48-2il2eU:APA91bE_fXzj3MbG4o7sfBOwEenYXjMWmOypCi9iuOroZFcXrhzURvgsmC9jrdJWafQ076cTkieLzOV8u2uCBy_iocsTDX9It0CZWOWC6dR5eMuwHxnf7BKfM3FKKuyPCOu67la7qbm3'], // required fill with device token or topics 
                to:data['deviceToken'],
@@ -757,15 +777,15 @@ convertTime12to24(time12h) {
                 },
                 notification: {
                     title: frm1.title,
-                    body: {
+                    body:{ 
                       "meetingDate":this.meetingDate,
                       "ObjectId":this.meetingID,
-                      "meetingText":frm1.body
-                    } 
+                      "meetingText":frm1.body}
                  }
               };
+            }
 
-              fcm.send(message, function(err, response){
+              fcm.send(this.message, function(err, response){
                 if (err) {
                     console.log("Something has gone wrong!");
                     console.log(err)
